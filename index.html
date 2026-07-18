@@ -7370,7 +7370,7 @@ function genReply(targetId){
   if(document.visibilityState !== 'visible'){
     var item=contacts.find(function(x){return x.id===targetId})||group;
     var msgText=reply||(imgSrc?'[图片]':'[表情]');
-    showPushNotification(item?item.name:'联系人',msgText);
+    showPushNotification(item?item.name:'联系人',msgText,(item&&item.avatar)?item.avatar:'');
   }
   
   var rcProb=getSpeed('rc-prob',senderId);
@@ -17563,6 +17563,11 @@ function maybeAutoSend(){
       var m=msgs(targetId);m.push({id:'m_'+Date.now()+'_'+Math.random().toString(36).substr(2,9),s:OTHER,t:reply,img:imgSrc,ts:new Date(),pc:false,isAuto:true,isInitiative:true,read:(cid===targetId)});savemsgs(targetId,m);
 
       if(cid===targetId){renderMsgs(m);playSound('recv',targetId)}renderChatList();
+
+      if(document.visibilityState!=='visible'){
+        var msgText=reply||(imgSrc?'[图片]':'[表情]');
+        showPushNotification(contact.name,msgText,(contact&&contact.avatar)?contact.avatar:'');
+      }
       var rcProb=getSpeed('rc-prob',targetId);if(Math.random()*100<rcProb){
         setTimeout(function(){var all=msgs(targetId);if(all.length>0){var lastMsg=all[all.length-1];lastMsg.retracted=true;lastMsg.originalContent=lastMsg.t||'';lastMsg.originalImg=lastMsg.img||'';lastMsg.t='';lastMsg.img='';}savemsgs(targetId,all);
           if(cid===targetId)renderMsgs(all);renderChatList();},(1+Math.random()*3)*1000);
@@ -18087,12 +18092,12 @@ function togglePushNotify(){
   }
 }
 
-function showPushNotification(contactName, message){
+function showPushNotification(contactName, message, avatarUrl){
   if(!pushNotifyEnabled)return;
   if(!('Notification' in window))return;
   if(Notification.permission!=='granted')return;
   
-  var icon='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0OCA0OCI+PHBhdGggZmlsbD0iIzE1NzJmNyIgZD0iTTQgNGg0MHY0MEg0eiIvPjxwYXRoIGZpbGw9IiMxNTcyZjciIGQ9Ik0zMiAxNGwtNi02LTYgNiAyLjgxIDguMTktOC4xOSAxMS44MSAxMi0xMiA4LjE5LTguMTktMTEuODEgMi44MXoiLz48L3N2Zz4=';
+  var icon=avatarUrl||'';
   
   // 优先通过 Service Worker 发送通知（Android standalone 模式更可靠）
   if(navigator.serviceWorker&&navigator.serviceWorker.controller){
@@ -18109,12 +18114,9 @@ function showPushNotification(contactName, message){
   
   // 降级：直接使用 Notification API
   try{
-    var notification=new Notification(contactName,{
-      body:message,
-      icon:icon,
-      badge:icon,
-      tag:'xingyan-msg'
-    });
+    var notifOpts={body:message,tag:'xingyan-msg'};
+    if(icon){notifOpts.icon=icon;notifOpts.badge=icon;}
+    var notification=new Notification(contactName,notifOpts);
     notification.onclick=function(){
       window.focus();
       notification.close();
@@ -23716,7 +23718,6 @@ var pendingNotifications=[];
 function flushPendingNotifications(){
   if(!navigator.serviceWorker||!navigator.serviceWorker.controller)return;
   if(pendingNotifications.length===0)return;
-  var icon='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0OCA0OCI+PHBhdGggZmlsbD0iIzE1NzJmNyIgZD0iTTQgNGg0MHY0MEg0eiIvPjxwYXRoIGZpbGw9IiMxNTcyZjciIGQ9Ik0zMiAxNGwtNi02LTYgNiAyLjgxIDguMTktOC4xOSAxMS44MSAxMi0xMiA4LjE5LTguMTktMTEuODEgMi44MXoiLz48L3N2Zz4=';
   while(pendingNotifications.length>0){
     var pn=pendingNotifications.shift();
     try{
@@ -23724,7 +23725,7 @@ function flushPendingNotifications(){
         type:'SHOW_NOTIFICATION',
         title:pn.title,
         body:pn.body,
-        icon:icon
+        icon:pn.icon||''
       });
     }catch(e){}
   }
