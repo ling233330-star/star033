@@ -23697,6 +23697,7 @@ sendMsg=function(){
 </div>
 
 
+<script>
 // PWA Service Worker 注册
 if('serviceWorker' in navigator){
   navigator.serviceWorker.register('sw.js',{scope:'/'}).then(function(reg){
@@ -23735,4 +23736,5 @@ document.addEventListener('visibilitychange',function(){
     flushPendingNotifications();
   }
 });
+</script>
 </body></html>
