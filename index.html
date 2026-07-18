@@ -1144,6 +1144,8 @@ canvas{-webkit-backface-visibility:hidden;backface-visibility:hidden;-webkit-tra
 
 /* ========== Theme: Minimalism 极简 ========== */
 </style>
+<link rel="manifest" href="manifest.json">
+<meta name="apple-mobile-web-app-title" content="星言">
 </head>
 <body>
 <div id="announcement-screen" style="position:fixed;top:0;left:0;width:100%;height:100%;background:#ffffff;display:flex;flex-direction:column;align-items:center;z-index:9998;opacity:1;transition:opacity 0.6s ease-in;overflow:hidden;">
@@ -7365,7 +7367,7 @@ function genReply(targetId){
   savemsgs(targetId,m);
   if(targetId===window.currentCid)renderMsgs(m);renderChatList();playSound('recv',targetId);
   
-  if(!document.hasFocus()){
+  if(document.visibilityState !== 'visible'){
     var item=contacts.find(function(x){return x.id===targetId})||group;
     var msgText=reply||(imgSrc?'[图片]':'[表情]');
     showPushNotification(item?item.name:'联系人',msgText);
@@ -10513,6 +10515,7 @@ async function exportCardsJSON(){
     try{var nprRaw=safeGetItem('ml2_lf_ml2_nav_cards_private_'+ncId);if(nprRaw)exportData.navCardsPrivate[ncId]=JSON.parse(nprRaw);}catch(e){}
   }
   exportData.navCardGroups=navCardGroups||{};
+  exportData.navDisplayStates=navDisplayStates||{};
   
   exportData.contacts=contacts.map(function(c){
     return {id:c.id,name:c.name,avatar:c.avatar||''};
@@ -10549,7 +10552,8 @@ function normalizeImportData(data){
     touchGroupCards:data.touchGroupCards||{},
     navCardsPublic:data.navCardsPublic||[],
     navCardsPrivate:data.navCardsPrivate||{},
-    navCardGroups:data.navCardGroups||{}
+    navCardGroups:data.navCardGroups||{},
+    navDisplayStates:data.navDisplayStates||{}
   };
   
   if(data.globalCards&&Array.isArray(data.globalCards)){
@@ -10709,6 +10713,11 @@ async function importCardsJSON(){
         if(importData.navCardGroups&&typeof importData.navCardGroups==='object'){
           navCardGroups=importData.navCardGroups;
           if(isLFAvailable()){window.localforage.setItem('ml2_nav_card_groups',JSON.stringify(navCardGroups)).catch(function(){});}
+        }
+        if(importData.navDisplayStates&&typeof importData.navDisplayStates==='object'){
+          navDisplayStates=importData.navDisplayStates;
+          ls('ml2_nav_display_states',navDisplayStates);
+          if(isLFAvailable()){window.localforage.setItem('ml2_nav_display_states',navDisplayStates).catch(function(){});}
         }
         
         // 导入专享字卡联系人绑定数据
@@ -17931,16 +17940,44 @@ function startKeepAlive(showToast){
     oscillator.start();
     keepAliveAudio={ctx:ctx,oscillator:oscillator,gainNode:gainNode};
     
+    // 在用户首次交互时恢复 AudioContext（现代浏览器安全策略要求）
+    if(ctx.state==='suspended'){
+      var resumeOnInteraction=function(){
+        if(keepAliveAudio&&keepAliveAudio.ctx&&keepAliveAudio.ctx.state==='suspended'){
+          keepAliveAudio.ctx.resume().catch(function(){});
+        }
+      };
+      document.addEventListener('click',resumeOnInteraction,{once:true});
+      document.addEventListener('touchstart',resumeOnInteraction,{once:true});
+      document.addEventListener('keydown',resumeOnInteraction,{once:true});
+    }
+    
     keepAliveInterval=setInterval(function(){
       if(keepAliveAudio&&keepAliveAudio.ctx&&keepAliveAudio.ctx.state==='suspended'){
         keepAliveAudio.ctx.resume().catch(function(){});
       }
     },5000);
     
-    // navigator.wakeLock 防止屏幕休眠
-    if(navigator.wakeLock){
-      navigator.wakeLock.request('screen').catch(function(){});
-    }
+    // navigator.wakeLock 防止屏幕休眠（持续请求，处理release后自动重试）
+    var wakeLockSentinel=null;
+    var requestWakeLock=function(){
+      if(navigator.wakeLock&&document.visibilityState==='visible'){
+        navigator.wakeLock.request('screen').then(function(sentinel){
+          wakeLockSentinel=sentinel;
+          if(wakeLockSentinel){
+            wakeLockSentinel.addEventListener('release',function(){
+              setTimeout(function(){
+                if(keepAliveEnabled)requestWakeLock();
+              },1000);
+            });
+          }
+        }).catch(function(){});
+      }
+    };
+    requestWakeLock();
+    document.addEventListener('visibilitychange',function(){
+      if(document.visibilityState==='visible'&&keepAliveEnabled)requestWakeLock();
+    });
     
     if(showToast!==false)toast('后台保活已启动');
   }catch(e){
@@ -17980,11 +18017,31 @@ var pushNotifyEnabled=false;
 function initPushNotify(){
   var saved=ls('pushNotifyEnabled');
   pushNotifyEnabled=saved!==undefined?saved:true;
-  $('push-notify-status').textContent=pushNotifyEnabled?'已开启':'已关闭';
-  $('push-notify-status').style.color=pushNotifyEnabled?'var(--accent)':'var(--txt3)';
-  
-  if(pushNotifyEnabled){
-    requestNotificationPermission(false);
+  updatePushNotifyStatusUI();
+}
+
+function updatePushNotifyStatusUI(){
+  var statusEl=$('push-notify-status');
+  if(!statusEl)return;
+  if(!pushNotifyEnabled){
+    statusEl.textContent='已关闭';
+    statusEl.style.color='var(--txt3)';
+    return;
+  }
+  if(!('Notification' in window)){
+    statusEl.textContent='浏览器不支持';
+    statusEl.style.color='#ff4d4f';
+    return;
+  }
+  if(Notification.permission==='granted'){
+    statusEl.textContent='已开启';
+    statusEl.style.color='var(--accent)';
+  }else if(Notification.permission==='denied'){
+    statusEl.textContent='已拒绝（需在浏览器设置中手动开启）';
+    statusEl.style.color='#ff4d4f';
+  }else{
+    statusEl.textContent='待授权（点击开启）';
+    statusEl.style.color='#faad14';
   }
 }
 
@@ -18001,13 +18058,31 @@ function requestNotificationPermission(showToast){
 function togglePushNotify(){
   pushNotifyEnabled=!pushNotifyEnabled;
   ls('pushNotifyEnabled',pushNotifyEnabled);
-  $('push-notify-status').textContent=pushNotifyEnabled?'已开启':'已关闭';
-  $('push-notify-status').style.color=pushNotifyEnabled?'var(--accent)':'var(--txt3)';
   
   if(pushNotifyEnabled){
-    requestNotificationPermission();
-    toast('后台消息弹窗已开启');
+    if(!('Notification' in window)){
+      updatePushNotifyStatusUI();
+      toast('当前浏览器不支持消息通知');
+      return;
+    }
+    if(Notification.permission==='granted'){
+      updatePushNotifyStatusUI();
+      toast('后台消息弹窗已开启');
+    }else if(Notification.permission==='denied'){
+      updatePushNotifyStatusUI();
+      toast('通知权限已被拒绝，请在浏览器设置中手动开启');
+    }else{
+      Notification.requestPermission().then(function(permission){
+        if(permission==='granted'){
+          toast('消息通知已开启');
+        }else{
+          toast('通知权限未授权，可在浏览器设置中手动开启');
+        }
+        updatePushNotifyStatusUI();
+      });
+    }
   }else{
+    updatePushNotifyStatusUI();
     toast('后台消息弹窗已关闭');
   }
 }
@@ -18017,13 +18092,29 @@ function showPushNotification(contactName, message){
   if(!('Notification' in window))return;
   if(Notification.permission!=='granted')return;
   
+  var icon='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0OCA0OCI+PHBhdGggZmlsbD0iIzE1NzJmNyIgZD0iTTQgNGg0MHY0MEg0eiIvPjxwYXRoIGZpbGw9IiMxNTcyZjciIGQ9Ik0zMiAxNGwtNi02LTYgNiAyLjgxIDguMTktOC4xOSAxMS44MSAxMi0xMiA4LjE5LTguMTktMTEuODEgMi44MXoiLz48L3N2Zz4=';
+  
+  // 优先通过 Service Worker 发送通知（Android standalone 模式更可靠）
+  if(navigator.serviceWorker&&navigator.serviceWorker.controller){
+    try{
+      navigator.serviceWorker.controller.postMessage({
+        type:'SHOW_NOTIFICATION',
+        title:contactName,
+        body:message,
+        icon:icon
+      });
+      return;
+    }catch(e){}
+  }
+  
+  // 降级：直接使用 Notification API
   try{
     var notification=new Notification(contactName,{
       body:message,
-      icon:'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0OCA0OCI+PHBhdGggZmlsbD0iIzE1NzJmNyIgZD0iTTQgNGg0MHY0MEg0eiIvPjxwYXRoIGZpbGw9IiMxNTcyZjciIGQ9Ik0zMiAxNGwtNi02LTYgNiAyLjgxIDguMTktOC4xOSAxMS44MSAxMi0xMiA4LjE5LTguMTktMTEuODEgMi44MXoiLz48L3N2Zz4=',
-      badge:'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0OCA0OCI+PHBhdGggZmlsbD0iIzE1NzJmNyIgZD0iTTQgNGg0MHY0MEg0eiIvPjxwYXRoIGZpbGw9IiMxNTcyZjciIGQ9Ik0zMiAxNGwtNi02LTYgNiAyLjgxIDguMTktOC4xOSAxMS44MSAxMi0xMiA4LjE5LTguMTktMTEuODEgMi44MXoiLz48L3N2Zz4='
+      icon:icon,
+      badge:icon,
+      tag:'xingyan-msg'
     });
-    
     notification.onclick=function(){
       window.focus();
       notification.close();
@@ -23606,3 +23697,42 @@ sendMsg=function(){
 </div>
 
 </body></html>
+
+// PWA Service Worker 注册
+if('serviceWorker' in navigator){
+  navigator.serviceWorker.register('sw.js',{scope:'/'}).then(function(reg){
+    console.log('SW registered:',reg.scope);
+    // SW 就绪后，尝试发送积压通知
+    navigator.serviceWorker.ready.then(function(){
+      flushPendingNotifications();
+    });
+  }).catch(function(err){
+    console.warn('SW registration failed:',err);
+  });
+}
+
+// 积压通知队列（SW 未就绪时暂存）
+var pendingNotifications=[];
+function flushPendingNotifications(){
+  if(!navigator.serviceWorker||!navigator.serviceWorker.controller)return;
+  if(pendingNotifications.length===0)return;
+  var icon='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0OCA0OCI+PHBhdGggZmlsbD0iIzE1NzJmNyIgZD0iTTQgNGg0MHY0MEg0eiIvPjxwYXRoIGZpbGw9IiMxNTcyZjciIGQ9Ik0zMiAxNGwtNi02LTYgNiAyLjgxIDguMTktOC4xOSAxMS44MSAxMi0xMiA4LjE5LTguMTktMTEuODEgMi44MXoiLz48L3N2Zz4=';
+  while(pendingNotifications.length>0){
+    var pn=pendingNotifications.shift();
+    try{
+      navigator.serviceWorker.controller.postMessage({
+        type:'SHOW_NOTIFICATION',
+        title:pn.title,
+        body:pn.body,
+        icon:icon
+      });
+    }catch(e){}
+  }
+}
+
+// visibilitychange 监听：用户切回前台时发送积压通知
+document.addEventListener('visibilitychange',function(){
+  if(document.visibilityState==='visible'){
+    flushPendingNotifications();
+  }
+});
