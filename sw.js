@@ -40,7 +40,7 @@ self.addEventListener('notificationclick', function(event) {
       if (clients.length > 0) {
         clients[0].focus();
       } else {
-        self.clients.openWindow('/');
+        self.clients.openWindow('/star033/');
       }
     })
   );
