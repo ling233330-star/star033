@@ -415,7 +415,9 @@ canvas{-webkit-backface-visibility:hidden;backface-visibility:hidden;-webkit-tra
 .mr.self .message-retracted{color:var(--txt3)}
 .mr.other .message-retracted{color:var(--txt3)}
 .mr.touch-msg{justify-content:center;margin-bottom:8px}
-.message-call-row{display:flex;justify-content:center;margin-bottom:8px}
+.message-call-row{display:flex;justify-content:center;margin-bottom:8px;position:relative;z-index:1}
+.message-call{font-size:12px;color:var(--txt3);text-align:center;padding:8px 16px;background:rgba(0,0,0,0.04);border-radius:20px;display:inline-block;max-width:80%;cursor:pointer;user-select:none;-webkit-user-select:none;position:relative}
+.message-call-time{font-size:10px;color:var(--txt4);text-align:center;margin-top:2px}
 .mr.self .message-touch{font-size:12px;color:var(--my-touch-color,#000);opacity:0.75;padding:4px 12px;border-radius:10px;text-align:center;display:block;max-width:100%;line-height:1.5}
 .mr.other .message-touch{font-size:12px;color:var(--other-touch-color,#000);opacity:0.75;padding:4px 12px;border-radius:10px;text-align:center;display:block;max-width:100%;line-height:1.5}
 .retracted-original{font-size:12px;color:var(--txt4);margin-top:4px;padding:6px 10px;background:rgba(0,0,0,.05);border-radius:4px;font-style:italic}
@@ -909,7 +911,7 @@ canvas{-webkit-backface-visibility:hidden;backface-visibility:hidden;-webkit-tra
   .modal-head{padding:12px 14px;padding-top:calc(env(safe-area-inset-top) + 12px)}
   .sf{padding-bottom:calc(env(safe-area-inset-bottom) + 12px)}
   .chat-more-item{padding:10px 6px;min-height:44px}
-  .chat-more-label{font-size:11px}
+  .chat-more-label{font-size:10px}
   .mr{gap:10px;margin-bottom:12px}
   .mb{padding:10px 14px;font-size:14px}
   .message-quote{padding:6px 10px;margin-bottom:6px;font-size:12px}
@@ -2487,6 +2489,24 @@ canvas{-webkit-backface-visibility:hidden;backface-visibility:hidden;-webkit-tra
         </div>
         <div style="font-size:12px;color:var(--txt2);line-height:1.4;">消息发送后，对方随机时间回看聊天记录时收藏的概率（1-180分钟内）</div>
       </div>
+      
+      <div style="margin-bottom:20px;">
+        <div style="font-size:14px;font-weight:500;color:var(--txt);margin-bottom:8px;">一次收藏数量</div>
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
+          <div style="display:flex;align-items:center;gap:8px;">
+            <span style="font-size:12px;color:var(--txt2);">最少</span>
+            <input type="range" id="ta-fav-min-count-slider" min="1" max="10" value="1" style="flex:1;width:80px;">
+            <span id="ta-fav-min-count-value" style="font-size:14px;font-weight:600;color:var(--accent);width:30px;text-align:right;">1</span>
+          </div>
+          <span style="font-size:14px;color:var(--txt2);">~</span>
+          <div style="display:flex;align-items:center;gap:8px;">
+            <span style="font-size:12px;color:var(--txt2);">最多</span>
+            <input type="range" id="ta-fav-max-count-slider" min="1" max="10" value="5" style="flex:1;width:80px;">
+            <span id="ta-fav-max-count-value" style="font-size:14px;font-weight:600;color:var(--accent);width:30px;text-align:right;">5</span>
+          </div>
+        </div>
+        <div style="font-size:12px;color:var(--txt2);line-height:1.4;">触发收藏时，随机收藏的消息数量范围</div>
+      </div>
     </div>
     <div class="modal-buttons" style="padding:16px 20px;border-top:1px solid var(--border);">
       <button class="btn" onclick="hideOv('ov-ta-favorites-settings')" style="flex:1;">保存</button>
@@ -2577,6 +2597,84 @@ canvas{-webkit-backface-visibility:hidden;backface-visibility:hidden;-webkit-tra
     </div>
     <div class="modal-buttons" style="padding:16px 20px;border-top:1px solid var(--border);">
       <button class="btn" onclick="hideOv('ov-ta-highlights-settings')" style="flex:1;">保存</button>
+      <button class="btn-primary" onclick="summonTAHighlight()" style="flex:1;">召唤划重点</button>
+    </div>
+  </div>
+</div>
+
+<!-- Pomodoro Timer Overlay -->
+<div class="overlay" id="ov-pomodoro">
+  <div class="sheet" style="max-width:100%;width:100%;">
+    <div class="sh"><h3>🍅 番茄钟</h3><div style="display:flex;align-items:center;gap:8px;"><button class="btn-nav" onclick="showPomodoroSettings()" style="font-size:18px;background:none;border:none;color:var(--txt2);cursor:pointer;padding:4px 8px;" title="设置">⚙️</button><button class="btn-close" onclick="hideOv('ov-pomodoro')">✕</button></div></div>
+    <div class="sb" style="padding:16px;max-height:70vh;overflow-y:auto;">
+      <div style="display:flex;justify-content:center;margin-bottom:16px;">
+        <div style="width:150px;height:150px;border-radius:50%;background:var(--c2);display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;box-shadow:0 4px 20px rgba(0,0,0,0.08);">
+          <div style="position:absolute;top:0;left:0;width:100%;height:100%;border-radius:50%;overflow:hidden;">
+            <div id="pomodoro-progress" style="width:0%;height:100%;background:var(--accent);transition:width 1s linear;"></div>
+          </div>
+          <div style="position:relative;z-index:1;text-align:center;">
+            <div id="pomodoro-time" style="font-size:40px;font-weight:700;color:var(--txt);font-family:monospace;">25:00</div>
+          </div>
+        </div>
+      </div>
+      
+      <div style="display:flex;justify-content:center;gap:6px;margin-bottom:16px;flex-wrap:wrap;">
+        <button class="btn" onclick="setPomodoroDuration(5)" style="padding:12px 14px;font-size:12px;min-width:50px;min-height:44px;">5分</button>
+        <button class="btn" onclick="setPomodoroDuration(15)" style="padding:12px 14px;font-size:12px;min-width:50px;min-height:44px;">15分</button>
+        <button class="btn" onclick="setPomodoroDuration(25)" style="padding:12px 14px;font-size:12px;min-width:50px;min-height:44px;">25分</button>
+        <button class="btn" onclick="setPomodoroDuration(30)" style="padding:12px 14px;font-size:12px;min-width:50px;min-height:44px;">30分</button>
+        <button class="btn" onclick="setPomodoroDuration(45)" style="padding:12px 14px;font-size:12px;min-width:50px;min-height:44px;">45分</button>
+        <button class="btn" onclick="setPomodoroDuration(60)" style="padding:12px 14px;font-size:12px;min-width:50px;min-height:44px;">60分</button>
+      </div>
+      
+      <div style="display:flex;justify-content:center;gap:10px;">
+        <button id="pomodoro-toggle-btn" onclick="startPomodoro()" class="btn-primary" style="padding:14px 32px;font-size:16px;font-weight:600;min-height:44px;">开始</button>
+        <button onclick="resetPomodoro()" class="btn" style="padding:14px 16px;font-size:14px;min-height:44px;">重置</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Pomodoro Settings Overlay -->
+<div class="overlay" id="ov-pomodoro-settings">
+  <div class="modal" style="width:90%;max-width:360px;">
+    <div class="modal-head" style="padding:16px 20px;">
+      <div class="modal-title" style="font-size:16px;font-weight:600;">番茄钟设置</div>
+      <button class="btn-nav" onclick="hideOv('ov-pomodoro-settings')">×</button>
+    </div>
+    <div style="padding:16px 20px;max-height:70vh;overflow-y:auto;">
+      <div style="margin-bottom:20px;">
+        <div style="font-size:14px;font-weight:500;color:var(--txt);margin-bottom:8px;">默认时长</div>
+        <div style="display:flex;align-items:center;gap:12px;">
+          <input type="range" id="pomodoro-duration-slider" min="5" max="60" value="25" style="flex:1;">
+          <span id="pomodoro-duration-value" style="font-size:14px;font-weight:600;color:var(--accent);width:60px;text-align:right;">25分钟</span>
+        </div>
+      </div>
+      
+      <div style="margin-bottom:20px;">
+        <div style="font-size:14px;font-weight:500;color:var(--txt);margin-bottom:8px;">提示音</div>
+        <div class="set-row"><span>倒计时结束播放提示音</span><label class="tsw"><input type="checkbox" id="pomodoro-sound" checked><span class="sl"></span></label></div>
+      </div>
+      
+      <div style="border-top:1px solid var(--border);padding-top:16px;margin-bottom:20px;">
+        <div style="font-size:14px;font-weight:500;color:var(--txt);margin-bottom:8px;">今日统计</div>
+        <div id="pomodoro-today-stats" style="font-size:13px;color:var(--txt2);">今日完成 0 个番茄，共 0 分钟</div>
+      </div>
+      
+      <div style="border-top:1px solid var(--border);padding-top:16px;margin-bottom:20px;">
+        <div style="font-size:14px;font-weight:500;color:var(--txt);margin-bottom:8px;">本周统计</div>
+        <div id="pomodoro-calendar" style="padding:8px 0;"></div>
+      </div>
+      
+      <div style="border-top:1px solid var(--border);padding-top:16px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;">
+          <div style="font-size:14px;font-weight:500;color:var(--txt);">今日打卡</div>
+          <button id="pomodoro-checkin-btn" onclick="togglePomodoroCheckIn()" style="padding:8px 24px;border:none;border-radius:20px;background:var(--c2);color:var(--txt);font-size:13px;font-weight:500;cursor:pointer;">立即打卡</button>
+        </div>
+      </div>
+    </div>
+    <div class="modal-buttons" style="padding:16px 20px;border-top:1px solid var(--border);">
+      <button class="btn-primary" onclick="savePomodoroSettingsUI()">保存</button>
     </div>
   </div>
 </div>
@@ -3494,6 +3592,12 @@ canvas{-webkit-backface-visibility:hidden;backface-visibility:hidden;-webkit-tra
         <div class="set-row"><span>最多</span><div class="stepper" data-k="reply-max"><button>−</button><input type="number" class="sv" id="reply-max-val" value="5"><button>+</button></div><span style="font-size:12px;color:var(--txt3);margin-left:4px">条</span></div>
       </div>
       <div style="margin-bottom:16px">
+        <div style="font-size:12px;color:var(--txt2);margin-bottom:8px;font-weight:600">免打扰模式</div>
+        <div style="font-size:11px;color:var(--txt3);margin-bottom:8px;">开启后，所有联系人的主动发消息将使用以下设置：最短1秒~最长3小时，30%概率触发联系人主动发消息</div>
+        <div class="set-row"><span>开启免打扰</span><label class="tsw"><input type="checkbox" id="dnd-en"><span class="sl"></span></label></div>
+        <div style="font-size:11px;color:var(--txt3);margin-top:4px;">免打扰模式下：最短等待1秒，最长等待3小时，触发概率30%</div>
+      </div>
+      <div style="margin-bottom:16px">
         <div style="font-size:12px;color:var(--txt2);margin-bottom:8px;font-weight:600">主动发送消息</div>
         <div class="set-row"><span>开启</span><label class="tsw"><input type="checkbox" id="as-en" checked><span class="sl"></span></label></div>
         <div class="set-row"><span>触发概率</span><div class="stepper" data-k="as-prob"><button>−</button><input type="number" class="sv" id="as-prob-val" value="50"><button>+</button></div><span style="font-size:12px;color:var(--txt3);margin-left:4px">%</span></div>
@@ -4056,6 +4160,23 @@ var $=function(id){return document.getElementById(id)};
 var bindEvt=function(id,evt,fn){var el=$(id);if(el)el.addEventListener(evt,fn);};
 var chatBgCache={};
 var SELF='user',OTHER='partner',LC='ml2_c',LP='ml2_p',LM='ml2_m_',LD='ml2_d_',LL='ml2_letters',LMOM='ml2_moments',LLIKE='ml2_like_';
+
+function setupKeyboardFix(){
+  if(/iPhone|iPad|iPod/i.test(navigator.userAgent)){
+    var originalHeight=window.innerHeight;
+    window.addEventListener('resize',function(){
+      var newHeight=window.innerHeight;
+      if(newHeight<originalHeight){
+        document.body.style.height=newHeight+'px';
+        document.body.style.overflow='hidden';
+      }else{
+        document.body.style.height='';
+        document.body.style.overflow='';
+      }
+    });
+  }
+}
+setupKeyboardFix();
 
 // ---------- Card Data ----------
 var TAROT_CARDS=[{"name": "愚者", "en": "The Fool", "kw": "新的开始·冒险·天真", "desc": "一段全新的旅程即将展开，你站在未知的起点，内心充满好奇与冲动。不必过度规划，信任直觉迈出第一步。", "rev_kw": "鲁莽·不成熟·逃避", "rev_desc": "你可能因为冲动而忽略了重要的细节，或者在刻意回避某些必须面对的问题。"}, {"name": "魔术师", "en": "The Magician", "kw": "创造力·能力·专注", "desc": "一切资源都已就位，你有足够的能力将想法变为现实。集中注意力，这个世界会回应你的意志。", "rev_kw": "才能浪费·欺骗·缺乏计划", "rev_desc": "空有天赋却没有付诸行动，或被表象迷惑而未能辨别真伪。"}, {"name": "女祭司", "en": "The High Priestess", "kw": "直觉·潜意识·神秘", "desc": "答案不在外界，而在你的内心深处。静下心来倾听内在的声音，直觉远比表面证据更可靠。", "rev_kw": "忽视直觉·表面信息·情绪混乱", "rev_desc": "过于依赖外部信息而忽略了内心的真实感受，导致方向迷失。"}, {"name": "女皇", "en": "The Empress", "kw": "丰饶·母性·感官享受", "desc": "万物生长、丰盛富足，这是一个享受生活和创造美好的阶段。亲近自然，滋养身心。", "rev_kw": "匮乏·依赖·停滞", "rev_desc": "资源或情感上的枯竭，也许太依赖别人而忽略了自己的力量。"}, {"name": "皇帝", "en": "The Emperor", "kw": "权威·秩序·控制", "desc": "建立结构与规则的时候到了。你需要用理性与纪律掌控局面，承担起领导的责任。", "rev_kw": "专横·混乱·缺乏自律", "rev_desc": "要么过于强势压制他人，要么因为缺乏秩序而导致失控。"}, {"name": "教皇", "en": "The Hierophant", "kw": "传统·信仰·教导", "desc": "遵循传统智慧，从既有的系统与经验中获取指导。这也可能意味着一段正式的关系或仪式。", "rev_kw": "叛逆·教条·虚伪", "rev_desc": "对传统盲目接受或全盘否定，缺乏真正的独立思考。"}, {"name": "恋人", "en": "The Lovers", "kw": "选择·爱情·结合", "desc": "一个重要的选择摆在你面前，它不仅关于爱情，也关于你的价值观和人生方向。听从内心。", "rev_kw": "错误选择·分离·不和谐", "rev_desc": "面临抉择的困难或关系中的裂痕，需要重新审视自己的真实需求。"}, {"name": "战车", "en": "The Chariot", "kw": "胜利·意志力·前进", "desc": "通过强大的意志力克服障碍，勇往直前。你的决心将带你冲破一切阻碍，抵达目标。", "rev_kw": "失控·挫折·方向错误", "rev_desc": "方向可能搞错了，或者急于求成导致了失控与碰撞。"}, {"name": "力量", "en": "Strength", "kw": "勇气·耐心·内在力量", "desc": "真正的力量来自于温柔与耐心。以柔克刚，用内在的坚定驯服外在的挑战。", "rev_kw": "软弱·失控·缺乏自信", "rev_desc": "自我怀疑正在削弱你的力量，需要重新找回内核的稳定。"}, {"name": "隐士", "en": "The Hermit", "kw": "内省·孤独·指引", "desc": "暂时退出喧嚣，独处并获得深层的洞见。你的内在之光会照亮前路。", "rev_kw": "孤僻·逃避·拒绝建议", "rev_desc": "可能陷入了过度的自我封闭，或者拒绝接受任何帮助。"}, {"name": "命运之轮", "en": "Wheel of Fortune", "kw": "转变·机遇·命运", "desc": "命运之轮正在转动，变化即将到来。无论是好是坏，接受它，顺应潮流的走向。", "rev_kw": "厄运·抵抗变化·失控", "rev_desc": "对不可阻挡的变化感到抗拒，导致被动与挫折。"}, {"name": "正义", "en": "Justice", "kw": "公平·真相·因果", "desc": "一切行为都会有相应的结果。理性决策、诚实面对自己，公正的天平总会倾向正确的一方。", "rev_kw": "不公·偏见·逃避责任", "rev_desc": "可能存在不公平的对待，或者你在逃避自己应负的责任。"}, {"name": "倒吊人", "en": "The Hanged Man", "kw": "牺牲·换个视角·等待", "desc": "以不同的角度看待世界。有时候停下来、放弃控制，反而能获得更深的理解。", "rev_kw": "无意义的牺牲·固执·停滞", "rev_desc": "你的牺牲或许并没有价值，只是在原地僵持而已。"}, {"name": "死神", "en": "Death", "kw": "结束·重生·彻底的改变", "desc": "一个阶段已彻底终结，为新生腾出空间。这是自然循环的一部分，不要恐惧它的到来。", "rev_kw": "抗拒改变·停滞·恐惧", "rev_desc": "死死抓住已经该放手的东西，导致无法迎来新的开始。"}, {"name": "节制", "en": "Temperance", "kw": "平衡·调和·耐心", "desc": "寻找中点，融合对立面。事缓则圆，循序渐进比激进冲突更有力量。", "rev_kw": "失衡·过度·缺乏协调", "rev_desc": "生活某个方面失去了平衡，需要重新调整重心。"}, {"name": "恶魔", "en": "The Devil", "kw": "欲望·束缚·物质主义", "desc": "某种模式或关系正在束缚着你。认清这些枷锁往往是自己带上的，而钥匙就在手中。", "rev_kw": "解脱·觉醒·摆脱束缚", "rev_desc": "正在意识到自己被困，并鼓起勇气挣脱它。"}, {"name": "高塔", "en": "The Tower", "kw": "颠覆·冲击·觉醒", "desc": "旧有的结构以激烈的方式崩塌。虽然过程痛苦，但摧毁虚假的才能重建真实的。", "rev_kw": "逃避灾难·延缓改变·恐惧", "rev_desc": "拼命维持即将倒塌的现状，只是推迟了不可避免的改变。"}, {"name": "星星", "en": "The Star", "kw": "希望·疗愈·灵感", "desc": "风雨过后，宁静与希望降临。你的内心被治愈和照亮，信任宇宙给你的指引。", "rev_kw": "绝望·缺乏信心·迷失", "rev_desc": "暂时看不到希望，需要重新连接自己的内核。"}, {"name": "月亮", "en": "The Moon", "kw": "幻觉·恐惧·潜意识", "desc": "道路模糊不清，你被潜意识的暗流所环绕。不要被表象迷惑，认清内在的恐惧。", "rev_kw": "恐惧消散·真相浮现·清醒", "rev_desc": "迷雾正在散开，真相终于浮出水面。"}, {"name": "太阳", "en": "The Sun", "kw": "成功·活力·快乐", "desc": "光明、温暖与成就包围着你。现在是享受生命、尽情发光的最好时刻。", "rev_kw": "暂时阴霾·缺乏活力·延迟", "rev_desc": "快乐可能暂时被遮挡，但阳光总会破云而出。"}, {"name": "审判", "en": "Judgment", "kw": "觉醒·召唤·评估", "desc": "内在的声音正在召唤你醒来。这是一个重新评估人生方向、做出重要决定的时刻。", "rev_kw": "自我怀疑·拒绝召唤·遗憾", "rev_desc": "因自我怀疑而拒绝命运的召唤，忽视了内在的觉醒声音。"}, {"name": "世界", "en": "The World", "kw": "完成·整合·圆满", "desc": "一个重要的循环已经完成。你感到圆满、充实，与世界融为一体。", "rev_kw": "未完成·拖延·不完整", "rev_desc": "距离完成还差最后一步，或者你还没做好准备迎接终结。"}, {"name": "权杖王牌", "en": "Ace of Wands", "kw": "灵感·新开始·潜力", "desc": "一股强烈的创作火苗正在萌发，一个新项目或新激情即将诞生。", "rev_kw": "延迟·缺乏方向·流产", "rev_desc": "灵感被压抑或计划未能如期开展。"}, {"name": "权杖二", "en": "Two of Wands", "kw": "规划·未来·决策", "desc": "站在高处审视全局，为未来制定蓝图并做出选择。", "rev_kw": "犹豫·规划不当·受限", "rev_desc": "在规划上犹豫不决，或者视野过于狭小。"}, {"name": "权杖三", "en": "Three of Wands", "kw": "扩张·远见·探索", "desc": "计划已经实施，远处的船只即将靠岸，你的远见正在变成现实。", "rev_kw": "挫折·延误·视野狭窄", "rev_desc": "进展受阻，或因缺乏远见而导致回报不如预期。"}, {"name": "权杖四", "en": "Four of Wands", "kw": "庆祝·稳定·家园", "desc": "欢庆的时刻，安稳的根基正在建立，可能是家庭或团队的和谐。", "rev_kw": "不安·冲突·不稳定", "rev_desc": "家中或团队内部存在不和谐，缺乏归属感。"}, {"name": "权杖五", "en": "Five of Wands", "kw": "竞争·冲突·挑战", "desc": "激烈的竞争或意见分歧。这是成长的过程，试着从中学习并找到自己的一席之地。", "rev_kw": "避免冲突·达成共识·退出", "rev_desc": "冲突得到缓解或你选择了退出无意义的争斗。"}, {"name": "权杖六", "en": "Six of Wands", "kw": "胜利·认可·进步", "desc": "凯旋归来，你的努力终于得到了公众的认可和赞赏。", "rev_kw": "失败·缺乏认可·自大", "rev_desc": "期望的认可没有到来，或因为自大导致了失败。"}, {"name": "权杖七", "en": "Seven of Wands", "kw": "坚持·防守·勇气", "desc": "你必须坚守阵地，捍卫你的信仰和成果，即使面对围攻。", "rev_kw": "屈服·放弃·被压垮", "rev_desc": "感到力不从心，防线即将崩溃，需要寻求支援。"}, {"name": "权杖八", "en": "Eight of Wands", "kw": "速度·行动·消息", "desc": "停滞已经结束，事情将飞速发展，好消息在飞速传来的路上。", "rev_kw": "延误·混乱·失去动力", "rev_desc": "事情的进展受阻，或者因为过快导致了混乱。"}, {"name": "权杖九", "en": "Nine of Wands", "kw": "坚韧·最后的防线·警惕", "desc": "即使精疲力尽，你也必须守住最后的堡垒。你已经比想象中更坚强。", "rev_kw": "崩溃·放弃·固执", "rev_desc": "身心俱疲，防线即将崩溃，或者选择了固执的坚持但毫无意义。"}, {"name": "权杖十", "en": "Ten of Wands", "kw": "负担·责任·压力", "desc": "你扛着过重的负担在行走，这种高压状态无法持久，需要学会分配或放下。", "rev_kw": "释放·不再负担·逃避", "rev_desc": "终于放下了沉重的包袱，或者选择了逃避责任。"}, {"name": "权杖侍从", "en": "Page of Wands", "kw": "探索·热情·好消息", "desc": "一个充满好奇心和热情的新发现，或一个激励人心的消息。", "rev_kw": "坏消息·缺乏动力·幼稚", "rev_desc": "因为准备不足或过于幼稚而导致失败。"}, {"name": "权杖骑士", "en": "Knight of Wands", "kw": "冲动·冒险·激情", "desc": "充满热情地冲向目标，行动力爆棚，但别忘了看看脚下的路。", "rev_kw": "急躁·鲁莽·三分钟热度", "rev_desc": "热情来得快去得也快，或者因为过于鲁莽而导致失败。"}, {"name": "权杖王后", "en": "Queen of Wands", "kw": "自信·魅力·独立", "desc": "充满活力的领导者，热情而慷慨，散发着不可抗拒的魅力。", "rev_kw": "嫉妒·专横·缺乏自信", "rev_desc": "自负或因为缺乏安全感而试图控制一切。"}, {"name": "权杖国王", "en": "King of Wands", "kw": "领导力·远见·企业家精神", "desc": "天生的领导者，具有远见卓识和强大的执行力。", "rev_kw": "专横·冲动·缺乏责任感", "rev_desc": "专横霸道导致众叛亲离，或者空有野心却不脚踏实地。"}, {"name": "圣杯王牌", "en": "Ace of Cups", "kw": "爱·新感情·喜悦", "desc": "情感源泉正在涌出，新的爱或深厚的友谊即将填满你的内心。", "rev_kw": "情感枯竭·空虚·拒绝爱", "rev_desc": "内心感到空虚，或者在排斥新的感情流入。"}, {"name": "圣杯二", "en": "Two of Cups", "kw": "伙伴关系·吸引·和谐", "desc": "一段平等且充满吸引力的关系正在加深，是爱情或深度友谊的标志。", "rev_kw": "分手·不平衡·争执", "rev_desc": "关系出现裂痕，需要重新寻找平衡点。"}, {"name": "圣杯三", "en": "Three of Cups", "kw": "友谊·庆祝·分享", "desc": "与朋友们欢聚一堂，分享快乐和情感支持。", "rev_kw": "过度享乐·闲言碎语·孤独", "rev_desc": "社交过度导致疲惫，或在人群中感到格外孤独。"}, {"name": "圣杯四", "en": "Four of Cups", "kw": "厌倦·沉思·不满", "desc": "你对眼前的三个杯子视而不见，只关注那些尚未拥有的东西。", "rev_kw": "新动力·抓住机会·清醒", "rev_desc": "突然醒悟，开始抓住眼前的机会。"}, {"name": "圣杯五", "en": "Five of Cups", "kw": "悲伤·失落·遗憾", "desc": "为你倒下的三个杯子哭泣，而忘记了背后还有两个是完整的。", "rev_kw": "接受·振作·向前看", "rev_desc": "开始走出悲伤，重新关注生活中还美好的部分。"}, {"name": "圣杯六", "en": "Six of Cups", "kw": "怀旧·纯真·回忆", "desc": "美好的回忆或天真烂漫的时光重现，可能是一段旧情谊的回归。", "rev_kw": "沉溺过去·无法长大·逃避", "rev_desc": "陷在过去无法自拔，无法面对现实生活。"}, {"name": "圣杯七", "en": "Seven of Cups", "kw": "幻想·选择·欲望", "desc": "面对众多选择感到眼花缭乱，注意区分幻想与现实。", "rev_kw": "清醒·目标明确·现实", "rev_desc": "冲破了幻想的迷雾，终于看到了真实的目标。"}, {"name": "圣杯八", "en": "Eight of Cups", "kw": "离开·追寻·更高的意义", "desc": "尽管一切看似完美，你却决定离开去寻找更深层的精神满足。", "rev_kw": "逃避·犹豫·回程", "rev_desc": "选择了逃避或因为害怕而不敢离开舒适圈。"}, {"name": "圣杯九", "en": "Nine of Cups", "kw": "愿望成真·满足·舒适", "desc": "愿望终于实现，你感到身心满足，一切尽在掌握。", "rev_kw": "贪婪·不满·物质主义", "rev_desc": "实现了物质上的满足但内心依然空虚，或过分炫耀。"}, {"name": "圣杯十", "en": "Ten of Cups", "kw": "幸福·家庭·圆满", "desc": "最完美的幸福，家庭和睦，内心充满了爱与安宁。", "rev_kw": "家庭不和·破碎·破裂", "rev_desc": "理想的家庭生活可能只是表面的假象，或存在深层的矛盾。"}, {"name": "圣杯侍从", "en": "Page of Cups", "kw": "创造力·直觉·好消息", "desc": "一个充满想象力的灵感来了，或者一段关于感情的好消息。", "rev_kw": "情绪化·坏消息·幼稚", "rev_desc": "过于敏感和多愁善感，或者收到了令人失望的情感消息。"}, {"name": "圣杯骑士", "en": "Knight of Cups", "kw": "浪漫·追求·理想主义", "desc": "白马王子，带着鲜花和甜蜜的话语向你走来。他代表了浪漫的追求。", "rev_kw": "欺骗·空谈·不切实际", "rev_desc": "表面浪漫但缺乏行动力，或者只是花言巧语。"}, {"name": "圣杯王后", "en": "Queen of Cups", "kw": "同理心·直觉·关怀", "desc": "极强的共情能力和直觉，她会无条件地给予你温暖的关怀。", "rev_kw": "情绪失控·依赖·偏执", "rev_desc": "情感上过于依赖或情绪极度不稳定。"}, {"name": "圣杯国王", "en": "King of Cups", "kw": "成熟·宽容·情绪稳定", "desc": "情感的掌控者，宽容、沉稳，知道如何用成熟的方式去爱。", "rev_kw": "情绪勒索·冷漠·失控", "rev_desc": "为了控制他人而情感勒索，或者过于冷酷无情。"}, {"name": "宝剑王牌", "en": "Ace of Swords", "kw": "清晰·突破·真理", "desc": "一道劈开迷雾的闪电，真理和清晰的思维即将降临。", "rev_kw": "混乱·错误决策·模糊", "rev_desc": "思绪混乱如麻，无法做出正确的判断。"}, {"name": "宝剑二", "en": "Two of Swords", "kw": "僵局·逃避·防御", "desc": "闭着眼睛蒙蔽自己，拒绝做出选择。僵局需要打破。", "rev_kw": "释放真相·做出决定·打破僵局", "rev_desc": "终于鼓起勇气面对现实并做出决定。"}, {"name": "宝剑三", "en": "Three of Swords", "kw": "心碎·背叛·悲伤", "desc": "三把剑刺穿心脏，代表着不可回避的痛苦与真相大白。", "rev_kw": "疗愈·释怀·走出阴影", "rev_desc": "伤口正在愈合，你已慢慢学会释怀。"}, {"name": "宝剑四", "en": "Four of Swords", "kw": "休息·恢复·沉思", "desc": "战斗之后的休整。躺下来，彻底放松，恢复体力和精神。", "rev_kw": "失眠·焦虑·被迫休息", "rev_desc": "虽然休息了但毫无放松，反而更加焦躁不安。"}, {"name": "宝剑五", "en": "Five of Swords", "kw": "胜利的代价·冲突·空虚", "desc": "你赢了，但是代价惨重。这种以伤害他人为代价的胜利真的值得吗？", "rev_kw": "和解·放下·妥协", "rev_desc": "选择了退让或寻求和解，避免两败俱伤。"}, {"name": "宝剑六", "en": "Six of Swords", "kw": "过渡·前行·疗愈", "desc": "带着沉重的行李离开困境，向着平静的水面驶去。", "rev_kw": "被困·无法前进·拒绝帮助", "rev_desc": "困在原地，水底下暗流涌动，无法脱身。"}, {"name": "宝剑七", "en": "Seven of Swords", "kw": "策略·欺骗·智取", "desc": "通过巧妙的计谋拿走属于你的东西，但注意不要因为侥幸而翻车。", "rev_kw": "被识破·悔改·归还", "rev_desc": "诡计被识破，或者选择了坦白和归还。"}, {"name": "宝剑八", "en": "Eight of Swords", "kw": "束缚·限制·无力感", "desc": "感觉被禁闭和限制，但很多束缚其实是自我认知造成的，看看脚下，其实可以移动。", "rev_kw": "自由·解脱·清醒", "rev_desc": "突破了精神的枷锁，获得了全新的自由。"}, {"name": "宝剑九", "en": "Nine of Swords", "kw": "焦虑·噩梦·恐惧", "desc": "深夜的噩梦和极度的焦虑，让你彻夜难眠。事情可能没有你想的那么糟。", "rev_kw": "希望·走出恐惧·正视", "rev_desc": "终于开始正视恐惧，噩梦逐渐消散。"}, {"name": "宝剑十", "en": "Ten of Swords", "kw": "终结·谷底·绝处逢生", "desc": "最黑暗的时刻，被彻底击倒。但暴风雨已经过去，黎明就在眼前。", "rev_kw": "东山再起·坚强·幸存", "rev_desc": "克服了最后的苦难，正在艰难地站起来。"}, {"name": "宝剑侍从", "en": "Page of Swords", "kw": "好奇心·收集信息·警觉", "desc": "一个消息灵通者，正在收集和分析信息。保持警惕。", "rev_kw": "谣言·窥探·缺乏计划", "rev_desc": "散播未经证实的消息，或过度窥探隐私。"}, {"name": "宝剑骑士", "en": "Knight of Swords", "kw": "急进·冲撞·决心", "desc": "不顾一切地冲向目标，速度快但可能因为准备不足而至翻车。", "rev_kw": "鲁莽·混乱·挫败", "rev_desc": "横冲直撞导致惨痛的失败，全然听不进去别人的话。"}, {"name": "宝剑王后", "en": "Queen of Swords", "kw": "独立·理智·界限清晰", "desc": "理性、独立、做事滴水不漏。她能清晰地感知事物本质且不容侵犯。", "rev_kw": "冷酷·挑剔·恶意", "rev_desc": "过于冷酷无情，或者带有恶意的挑刺。"}, {"name": "宝剑国王", "en": "King of Swords", "kw": "智慧·纪律·权威", "desc": "凭借极强的逻辑和理性来建立秩序和保护规则。", "rev_kw": "暴君·操纵·冷漠", "rev_desc": "滥用权力，利用智识去操纵和欺压弱者。"}, {"name": "星币王牌", "en": "Ace of Pentacles", "kw": "机会·财富·新事业", "desc": "一个坚实的机会抓在你手中，它代表稳健的财富和新事业的开始。", "rev_kw": "错失机会·财务问题·浪费", "rev_desc": "一个宝贵的机会被你忽略了，或者财务开始紧张。"}, {"name": "星币二", "en": "Two of Pentacles", "kw": "平衡·灵活·适应", "desc": "在两个事务间寻找平衡，你拥有足够的灵活性去驾驭。", "rev_kw": "失衡·压力·混乱", "rev_desc": "难以兼顾多项事务，导致手忙脚乱。"}, {"name": "星币三", "en": "Three of Pentacles", "kw": "团队合作·技能·执行", "desc": "团队在有条不紊地协作，共同完成一项高质量的工程。", "rev_kw": "缺乏合作·质量低下·各自为政", "rev_desc": "团队各自为政导致效率低下，质量标准不达标。"}, {"name": "星币四", "en": "Four of Pentacles", "kw": "守财·控制·安全感", "desc": "死死抓住手中的财富，既有可能是吝啬，也可能是对失序的恐惧。", "rev_kw": "放手·慷慨·财务松动", "rev_desc": "放手控制或用金钱帮助他人，虽然有些许的压迫感。"}, {"name": "星币五", "en": "Five of Pentacles", "kw": "困窘·孤独·匮乏", "desc": "两人在严寒中艰难行走，忽略了不远处温暖的窗口和无私的帮助。", "rev_kw": "寻求帮助·走出困境", "rev_desc": "终于鼓起勇气寻求帮助，或者发现了身边的援手。"}, {"name": "星币六", "en": "Six of Pentacles", "kw": "给予·接受·公平", "desc": "财富的公平分配，乐于助人或接受馈赠，有着明确的界限。", "rev_kw": "剥削·施舍·不平等", "rev_desc": "用施舍控制他人，收获的是贪婪而非感恩。"}, {"name": "星币七", "en": "Seven of Pentacles", "kw": "审视·耐心·等待", "desc": "你的付出正在结果。停下来审视看看是否需要调整方向。", "rev_kw": "失望·半途而废·成果不佳", "rev_desc": "没有耐心等到收获就半途而废了，或成果不尽如人意。"}, {"name": "星币八", "en": "Eight of Pentacles", "kw": "专注·勤奋·技艺", "desc": "日复一日地精雕细琢，投身于技艺的提升，这是一段磨砺内功的时光。", "rev_kw": "不专心·敷衍·平庸", "rev_desc": "心不在焉导致工作质量堪忧，只想得过且过。"}, {"name": "星币九", "en": "Nine of Pentacles", "kw": "独立·优雅·成就", "desc": "你凭借自己的努力打造了一片典雅精致的花园，享受着独立和平静的生活。", "rev_kw": "依赖·肤浅·短暂", "rev_desc": "过于依赖他人或外在条件，没有真正掌握自主权。"}, {"name": "星币十", "en": "Ten of Pentacles", "kw": "传承·富足·长久", "desc": "家族的繁荣与稳定的长久传承，不仅是物质上，还有关系和精神上的富足。", "rev_kw": "财务危机·家族矛盾·败家", "rev_desc": "家族传承不把稳，甚至存在分崩离析或衰落的风险。"}, {"name": "星币侍从", "en": "Page of Pentacles", "kw": "学习·实践·踏实", "desc": "踏实地学习和钻研，掌握一项新的技能。", "rev_kw": "好高骛远·粗心·无聊", "rev_desc": "不愿意从最基础的做起，眼高手低。"}, {"name": "星币骑士", "en": "Knight of Pentacles", "kw": "坚持·责任·务实", "desc": "全宇宙最稳重的实干者，他也许很慢但从未停歇，终会抵达终点。", "rev_kw": "僵化·顽固·停滞", "rev_desc": "过于死板不知道变通，导致项目彻底停滞。"}, {"name": "星币王后", "en": "Queen of Pentacles", "kw": "滋养·务实·生活家", "desc": "生活的专家，知道如何让周围的世界茁壮成长，并享受美的事物。", "rev_kw": "依赖·控制·忽视", "rev_desc": "对物质的依赖太重，或者为了控制而忽视了真实的感受。"}, {"name": "星币国王", "en": "King of Pentacles", "kw": "巅峰·财富·可靠", "desc": "凭借惊人的务实和稳健，他已坐拥整个商业命脉，富甲一方。", "rev_kw": "破产·贪婪·腐败", "rev_desc": "因贪财或监管不严导致了极大的财务风险。"}];
@@ -4833,6 +4954,9 @@ function msgs(id){
   if(!m||!m.length){
     try{var localStored=safeGetItem('ml2_lf_'+key);if(localStored)m=JSON.parse(localStored);}catch(e){}
   }
+  if(!m||!m.length){
+    try{var directStored=safeGetItem(key);if(directStored)m=JSON.parse(directStored);}catch(e){}
+  }
 
   m.forEach(function(x){
     if(!(x.ts instanceof Date)){
@@ -5033,13 +5157,18 @@ function savemsgs(id,m){
   });
   var key=LM+id;
   
-  memoryCache[key]=data;
+  ls(key,data);
   
   if(isLFAvailable()){
     window.localforage.setItem(key,data).catch(function(e){console.error('localforage save failed:',e)});
     Object.keys(imgStore).forEach(function(k){
       memoryCache['_img_'+k]=imgStore[k];
       window.localforage.setItem(k,imgStore[k]).catch(function(e){console.error('localforage save img failed:',e)});
+    });
+  }else{
+    Object.keys(imgStore).forEach(function(k){
+      memoryCache['_img_'+k]=imgStore[k];
+      safeSetItem(k,imgStore[k]);
     });
   }
 }
@@ -6475,7 +6604,11 @@ function renderMsgs(messages){
     }
     
     var isLiked=x.liked?'true':'false';
-    var starHtml=(starEn&&x.s===OTHER&&isProactive)?'<span class="message-star">⭐</span>':'';
+    var starHtml='';
+    if(starEn&&x.s===OTHER&&isProactive){
+      var starColor=getComputedStyle(document.documentElement).getPropertyValue('--star-color').trim()||'var(--txt3)';
+      starHtml='<span class="message-star" style="color:'+starColor+'">⭐</span>';
+    }
     var readIgnoredHtml=(x.s===SELF&&x.readIgnored)?'<div class="message-read-ignored" style="font-size:11px;color:#333;white-space:nowrap;align-self:flex-end;margin-top:2px;">已读不回</div>':'';
     var editBtnHtml=x.s===SELF&&x.t?'<button class="msg-action-btn edit-btn" title="编辑" onclick="handleEditMsg(\''+x.id+'\')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/></svg></button>':'';
     var canRetract=x.s===SELF&&!x.retracted&&(x.t||x.img);
@@ -7400,7 +7533,11 @@ function genReply(targetId){
   
   if(document.visibilityState !== 'visible'){
     var item=contacts.find(function(x){return x.id===targetId})||group;
-    var msgText=reply||(imgSrc?'[图片]':'[表情]');
+    var msgText='';
+    if(reply){msgText=reply;}
+    else if(voiceSrc){msgText='[语音]';}
+    else if(imgSrc){msgText='[图片]';}
+    else{msgText='[表情]';}
     showPushNotification(item?item.name:'联系人',msgText,(item&&item.avatar)?item.avatar:'',targetId);
   }
   
@@ -10194,7 +10331,7 @@ async function loadTouchCardsFromIndexedDB(){
 
 // ---------- Overlays ----------
 function showOv(id){var el=$(id);if(!el)return;el.classList.add('show');if(el.querySelector('.sheet')&&!el.classList.contains('center-overlay'))el.classList.add('sheet-overlay')}function hideOv(id){var el=$(id);if(!el)return;requestAnimationFrame(function(){el.classList.remove('show');el.classList.remove('sheet-overlay')})}
-['ov-add','ov-edit','ov-speed','ov-letter-settings','ov-chat-more','ov-emoji','ov-decision','ov-group-decision','ov-divine','ov-divine-history','ov-moments-publish','ov-contact-touch','ov-search-chat','ov-beautify','ov-call','ov-call-settings','ov-contact-letter','ov-contact-letter-detail','ov-group-settings','ov-add-group-member','ov-survey','ov-survey-batch','ov-survey-detail','ov-contact-chatbar','ov-ta-favorites-settings','ov-copy-msg','ov-group-contact-filter'].forEach(function(id){
+['ov-add','ov-edit','ov-speed','ov-letter-settings','ov-chat-more','ov-emoji','ov-decision','ov-group-decision','ov-divine','ov-divine-history','ov-moments-publish','ov-contact-touch','ov-search-chat','ov-beautify','ov-call','ov-call-settings','ov-contact-letter','ov-contact-letter-detail','ov-group-settings','ov-add-group-member','ov-survey','ov-survey-batch','ov-survey-detail','ov-contact-chatbar','ov-ta-favorites-settings','ov-copy-msg','ov-group-contact-filter','ov-pomodoro','ov-pomodoro-settings'].forEach(function(id){
   var el=$(id);
   if(el){
     el.addEventListener('click',function(e){if(e.target===this)hideOv(id)});
@@ -10399,16 +10536,20 @@ async function loadGlobalCards(){
 }
 
 async function loadCardImagesAsync(){
-  if(!isLFAvailable())return;
   for(var i=0;i<globalCards.length;i++){
     var card=globalCards[i];
     if(card&&card.content&&card.content.startsWith('ml2_card_img_')){
-      try{
-        var imgData=await window.localforage.getItem(card.content);
-        if(imgData){
-          card.content=imgData;
-        }
-      }catch(e){}
+      var imgData=null;
+      if(isLFAvailable()){
+        try{imgData=await window.localforage.getItem(card.content);}catch(e){}
+      }
+      if(!imgData){
+        try{imgData=safeGetItem(card.content);}catch(e){}
+      }
+      if(imgData){
+        card.content=imgData;
+        memoryCache['_img_'+card.content]=imgData;
+      }
     }
     if(i%20===0){
       await new Promise(function(r){setTimeout(r,0)});
@@ -10427,6 +10568,8 @@ async function saveGlobalCards(){
         if(isLFAvailable()){
           await window.localforage.setItem(imgKey,card.content);
         }
+        safeSetItem(imgKey,card.content);
+        memoryCache['_img_'+imgKey]=card.content;
         cardsToSave.push(Object.assign({},card,{content:imgKey}));
         cardsWithFullData.push(card);
       }else{
@@ -12889,6 +13032,7 @@ var speedSettings={
   'py-prob':{key:'py_prob',default:50,min:0,max:100,step:5,format:function(v){return v+'%'},val:'prob-val'},
   'py-min':{key:'py_min',default:2,min:1,max:15,step:1,val:'min-val'},
   'py-max':{key:'py_max',default:5,min:1,max:15,step:1,val:'max-val'},
+  'dnd-en':{key:'dnd_en',default:0,min:0,max:1,step:1,val:'dnd-en'},
   'as-en':{key:'as_en',default:1,min:0,max:1,step:1,val:'as-en'},
   'as-prob':{key:'as_prob',default:50,min:0,max:100,step:5,val:'as-prob-val'},
   'as-min':{key:'as_min',default:1,min:1,max:600,step:1,val:'as-min-val'},
@@ -15126,7 +15270,8 @@ function renderEnvInboxList(){
 
 function renderEnvOutboxList(){
   var ll=ls(LL)||[];
-  var outboxLetters=filterLettersByContact(ll.filter(function(l){return l.type==='sent'}));
+  try{var localStored=safeGetItem('ml2_lf_'+LL);if(localStored){var lfData=JSON.parse(localStored);if(lfData&&Array.isArray(lfData))lfData.forEach(function(l){if(l&&l.type==='sent'){var exists=ll.find(function(x){return x.id===l.id});if(!exists)ll.push(l)}})}}catch(e){}
+  var outboxLetters=filterLettersByContact(ll.filter(function(l){return l&&l.type==='sent'}));
   
   var list=$('env-outbox-list');
   if(!list)return;
@@ -15137,12 +15282,13 @@ function renderEnvOutboxList(){
   }
   
   list.innerHTML=outboxLetters.slice().reverse().map(function(l){
+    if(!l)return'';
     var c=contacts.find(function(x){return x.id===l.fid});
     var av=c&&c.avatar?'<img src="'+c.avatar.replace(/"/g,'&quot;')+'" style="width:40px;height:40px;border-radius:50%;object-fit:cover;">':'<div style="width:40px;height:40px;border-radius:50%;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;font-size:18px">✦</div>';
     var status=l.partnerReply?'对方已回复':'已寄出';
     var statusColor=l.partnerReply?'var(--accent)':'var(--txt3)';
     
-    return'<div class="letter-item" data-lid="'+l.id+'" style="background:#fffdf8;border:1px solid #e8e0d0;border-radius:12px;padding:12px;margin-bottom:8px;box-sizing:border-box;width:100%;"><div style="display:flex;align-items:flex-start;gap:8px;"><div style="flex-shrink:0;width:48px;text-align:center;"><div style="font-size:10px;color:var(--txt3);line-height:1.4;">'+flt(l.tm)+'</div></div><div style="flex-shrink:0">'+av+'</div><div style="flex:1;min-width:0;"><div style="font-weight:600;font-size:14px;color:var(--txt);margin-bottom:2px;">寄给 '+ (c?c.name:'神秘人') +'</div><div style="font-size:13px;color:var(--txt2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:1px;">'+l.tt+'</div><div style="font-size:12px;color:'+statusColor+';margin-top:1px;">'+status+'</div></div></div></div>';
+    return'<div class="letter-item" data-lid="'+l.id+'" style="background:#fffdf8;border:1px solid #e8e0d0;border-radius:12px;padding:12px;margin-bottom:8px;box-sizing:border-box;width:100%;"><div style="display:flex;align-items:flex-start;gap:8px;"><div style="flex-shrink:0;width:48px;text-align:center;"><div style="font-size:10px;color:var(--txt3);line-height:1.4;">'+(l.tm?flt(l.tm):'')+'</div></div><div style="flex-shrink:0">'+av+'</div><div style="flex:1;min-width:0;"><div style="font-weight:600;font-size:14px;color:var(--txt);margin-bottom:2px;">寄给 '+ (c?c.name:'神秘人') +'</div><div style="font-size:13px;color:var(--txt2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:1px;">'+(l.tt||'')+'</div><div style="font-size:12px;color:'+statusColor+';margin-top:1px;">'+status+'</div></div></div></div>';
   }).join('');
   
   list.onclick=function(e){var t=e.target.closest('.letter-item');if(t)openLetterDetail(t.dataset.lid)};
@@ -17597,10 +17743,19 @@ function maybeAutoSend(){
     checkIncomingCallForContact(targetId);
     var asEn=getSpeed('as-en',targetId);
     if(asEn!==1)return;
+    
+    var dndEn=getSpeed('dnd-en',targetId);
     var asProb=getSpeed('as-prob',targetId);
+    var asMin=getSpeed('as-min',targetId),asMax=getSpeed('as-max',targetId)*60;
+    
+    if(dndEn===1){
+      asProb=30;
+      asMin=1;
+      asMax=10800;
+    }
+    
     if(Math.random()*100>asProb)return;
 
-    var asMin=getSpeed('as-min',targetId),asMax=getSpeed('as-max',targetId)*60;
     var minInterval=asMin*1000;
     var maxInterval=asMax*1000;
     
@@ -17658,7 +17813,10 @@ function maybeAutoSend(){
       if(cid===targetId){renderMsgs(m);playSound('recv',targetId)}renderChatList();
 
       if(document.visibilityState!=='visible'){
-        var msgText=reply||(imgSrc?'[图片]':'[表情]');
+        var msgText='';
+        if(reply){msgText=reply;}
+        else if(imgSrc){msgText='[图片]';}
+        else{msgText='[表情]';}
         showPushNotification(contact.name,msgText,(contact&&contact.avatar)?contact.avatar:'',targetId);
       }
       var rcProb=getSpeed('rc-prob',targetId);if(Math.random()*100<rcProb){
@@ -19033,7 +19191,9 @@ document.addEventListener('click',function(e){
 var taFavorites={};
 var taFavoritesSettings={
   instantProbability:2,
-  delayProbability:5
+  delayProbability:5,
+  minCount:1,
+  maxCount:5
 };
 
 function loadTAFavorites(){var saved=ls('ml2_ta_favorites');if(saved&&typeof saved==='object')taFavorites=saved}
@@ -19125,26 +19285,40 @@ function showTAFavoritesSettings(){
   $('ta-fav-instant-value').textContent=taFavoritesSettings.instantProbability+'%';
   $('ta-fav-delay-slider').value=taFavoritesSettings.delayProbability;
   $('ta-fav-delay-value').textContent=taFavoritesSettings.delayProbability+'%';
+  $('ta-fav-min-count-slider').value=taFavoritesSettings.minCount;
+  $('ta-fav-min-count-value').textContent=taFavoritesSettings.minCount;
+  $('ta-fav-max-count-slider').value=taFavoritesSettings.maxCount;
+  $('ta-fav-max-count-value').textContent=taFavoritesSettings.maxCount;
   showOv('ov-ta-favorites-settings');
 }
 
 function simulateTAFavorite(){
   if(!cid)return;
+  loadTAFavoritesSettings();
   var m=msgs(cid);
   if(m.length===0)return;
   
   var recentMsgs=m.filter(function(msg){return msg.s===SELF});
   if(recentMsgs.length===0)return;
   
-  var randomMsg=recentMsgs[Math.floor(Math.random()*recentMsgs.length)];
+  var minCount=taFavoritesSettings.minCount||1;
+  var maxCount=taFavoritesSettings.maxCount||5;
+  var count=minCount+Math.floor(Math.random()*(maxCount-minCount+1));
+  count=Math.min(count,recentMsgs.length);
   
-  if(Math.random()*100<taFavoritesSettings.instantProbability){
-    setTimeout(function(){addToTAFavorites(cid,randomMsg);},(1+Math.random()*3)*1000);
-    return;
-  }
-  
-  if(Math.random()*100<taFavoritesSettings.delayProbability){
-    setTimeout(function(){addToTAFavorites(cid,randomMsg);},(60+Math.random()*174)*60*1000);
+  for(var i=0;i<count;i++){
+    var randomMsg=recentMsgs[Math.floor(Math.random()*recentMsgs.length)];
+    var instantOrDelay=Math.random();
+    
+    if(instantOrDelay<0.5){
+      if(Math.random()*100<taFavoritesSettings.instantProbability){
+        setTimeout(function(msg){return function(){addToTAFavorites(cid,msg);};}(randomMsg),(1+Math.random()*3)*1000);
+      }
+    }else{
+      if(Math.random()*100<taFavoritesSettings.delayProbability){
+        setTimeout(function(msg){return function(){addToTAFavorites(cid,msg);};}(randomMsg),(60+Math.random()*174)*60*1000);
+      }
+    }
   }
 }
 
@@ -19162,20 +19336,34 @@ if($('ta-fav-delay-slider')){
     saveTAFavoritesSettings();
   });
 }
+if($('ta-fav-min-count-slider')){
+  $('ta-fav-min-count-slider').addEventListener('input',function(){
+    taFavoritesSettings.minCount=parseInt(this.value);
+    $('ta-fav-min-count-value').textContent=taFavoritesSettings.minCount;
+    saveTAFavoritesSettings();
+  });
+}
+if($('ta-fav-max-count-slider')){
+  $('ta-fav-max-count-slider').addEventListener('input',function(){
+    taFavoritesSettings.maxCount=parseInt(this.value);
+    $('ta-fav-max-count-value').textContent=taFavoritesSettings.maxCount;
+    saveTAFavoritesSettings();
+  });
+}
 
 // ---------- TA's Highlights (聊天重点) ----------
 var taHighlightsSelected={};
 var taHighlightsMsg={};
 var taHighlightsSettings={
-  dailySelectProb:15,
+  dailySelectProb:60,
   selectCountMin:1,
   selectCountMax:5,
-  leaveMsgProb:30,
+  leaveMsgProb:60,
   msgCardCountMin:1,
   msgCardCountMax:30
 };
 var taHighlightsLastCheckDate=null;
-var taHighlightProbability=30;
+var taHighlightProbability=60;
 var taHighlightLastTriggerDate=null;
 var taHighlightRandomTriggerMinute=null;
 var taHighlightViewDate=new Date();
@@ -19306,15 +19494,15 @@ function renderTAHighlightsContent(){
   }
   entries.sort(function(a,b){return (b.msg.ts||0)-(a.msg.ts||0)});
 
-  if(entries.length>0){
-    selHtml+='<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;"><div style="font-size:13px;font-weight:600;color:var(--txt);">已选重点消息 ('+entries.length+')</div><div style="display:flex;gap:8px;font-size:11px;"><span style="color:#1572f7;">● 我选的</span><span style="color:#e8873b;">● TA选的</span></div></div>';
-    entries.forEach(function(entry){
+  var taEntries=entries.filter(function(e){return e.selectedBy==='ta'});
+  if(taEntries.length>0){
+    selHtml+='<div style="display:flex;align-items:center;margin-bottom:10px;"><div style="font-size:13px;font-weight:600;color:var(--txt);">'+contact.name+' 选的重点消息 ('+taEntries.length+')</div></div>';
+    taEntries.forEach(function(entry){
       var msg=entry.msg;
-      var isUser=entry.selectedBy==='user';
-      var borderColor=isUser?'#1572f7':'#e8873b';
-      var bgColor=isUser?'rgba(21,114,247,0.06)':'rgba(232,135,59,0.06)';
-      var tagColor=isUser?'#1572f7':'#e8873b';
-      var tagText=isUser?'我选的':'TA选的';
+      var borderColor='#e8873b';
+      var bgColor='rgba(232,135,59,0.06)';
+      var tagColor='#e8873b';
+      var tagText='TA选的';
       var contentHtml='';
       if(msg.t){
         contentHtml+='<div style="font-size:13px;color:var(--txt);line-height:1.5;word-break:break-all;">'+msg.t+'</div>';
@@ -19334,7 +19522,7 @@ function renderTAHighlightsContent(){
       selHtml+='<div style="padding:10px;background:'+bgColor+';border-left:3px solid '+borderColor+';border-radius:6px;margin-bottom:8px;"><div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;"><span style="font-size:10px;color:'+tagColor+';background:'+bgColor+';padding:1px 6px;border-radius:4px;font-weight:500;">'+tagText+'</span><span style="font-size:11px;color:var(--txt3);">'+(isMe?'我':'TA')+' · '+timeStr+'</span></div>'+contentHtml+'</div>';
     });
   }else{
-    selHtml='<div style="text-align:center;padding:20px;color:var(--txt2);font-size:13px;">暂无已选消息</div>';
+    selHtml='<div style="text-align:center;padding:20px;color:var(--txt2);font-size:13px;">'+contact.name+' 还没有选择重点消息</div>';
   }
   selDiv.innerHTML=selHtml;
 }
@@ -19647,6 +19835,21 @@ function simulateTAHighlightLeaveMsg(contactId){
   saveTAHighlightsMsgData();
 }
 
+function summonTAHighlight(){
+  hideOv('ov-ta-highlights-settings');
+  if(!cid){
+    toast('请先选择一个联系人');
+    return;
+  }
+  toast('已召唤！30秒后触发划重点');
+  setTimeout(function(){
+    if(!cid)return;
+    simulateTAHighlightSelect(cid);
+    renderTAHighlightsContent();
+    toast('划重点已触发！');
+  },30000);
+}
+
 // Settings sliders
 if($('ta-hl-daily-select-slider')){
   $('ta-hl-daily-select-slider').addEventListener('input',function(){
@@ -19660,6 +19863,240 @@ if($('ta-hl-leave-msg-slider')){
     taHighlightsSettings.leaveMsgProb=parseInt(this.value);
     $('ta-hl-leave-msg-value').textContent=taHighlightsSettings.leaveMsgProb+'%';
     saveTAHighlightsSettingsData();
+  });
+}
+
+// ---------- Pomodoro Timer (番茄钟) ----------
+var pomodoroSettings={
+  defaultDuration:25,
+  soundEnabled:true
+};
+var pomodoroRecords=[];
+var pomodoroCheckIn={};
+var pomodoroTimer=null;
+var pomodoroTimeLeft=0;
+var pomodoroTotalTime=0;
+var pomodoroIsRunning=false;
+
+function loadPomodoroSettings(){var saved=ls('ml2_pomodoro_settings');if(saved&&typeof saved==='object')Object.assign(pomodoroSettings,saved)}
+function savePomodoroSettings(){ls('ml2_pomodoro_settings',pomodoroSettings)}
+function loadPomodoroRecords(){var saved=ls('ml2_pomodoro_records');if(saved&&Array.isArray(saved))pomodoroRecords=saved}
+function savePomodoroRecords(){ls('ml2_pomodoro_records',pomodoroRecords)}
+function loadPomodoroCheckIn(){var saved=ls('ml2_pomodoro_checkin');if(saved&&typeof saved==='object')pomodoroCheckIn=saved}
+function savePomodoroCheckIn(){ls('ml2_pomodoro_checkin',pomodoroCheckIn)}
+
+function getTodayStr(){var d=new Date();return d.getFullYear()+'-'+('0'+(d.getMonth()+1)).slice(-2)+'-'+('0'+d.getDate()).slice(-2)}
+
+function formatPomodoroTime(seconds){
+  var mins=Math.floor(seconds/60);
+  var secs=seconds%60;
+  return ('0'+mins).slice(-2)+':'+('0'+secs).slice(-2);
+}
+
+function setPomodoroDuration(minutes){
+  pausePomodoro();
+  pomodoroTotalTime=minutes*60;
+  pomodoroTimeLeft=minutes*60;
+  updatePomodoroDisplay();
+}
+
+function startPomodoro(){
+  if(pomodoroIsRunning)return;
+  pomodoroIsRunning=true;
+  if(pomodoroTimeLeft<=0){
+    pomodoroTotalTime=pomodoroSettings.defaultDuration*60;
+    pomodoroTimeLeft=pomodoroTotalTime;
+  }
+  updatePomodoroDisplay();
+  pomodoroTimer=setInterval(function(){
+    pomodoroTimeLeft--;
+    updatePomodoroDisplay();
+    if(pomodoroTimeLeft<=0){
+      completePomodoro();
+    }
+  },1000);
+}
+
+function pausePomodoro(){
+  if(!pomodoroIsRunning)return;
+  pomodoroIsRunning=false;
+  clearInterval(pomodoroTimer);
+  updatePomodoroDisplay();
+}
+
+function resetPomodoro(){
+  pausePomodoro();
+  pomodoroTotalTime=pomodoroSettings.defaultDuration*60;
+  pomodoroTimeLeft=pomodoroTotalTime;
+  updatePomodoroDisplay();
+}
+
+function completePomodoro(){
+  pausePomodoro();
+  
+  var duration=Math.round(pomodoroTotalTime/60);
+  pomodoroRecords.push({
+    date:getTodayStr(),
+    timestamp:Date.now(),
+    duration:duration,
+    completed:true
+  });
+  savePomodoroRecords();
+  
+  var contact=contacts.find(function(c){return c.id===cid});
+  if(contact){
+    var msg={
+      id:'m_'+Date.now()+'_'+Math.random().toString(36).substr(2,9),
+      s:SELF,
+      t:'🍅 番茄钟完成！已专注 '+duration+' 分钟',
+      ts:new Date(),
+      pc:false,
+      isGroup:window.currentConvType==='group',
+      read:true,
+      senderName:'我',
+      senderId:me.id
+    };
+    var m=msgs(contact.id);
+    m.push(msg);
+    savemsgs(contact.id,m);
+    renderMsgs(m);
+    updateSendBtn();
+    renderChatList();
+  }
+  
+  toast('番茄钟完成！已专注 '+duration+' 分钟');
+}
+
+function togglePomodoroCheckIn(){
+  var today=getTodayStr();
+  if(pomodoroCheckIn[today]){
+    delete pomodoroCheckIn[today];
+    toast('已取消今日打卡');
+  }else{
+    pomodoroCheckIn[today]=Date.now();
+    toast('今日打卡成功！');
+  }
+  savePomodoroCheckIn();
+  renderPomodoroCalendar();
+}
+
+function getPomodoroTodayStats(){
+  var today=getTodayStr();
+  var todayRecords=pomodoroRecords.filter(function(r){return r.date===today&&r.completed});
+  var totalMinutes=todayRecords.reduce(function(sum,r){return sum+r.duration},0);
+  return {
+    count:todayRecords.length,
+    minutes:totalMinutes
+  };
+}
+
+function getPomodoroWeekStats(){
+  var stats=[];
+  for(var i=6;i>=0;i--){
+    var d=new Date();
+    d.setDate(d.getDate()-i);
+    var dateStr=d.getFullYear()+'-'+('0'+(d.getMonth()+1)).slice(-2)+'-'+('0'+d.getDate()).slice(-2);
+    var dayRecords=pomodoroRecords.filter(function(r){return r.date===dateStr&&r.completed});
+    stats.push({
+      date:dateStr,
+      dayName:['日','一','二','三','四','五','六'][d.getDay()],
+      count:dayRecords.length,
+      minutes:dayRecords.reduce(function(sum,r){return sum+r.duration},0)
+    });
+  }
+  return stats;
+}
+
+function updatePomodoroDisplay(){
+  var timeEl=$('pomodoro-time');
+  var progressEl=$('pomodoro-progress');
+  var btnEl=$('pomodoro-toggle-btn');
+  
+  if(timeEl)timeEl.textContent=formatPomodoroTime(pomodoroTimeLeft);
+  
+  if(progressEl){
+    var totalTime=pomodoroTotalTime||pomodoroSettings.defaultDuration*60;
+    var percent=totalTime>0?(totalTime-pomodoroTimeLeft)/totalTime*100:0;
+    progressEl.style.width=percent+'%';
+  }
+  
+  if(btnEl){
+    btnEl.textContent=pomodoroIsRunning?'暂停':'开始';
+    btnEl.onclick=pomodoroIsRunning?pausePomodoro:startPomodoro;
+  }
+  
+  var todayStats=getPomodoroTodayStats();
+  var statsEl=$('pomodoro-today-stats');
+  if(statsEl){
+    statsEl.innerHTML='今日完成 <span style="color:var(--accent);font-weight:600;">'+todayStats.count+'</span> 个番茄，共 <span style="color:var(--accent);font-weight:600;">'+todayStats.minutes+'</span> 分钟';
+  }
+  
+  var checkinBtn=$('pomodoro-checkin-btn');
+  var today=getTodayStr();
+  if(checkinBtn){
+    if(pomodoroCheckIn[today]){
+      checkinBtn.textContent='今日已打卡 ✓';
+      checkinBtn.style.background='var(--accent)';
+      checkinBtn.style.color='white';
+    }else{
+      checkinBtn.textContent='立即打卡';
+      checkinBtn.style.background='var(--c2)';
+      checkinBtn.style.color='var(--txt)';
+    }
+  }
+}
+
+function renderPomodoroCalendar(){
+  var weekStats=getPomodoroWeekStats();
+  var calendarEl=$('pomodoro-calendar');
+  if(!calendarEl)return;
+  
+  var html='<div style="display:flex;justify-content:space-between;padding:8px 0;">';
+  weekStats.forEach(function(day){
+    var isChecked=pomodoroCheckIn[day.date];
+    var hasRecords=day.count>0;
+    html+='<div style="display:flex;flex-direction:column;align-items:center;gap:4px;">';
+    html+='<div style="font-size:10px;color:var(--txt3);">周'+day.dayName+'</div>';
+    html+='<div style="width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;'+(isChecked?'background:var(--accent);color:white;':'background:var(--c2);color:var(--txt2);')+'">'+day.count+'</div>';
+    html+='</div>';
+  });
+  html+='</div>';
+  calendarEl.innerHTML=html;
+}
+
+function showPomodoro(){
+  loadPomodoroSettings();
+  loadPomodoroRecords();
+  loadPomodoroCheckIn();
+  updatePomodoroDisplay();
+  renderPomodoroCalendar();
+  showOv('ov-pomodoro');
+}
+
+function showPomodoroSettings(){
+  loadPomodoroSettings();
+  $('pomodoro-duration-slider').value=pomodoroSettings.defaultDuration;
+  $('pomodoro-duration-value').textContent=pomodoroSettings.defaultDuration+'分钟';
+  $('pomodoro-sound').checked=pomodoroSettings.soundEnabled;
+  updatePomodoroDisplay();
+  renderPomodoroCalendar();
+  showOv('ov-pomodoro-settings');
+}
+
+function savePomodoroSettingsUI(){
+  pomodoroSettings.defaultDuration=parseInt($('pomodoro-duration-slider').value);
+  pomodoroSettings.soundEnabled=$('pomodoro-sound').checked;
+  savePomodoroSettings();
+  hideOv('ov-pomodoro-settings');
+  if(!pomodoroIsRunning){
+    resetPomodoro();
+  }
+  toast('设置已保存');
+}
+
+if($('pomodoro-duration-slider')){
+  $('pomodoro-duration-slider').addEventListener('input',function(){
+    $('pomodoro-duration-value').textContent=this.value+'分钟';
   });
 }
 
@@ -19684,10 +20121,11 @@ var chatbarItems=[
   {id:'letters',name:'信箱',icon:'✉️',fixed:false,category:'其他'},
   {id:'chat_list',name:'聊天列表',icon:'💬',category:'其他',fixed:true},
   {id:'moments',name:'朋友圈',icon:'📸',category:'其他',fixed:false},
+  {id:'pomodoro',name:'番茄钟',icon:'🍅',category:'其他',fixed:false},
   {id:'settings',name:'设置',icon:'⚙️',category:'其他',fixed:false}
 ];
 var chatbarCategoryOrder=['消息工具','数据统计','其他'];
-var customChatbarEnabled=['image','cards','decision','group_decision','divine','call','survey','search','favorites','copy_msg','fav_msg','my_favs','card_stats','ta_highlights','long_screenshot','topbar_cards','letters','moments'];
+var customChatbarEnabled=['image','cards','decision','group_decision','divine','call','survey','search','favorites','copy_msg','fav_msg','my_favs','card_stats','ta_highlights','long_screenshot','topbar_cards','letters','moments','pomodoro','settings'];
 
 function renderChatMorePanel(){
   var list=$('chat-more-list');
@@ -19801,6 +20239,9 @@ function handleChatMoreAction(action){
       case 'moments':
         showPg('pg-moments');
         renderMoments();
+        break;
+      case 'pomodoro':
+        showPomodoro();
         break;
       case 'settings':
         showPg('pg-my');
@@ -23649,7 +24090,11 @@ async function generateLongScreenshot(){
       }
       
       // Star
-      var starHtml=(starEn&&x.s===OTHER&&isProactive)?'<span class="message-star">⭐</span>':'';
+      var starHtml='';
+    if(starEn&&x.s===OTHER&&isProactive){
+      var starColor=getComputedStyle(document.documentElement).getPropertyValue('--star-color').trim()||'var(--txt3)';
+      starHtml='<span class="message-star" style="color:'+starColor+'">⭐</span>';
+    }
       
       // Read ignored
       var readIgnoredHtml=(x.s===SELF&&x.readIgnored)?'<div class="message-read-ignored">已读不回</div>':'';
