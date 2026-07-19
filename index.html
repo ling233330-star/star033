@@ -4523,10 +4523,26 @@ var Storage = (function(){
         for(var i=0;i<keys.length;i++){
           var k=keys[i];
           if(isProtectedKey(k)&&!cache.hasOwnProperty(k)){
-            var val=await window.localforage.getItem(k);
-            if(val!==null&&val!==undefined){
-              cache[k]=val;
-              loaded++;
+            // 先查 localStorage 有没有该键的 ml2_lf_ 备份数据
+            var lsBackup=safeGetItem('ml2_lf_'+k);
+            var loadedFromLS=false;
+            if(lsBackup!==null){
+              try{
+                var lsParsed=JSON.parse(lsBackup);
+                // 如果是数组且有数据，优先用 localStorage 的（避免 IndexedDB 空数据污染缓存）
+                if(Array.isArray(lsParsed)&&lsParsed.length>0){
+                  cache[k]=lsParsed;loaded++;loadedFromLS=true;
+                }else if(!Array.isArray(lsParsed)){
+                  cache[k]=lsParsed;loaded++;loadedFromLS=true;
+                }
+              }catch(e){cache[k]=lsBackup;loaded++;loadedFromLS=true;}
+            }
+            if(!loadedFromLS){
+              var val=await window.localforage.getItem(k);
+              if(val!==null&&val!==undefined){
+                cache[k]=val;
+                loaded++;
+              }
             }
           }
         }
@@ -16007,6 +16023,13 @@ async function getNavCards(type,contactId){
   if(localStored){
     try{var parsed=JSON.parse(localStored);if(parsed&&Array.isArray(parsed)&&parsed.length>0)result=parsed;}catch(e){}
   }
+  // 再加一层兜底：直接键（无前缀），兼容不同保存路径
+  if(!result||result.length===0){
+    var directRaw=safeGetItem(key);
+    if(directRaw){
+      try{var dp=JSON.parse(directRaw);if(dp&&Array.isArray(dp)&&dp.length>0)result=dp;}catch(e){}
+    }
+  }
   if(isLFAvailable()){
     try{
       var stored=await window.localforage.getItem(key);
@@ -16019,6 +16042,7 @@ async function getNavCards(type,contactId){
       }
     }catch(e){}
   }
+  console.log('[navCards] get',key,'found',result.length,'cards');
   return result;
 }
 
@@ -16028,12 +16052,14 @@ async function saveNavCards(cards,type,contactId){
     key+='_'+contactId;
   }
   var cardsStr=JSON.stringify(cards);
+  safeSetItem(key,cards);                // 直接键（无 ml2_lf_ 前缀），作为兜底
   safeSetItem('ml2_lf_'+key,cards);
   ls(key,cards);
   if(isLFAvailable()){
     await window.localforage.setItem(key,cardsStr).catch(function(e){});
     try{await window.localforage.setItem(key,cards);}catch(e){}
   }
+  console.log('[navCards] saved',key,cards.length,'cards');
   resetNavDisplayTimers();
   await checkNavDisplay();
 }
