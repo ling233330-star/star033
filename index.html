@@ -1245,11 +1245,11 @@ canvas{-webkit-backface-visibility:hidden;backface-visibility:hidden;-webkit-tra
             
             <div style="padding:16px;background:#f5f5f5;border-radius:12px;border-left:2px solid #666666;margin-bottom:12px;">
               <div style="font-size:12px;color:#666666;font-weight:600;margin-bottom:4px;">重要声明</div>
-              <div style="font-size:12px;color:#666666;line-height:1.7;">小众圈子，希望可以安稳使用。目前为文件版测试阶段。禁止将文件传至小红书以外的公开平台，或带tag恶意扩圈。禁止拿我的文件去盈利。</div>
+              <div style="font-size:12px;color:#666666;line-height:1.7;">目前为文件版测试阶段，有公开文件。希望可以安稳使用，禁止将文件传至小红书以外的公开平台，或带tag恶意扩圈。禁止拿我的文件去盈利。</div>
             </div>
             
             <div style="padding:16px;background:#f8fafc;border-radius:12px;border:1px solid #eeeeee;">
-              <div style="font-size:12px;color:#333333;font-weight:500;margin-bottom:4px;">星言1.0.0
+              <div style="font-size:12px;color:#333333;font-weight:500;margin-bottom:4px;">星言1.2
                  测试中</div>
               <div style="font-size:12px;color:#666666;line-height:1.7;">如果有bug可以带上手机型号和问题和我反馈（目前我自己用没什么bug，不知道不同手机是什么情况，最好是说详细点我问问ai修）</div>
             </div>
@@ -4130,16 +4130,6 @@ canvas{-webkit-backface-visibility:hidden;backface-visibility:hidden;-webkit-tra
     </div>
     
     <div id="beautify-tab-other" style="display:none;">
-      
-      <div style="margin-bottom:16px">
-        <div style="font-size:12px;color:var(--txt2);margin-bottom:8px;font-weight:600">星星标识颜色</div>
-        <div style="display:flex;gap:12px;margin-bottom:8px">
-          <div style="flex:1">
-            <div style="font-size:11px;color:var(--txt3);margin-bottom:4px">星星颜色</div>
-            <input type="color" id="star-color" value="#ffc107" style="width:100%;height:36px;border:none;border-radius:8px;cursor:pointer">
-          </div>
-        </div>
-      </div>
       
       <div style="margin-bottom:16px">
         <div style="font-size:12px;color:var(--txt2);margin-bottom:8px;font-weight:600">拍一拍颜色</div>
@@ -8089,19 +8079,12 @@ function syncCallUI(){
 
 function bindCallSteppers(){
   document.querySelectorAll('#ov-call-settings .stepper').forEach(function(s){
-    var btnMinus=s.querySelector('button:first-child');
-    var btnPlus=s.querySelector('button:last-child');
     var input=s.querySelector('input');
-    btnMinus.addEventListener('click',function(){
-      var val=parseInt(input.value)||0;
-      if(val>0)input.value=val-1;
-      input.dispatchEvent(new Event('change'));
-    });
-    btnPlus.addEventListener('click',function(){
-      var val=parseInt(input.value)||0;
-      input.value=val+1;
-      input.dispatchEvent(new Event('change'));
-    });
+    var stp=parseFloat(input.getAttribute('step'))||1;
+    function stepDown(e){if(e)e.preventDefault();var v=parseFloat(input.value)||0;var nv=Math.max(0,v-stp);input.value=(stp<1?nv.toFixed(2):nv);input.dispatchEvent(new Event('change'));}
+    function stepUp(e){if(e)e.preventDefault();var v=parseFloat(input.value)||0;var nv=v+stp;input.value=(stp<1?nv.toFixed(2):nv);input.dispatchEvent(new Event('change'));}
+    var bm=s.querySelector('button:first-child');if(bm){bm.addEventListener('click',stepDown);bm.addEventListener('touchend',stepDown);}
+    var bp=s.querySelector('button:last-child');if(bp){bp.addEventListener('click',stepUp);bp.addEventListener('touchend',stepUp);}
   });
 }
 
@@ -8320,7 +8303,8 @@ function startCallDuration(){
 
 function createCallMessage(contactId,status){
   var m=msgs(contactId);
-  var callMsg='📞 通话已接通';
+  var contact=contacts.find(function(c){return c.id===contactId});
+  var callMsg=contact?'📞 正在呼叫 '+contact.name+'...':'📞 正在呼叫...';
   var callMsgId='call_'+Date.now();
   m.push({id:callMsgId,s:OTHER,t:'',ts:new Date(),pc:false,isAuto:true,isInitiative:false,isCall:true,callStatus:status,callDuration:0,callMessage:callMsg,senderName:'系统',read:false});
   savemsgs(contactId,m);
@@ -8335,7 +8319,9 @@ function updateCallMessage(contactId,callMsgId,status,duration){
   if(msgIndex>=0){
     var callMsg='';
     if(status==='connected'){
-      callMsg='📞 通话已接通，时长 '+formatDuration(duration);
+      var contact=contacts.find(function(c){return c.id===contactId});
+      var contactName=contact?contact.name:'对方';
+      callMsg='📞 '+contactName+' 已接通电话';
     }else if(status==='busy'){
       callMsg='📞 对方忙线中';
     }else if(status==='rejected'){
@@ -8365,8 +8351,8 @@ function userEndCall(){
   if(incomingCallTimer){clearInterval(incomingCallTimer);incomingCallTimer=null}
   if(callDurationTimer){clearInterval(callDurationTimer);callDurationTimer=null}
   if($('calling-countdown'))$('calling-countdown').style.display='none';
-  // 用户主动挂断标记为 connected（正常结束）
-  endCall('connected',currentCall.duration);
+  // 用户主动挂断标记为 ended_by_user
+  endCall('ended_by_user',currentCall.duration);
 }
 
 function endCall(status,duration){
@@ -8419,6 +8405,10 @@ function endCall(status,duration){
   if(status==='connected'){
     toast('通话结束');
     callMsg='📞 通话已接通，时长 '+formatDuration(duration);
+  }else if(status==='ended_by_user'){
+    var myName=me&&me.name?me.name:'我';
+    toast(myName+' 已挂断');
+    callMsg='📞 '+myName+' 已挂断通话，时长 '+formatDuration(duration);
   }else if(status==='hangup_by_contact'){
     toast(contactName+' 已挂断');
     callMsg='📞 '+contactName+' 挂断了电话，时长 '+formatDuration(duration);
@@ -10357,7 +10347,7 @@ if($('call-hangup-prob-input'))$('call-hangup-prob-input').addEventListener('inp
 if($('call-hangup-prob-slider'))$('call-hangup-prob-slider').addEventListener('input',function(){
   $('call-hangup-prob-input').value=this.value;
 });
-if($('save-call-settings')){$('save-call-settings').addEventListener('click',saveCallSettings);$('save-call-settings').addEventListener('touchend',function(e){e.preventDefault();saveCallSettings()});}
+if($('save-call-settings')){$('save-call-settings').addEventListener('click',function(){saveCallSettings();hideOv('ov-call-settings');toast('设置已保存')});$('save-call-settings').addEventListener('touchend',function(e){e.preventDefault();saveCallSettings();hideOv('ov-call-settings');toast('设置已保存')});}
 $('initiate-call-btn')&&($('initiate-call-btn').addEventListener('click',initiateCall),$('initiate-call-btn').addEventListener('touchend',function(e){e.preventDefault();initiateCall()}));
 $('call-end-btn')&&($('call-end-btn').addEventListener('click',function(){userEndCall()}),$('call-end-btn').addEventListener('touchend',function(e){e.preventDefault();userEndCall()}));
 $('call-answer-btn')&&$('call-answer-btn').addEventListener('click',function(){
@@ -21418,7 +21408,6 @@ async function openBeautify(){
   $('send-btn-text').value=settings.sendBtnText;
   $('my-timeline-color').value=settings.myTimelineColor;
   $('other-timeline-color').value=settings.otherTimelineColor;
-  $('star-color').value=settings.starColor;
   $('my-touch-color').value=settings.myTouchColor;
   $('other-touch-color').value=settings.otherTouchColor;
   $('bubble-font-size-slider').value=settings.bubbleFontSize;
@@ -21636,7 +21625,6 @@ function debounceApplyChatSettings(){
     entity.chatSettings.sendBtnText=$('send-btn-text').value;
     entity.chatSettings.myTimelineColor=$('my-timeline-color').value;
     entity.chatSettings.otherTimelineColor=$('other-timeline-color').value;
-    entity.chatSettings.starColor=$('star-color').value;
     entity.chatSettings.myTouchColor=$('my-touch-color').value;
     entity.chatSettings.otherTouchColor=$('other-touch-color').value;
     entity.chatSettings.bubbleFontSize=parseInt($('bubble-font-size-slider').value);
@@ -21658,7 +21646,7 @@ function debounceApplyChatSettings(){
 $('custom-font-input').addEventListener('input',debounceApplyChatSettings);
 $('custom-css-input').addEventListener('input',debounceApplyChatSettings);
 
-var colorInputs=['my-bubble-text','my-bubble-bg','other-bubble-text','other-bubble-bg','my-quote-color','other-quote-color','send-btn-bg','send-btn-text','my-timeline-color','other-timeline-color','star-color','my-touch-color','other-touch-color','nav-status-color'];
+var colorInputs=['my-bubble-text','my-bubble-bg','other-bubble-text','other-bubble-bg','my-quote-color','other-quote-color','send-btn-bg','send-btn-text','my-timeline-color','other-timeline-color','my-touch-color','other-touch-color','nav-status-color'];
 colorInputs.forEach(function(id){
   if($(id))$(id).addEventListener('input',debounceApplyChatSettings);
 });
@@ -21691,7 +21679,6 @@ function getDefaultChatSettings(){
     sendBtnText:'#ffffff',
     myTimelineColor:'#000000',
     otherTimelineColor:'#000000',
-    starColor:'#ffc107',
     myTouchColor:'#000000',
     otherTouchColor:'#000000',
     bubbleFontSize:16,
@@ -21841,6 +21828,7 @@ async function renderChatBgList(contact){
 }
 
 $('chat-bg-edit').addEventListener('click',function(){$('chat-bg-input').click()});
+$('chat-bg-edit').addEventListener('touchend',function(e){e.preventDefault();$('chat-bg-input').click()});
 $('chat-bg-input').addEventListener('change',function(e){
   var f=e.target.files[0];if(!f)return;
   compressImage(f,1920,0.95,async function(res){
@@ -21905,7 +21893,6 @@ var saveBeautifySettings=async function(){
   entity.chatSettings.sendBtnText=$('send-btn-text').value;
   entity.chatSettings.myTimelineColor=$('my-timeline-color').value;
   entity.chatSettings.otherTimelineColor=$('other-timeline-color').value;
-  entity.chatSettings.starColor=$('star-color').value;
   entity.chatSettings.myTouchColor=$('my-touch-color').value;
   entity.chatSettings.otherTouchColor=$('other-touch-color').value;
   entity.chatSettings.bubbleFontSize=parseInt($('bubble-font-size-slider').value);
@@ -22133,7 +22120,6 @@ async function applyChatSettings(contact){
   document.documentElement.style.setProperty('--other-quote-color',settings.otherQuoteColor);
   document.documentElement.style.setProperty('--my-timeline-color',settings.myTimelineColor);
   document.documentElement.style.setProperty('--other-timeline-color',settings.otherTimelineColor);
-  document.documentElement.style.setProperty('--star-color',settings.starColor);
   document.documentElement.style.setProperty('--my-touch-color',settings.myTouchColor);
   document.documentElement.style.setProperty('--other-touch-color',settings.otherTouchColor);
   
@@ -24646,12 +24632,13 @@ sendMsg=function(){
     var bar=$('call-mini-bar');
     var btn=$('call-mini-expand-btn');
     if(!bar||!btn)return;
-    var dragStarted=false,moved=false,startX=0,startY=0;
+    var dragStarted=false,moved=false,startX=0,startY=0,origLeft=0,origTop=0;
     function onDown(e){
       if(e.target===btn)return;
       dragStarted=true;moved=false;
       var p=e.touches?e.touches[0]:e;
       startX=p.clientX;startY=p.clientY;
+      var r=bar.getBoundingClientRect();origLeft=r.left;origTop=r.top;
       bar.style.cursor='grabbing';
     }
     function onMove(e){
@@ -24660,9 +24647,10 @@ sendMsg=function(){
       if(Math.abs(p.clientX-startX)>5||Math.abs(p.clientY-startY)>5){
         moved=true;
         if(e.cancelable)e.preventDefault();
-        var rect=bar.getBoundingClientRect();
-        bar.style.left=(Math.max(4,Math.min(rect.left+(p.clientX-startX),window.innerWidth-bar.offsetWidth-4)))+'px';
-        bar.style.top=(Math.max(4,Math.min(rect.top+(p.clientY-startY),window.innerHeight-bar.offsetHeight-4)))+'px';
+        // 使用原始位置 + 总偏移量，避免累积计算导致跳跃
+        var dx=p.clientX-startX,dy=p.clientY-startY;
+        bar.style.left=(Math.max(4,Math.min(origLeft+dx,window.innerWidth-bar.offsetWidth-4)))+'px';
+        bar.style.top=(Math.max(4,Math.min(origTop+dy,window.innerHeight-bar.offsetHeight-4)))+'px';
         bar.style.bottom='auto';bar.style.transform='none';
       }
     }
