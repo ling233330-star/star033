@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no,viewport-fit=cover">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no,viewport-fit=cover">
 <meta name="theme-color" content="#fafafa">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
@@ -2229,11 +2229,14 @@ canvas{-webkit-backface-visibility:hidden;backface-visibility:hidden;-webkit-tra
       <div class="my-row" id="dnd-settings-btn"><span class="my-ico">🌙</span><span class="my-label">免打扰模式</span><span style="color:var(--txt3)">›</span></div>
       <div class="my-row" id="import-data-btn" style="cursor:pointer;-webkit-tap-highlight-color:transparent;"><span class="my-ico">📥</span><span class="my-label">导入数据</span><span style="color:var(--txt3)">›</span></div>
       <div class="my-row" id="export-data-btn"><span class="my-ico">📤</span><span class="my-label">导出数据</span><span style="color:var(--txt3)">›</span></div>
+      <div class="my-row" id="export-letters-btn"><span class="my-ico">✉️</span><span class="my-label">导出信箱数据</span><span style="color:var(--txt3)">›</span></div>
+      <div class="my-row" id="import-letters-btn" style="cursor:pointer;-webkit-tap-highlight-color:transparent;"><span class="my-ico">📨</span><span class="my-label">导入信箱数据</span><span style="color:var(--txt3)">›</span></div>
 
       <div class="my-row" id="clear-cache-btn" style="color:#ff4d4f;cursor:pointer;-webkit-tap-highlight-color:transparent;"><span class="my-ico">🗑️</span><span class="my-label">清除数据</span><span style="color:var(--txt3)">›</span></div>
       <div class="my-row" id="keep-alive-btn" style="display:flex;align-items:center;justify-content:space-between;"><div style="display:flex;align-items:center;gap:12px;"><span class="my-ico">🔋</span><span class="my-label">后台保活</span></div><div style="display:flex;align-items:center;gap:8px;"><span id="keep-alive-status" style="font-size:12px;color:var(--txt3)">已开启</span><span style="color:var(--txt3)">›</span></div></div>
       <div class="my-row" id="push-notify-btn" style="display:flex;align-items:center;justify-content:space-between;"><div style="display:flex;align-items:center;gap:12px;"><span class="my-ico">🔔</span><span class="my-label">后台消息弹窗</span></div><div style="display:flex;align-items:center;gap:8px;"><span id="push-notify-status" style="font-size:12px;color:var(--txt3)">已开启</span><span style="color:var(--txt3)">›</span></div></div>
       <input type="file" id="import-data-input" accept=".json" style="display:none;">
+      <input type="file" id="import-letters-input" accept=".json" style="display:none;">
       <input type="file" id="tb-import-input" accept=".json" style="display:none;">
     </div>
   </div>
@@ -15943,6 +15946,8 @@ function bindMyPageEvents(){
     ['dnd-settings-btn',openDndSettings],
     ['sound-btn',openSoundSettings],
     ['export-data-btn',exportData],
+    ['export-letters-btn',exportLetters],
+    ['import-letters-btn',function(){$('import-letters-input').click()}],
 
     ['clear-cache-btn',async function(){
       if(window._clearingData)return;
@@ -18078,6 +18083,56 @@ async function doImportData(data){
   updateProgress('导入完成，即将刷新...',100);
   await new Promise(function(r){setTimeout(r,300)});
 }
+
+// ---------- 信箱数据导出/导入 ----------
+async function exportLetters(){
+  var letters=ls(LL)||[];
+  if(!letters||!letters.length){toast('信箱暂无数据');return;}
+  var data={version:'1.0',exportTime:new Date().toISOString(),type:'letters',count:letters.length,letters:letters};
+  var jsonStr=JSON.stringify(data,null,2);
+  var blob=new Blob([jsonStr],{type:'application/json;charset=utf-8'});
+  var url=URL.createObjectURL(blob);
+  var a=document.createElement('a');
+  a.href=url;
+  a.download='星言信箱数据_'+new Date().toISOString().slice(0,10)+'.json';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  toast('信箱数据已导出（'+letters.length+' 条）');
+}
+function importLettersFile(){
+  var input=$('import-letters-input');
+  if(!input)return;
+  input.value='';
+  input.addEventListener('change',function handler(e){
+    var f=e.target.files[0];if(!f)return;
+    input.removeEventListener('change',handler);
+    var reader=new FileReader();
+    reader.onload=async function(evt){
+      try{
+        var data=JSON.parse(evt.target.result);
+        if(!data.letters||!Array.isArray(data.letters)){toast('无效的信箱数据文件');return;}
+        var existing=ls(LL)||[];
+        var added=0;
+        data.letters.forEach(function(l){
+          if(!l||!l.id)return;
+          if(!existing.some(function(e){return e.id===l.id})){
+            existing.push(l);added++;
+          }
+        });
+        existing.sort(function(a,b){return (b.tm||0)-(a.tm||0)});
+        ls(LL,existing);
+        if(isLFAvailable()){await window.localforage.setItem(LL,existing).catch(function(){})}
+        toast('信箱数据已导入（新增 '+added+' 条'+(data.letters.length-added)+' 条重复）');
+        renderLetters&&renderLetters();
+      }catch(e){console.error(e);toast('导入失败，文件格式错误');}
+    };
+    reader.readAsText(f);
+  });
+  input.click();
+}
+importLettersFile();
 
 // ---------- Auto Send ----------
 var lastAutoSendTime={};
