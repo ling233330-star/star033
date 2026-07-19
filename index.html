@@ -1127,6 +1127,20 @@ canvas{-webkit-backface-visibility:hidden;backface-visibility:hidden;-webkit-tra
 .splash-gradient-text{background:linear-gradient(135deg,#c9a96e,#d4b57a,#c9a96e);background-size:200% auto;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:shimmer 3s linear infinite}
 
 @media (max-width: 480px){
+  #pg-letters .nav{padding-top:env(safe-area-inset-top);height:auto;min-height:44px}
+  #pg-letters .nav .nr{padding-top:env(safe-area-inset-top)}
+  #write-letter-btn{padding:4px 10px;font-size:11px}
+  #env-contact-selector{padding:6px 10px}
+  #env-contact-btn{padding:6px 10px;font-size:12px}
+  .env-tab-btn{padding:8px 4px;font-size:11px}
+  .env-tab-btn svg{width:12px;height:12px}
+  #env-partner-section,#env-inbox-section,#env-outbox-section{padding:6px 10px}
+  .letter-item{padding:10px;margin-bottom:6px}
+  .letter-item .l-from{font-size:14px}
+  .letter-item .l-title{font-size:12px}
+  .letter-item .l-time{font-size:10px}
+  #env-compose-form{padding:12px}
+  #envelope-input{font-size:14px;padding:16px}
   #announcement-content{padding:16px 24px}
   #announcement-title{font-size:28px;letter-spacing:8px}
   #announcement-subtitle{font-size:9px;letter-spacing:4px}
@@ -4227,10 +4241,10 @@ var Storage = (function(){
     scheduleFlush();
     if(isLFAvailable()){
       window.localforage.setItem(k, v).catch(function(e){});
-      var isLargeKey=k.startsWith('ml2_card_img_')||k.startsWith('ml2_global_cards')||k.startsWith('ml2_contacts')||k.startsWith('ml2_msg_');
-      if(!isLargeKey){
+      var isImgKey=k.startsWith('ml2_card_img_')||k.startsWith('ml2_msg_img_');
+      if(!isImgKey){
         var valStr=typeof v==='object'?JSON.stringify(v):String(v);
-        if(valStr.length<50000){
+        if(valStr.length<500000){
           safeSetItem('ml2_lf_'+k, v);
         }
       }
@@ -4816,6 +4830,9 @@ function msgs(id){
   }
   var lsVal=ls(key);
   var m=lsVal||[];
+  if(!m||!m.length){
+    try{var localStored=safeGetItem('ml2_lf_'+key);if(localStored)m=JSON.parse(localStored);}catch(e){}
+  }
 
   m.forEach(function(x){
     if(!(x.ts instanceof Date)){
@@ -4826,15 +4843,27 @@ function msgs(id){
     }
     if(x.img&&typeof x.img==='string'&&x.img.startsWith('ml2_msg_img_')){
       var imgCached=memoryCache['_img_'+x.img];
-      if(imgCached){x.img=imgCached;}
+      if(imgCached){x.img=imgCached;}else if(isLFAvailable()){
+        window.localforage.getItem(x.img).then(function(imgData){
+          if(imgData){memoryCache['_img_'+x.img]=imgData;x.img=imgData;renderMsgs(msgs(cid));}
+        }).catch(function(){});
+      }
     }
     if(x.originalImg&&typeof x.originalImg==='string'&&x.originalImg.startsWith('ml2_msg_img_')){
       var cachedOrig=memoryCache['_img_'+x.originalImg];
-      if(cachedOrig){x.originalImg=cachedOrig;}
+      if(cachedOrig){x.originalImg=cachedOrig;}else if(isLFAvailable()){
+        window.localforage.getItem(x.originalImg).then(function(imgData){
+          if(imgData){memoryCache['_img_'+x.originalImg]=imgData;x.originalImg=imgData;renderMsgs(msgs(cid));}
+        }).catch(function(){});
+      }
     }
     if(x.voice&&typeof x.voice==='string'&&x.voice.startsWith('ml2_msg_voice_')){
       var cachedVoice=memoryCache['_img_'+x.voice];
-      if(cachedVoice){x.voice=cachedVoice;}
+      if(cachedVoice){x.voice=cachedVoice;}else if(isLFAvailable()){
+        window.localforage.getItem(x.voice).then(function(vData){
+          if(vData){memoryCache['_img_'+x.voice]=vData;x.voice=vData;renderMsgs(msgs(cid));}
+        }).catch(function(){});
+      }
     }
   });
   memoryCache[key]=m;
@@ -6487,7 +6516,9 @@ function renderMsgs(messages){
   
   box.innerHTML=html.join('');
   initMsgActions();
-  requestAnimationFrame(function(){box.scrollTop=box.scrollHeight});
+  if(!longScreenshotMode){
+    requestAnimationFrame(function(){box.scrollTop=box.scrollHeight});
+  }
 }
 
 var replyingToMsg=null;
@@ -7370,7 +7401,7 @@ function genReply(targetId){
   if(document.visibilityState !== 'visible'){
     var item=contacts.find(function(x){return x.id===targetId})||group;
     var msgText=reply||(imgSrc?'[图片]':'[表情]');
-    showPushNotification(item?item.name:'联系人',msgText,(item&&item.avatar)?item.avatar:'');
+    showPushNotification(item?item.name:'联系人',msgText,(item&&item.avatar)?item.avatar:'',targetId);
   }
   
   var rcProb=getSpeed('rc-prob',senderId);
@@ -8727,7 +8758,9 @@ function renderNonInstantMsgs(){
     lt=d.getTime();
   });
   box.innerHTML=html;
-  requestAnimationFrame(function(){box.scrollTop=box.scrollHeight});
+  if(!longScreenshotMode){
+    requestAnimationFrame(function(){box.scrollTop=box.scrollHeight});
+  }
   initNonInstantMsgActions();
 }
 var _nonInstInited=false;
@@ -9312,7 +9345,6 @@ function renderEmojiGroupContent(stickers,container){
     el.style.borderRadius='8px';
     if(sticker.category==='stickers'&&sticker.content){
       var img=document.createElement('img');
-      img.src=sticker.content;
       img.style.width='100%';
       img.style.height='100%';
       img.style.objectFit='contain';
@@ -9320,6 +9352,26 @@ function renderEmojiGroupContent(stickers,container){
       img.style.imageRendering='auto';
       img.style.webkitTransform='translateZ(0)';
       img.style.transform='translateZ(0)';
+      if(sticker.content.startsWith('data:image/')){
+        img.src=sticker.content;
+      }else if(sticker.content.startsWith('ml2_card_img_')){
+        var cachedImg=memoryCache['_img_'+sticker.content];
+        if(cachedImg){
+          img.src=cachedImg;
+        }else{
+          img.src='data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
+          if(isLFAvailable()){
+            window.localforage.getItem(sticker.content).then(function(imgData){
+              if(imgData){
+                memoryCache['_img_'+sticker.content]=imgData;
+                img.src=imgData;
+              }
+            }).catch(function(){});
+          }
+        }
+      }else{
+        img.src=sticker.content;
+      }
       el.appendChild(img);
     }else{
       el.textContent=sticker.content;
@@ -10192,6 +10244,7 @@ async function loadGlobalCards(){
   
   var c=null;
   var lsData=null;
+  var fullData=null;
   
   if(isLFAvailable()){
     try{c=await window.localforage.getItem('ml2_global_cards');}catch(e){console.warn('loadGlobalCards localforage failed:',e);}
@@ -10201,7 +10254,12 @@ async function loadGlobalCards(){
     lsData=ls('ml2_global_cards');
   }
   
-  if(c&&Array.isArray(c)&&c.length>0){
+  try{var fullRaw=safeGetItem('ml2_global_cards_full');if(fullRaw)fullData=JSON.parse(fullRaw);}catch(e){}
+  
+  if(fullData&&Array.isArray(fullData)&&fullData.length>0){
+    globalCards=fullData;
+    memoryCache['ml2_global_cards']=fullData;
+  }else if(c&&Array.isArray(c)&&c.length>0){
     globalCards=c;
     memoryCache['ml2_global_cards']=c;
   }else if(lsData&&Array.isArray(lsData)&&lsData.length>0){
@@ -10361,6 +10419,7 @@ async function loadCardImagesAsync(){
 async function saveGlobalCards(){
   try{
     var cardsToSave=[];
+    var cardsWithFullData=[];
     for(var i=0;i<globalCards.length;i++){
       var card=globalCards[i];
       if(card.content&&(card.content.startsWith('data:image/')||card.content.startsWith('data:audio/'))){
@@ -10369,11 +10428,14 @@ async function saveGlobalCards(){
           await window.localforage.setItem(imgKey,card.content);
         }
         cardsToSave.push(Object.assign({},card,{content:imgKey}));
+        cardsWithFullData.push(card);
       }else{
         cardsToSave.push(card);
+        cardsWithFullData.push(card);
       }
     }
     ls('ml2_global_cards',cardsToSave);
+    safeSetItem('ml2_global_cards_full',cardsWithFullData);
     if(isLFAvailable()){
       await window.localforage.setItem('ml2_global_cards', cardsToSave).catch(function(){});
     }
@@ -10711,8 +10773,29 @@ async function importCardsJSON(){
           }
         }
         if(importData.navCardGroups&&typeof importData.navCardGroups==='object'){
-          navCardGroups=importData.navCardGroups;
-          if(isLFAvailable()){window.localforage.setItem('ml2_nav_card_groups',JSON.stringify(navCardGroups)).catch(function(){});}
+          if(importData.navCardGroups.public&&Array.isArray(importData.navCardGroups.public)){
+            importData.navCardGroups.public.forEach(function(g){
+              if(g&&!navCardGroups.public.includes(g)){
+                navCardGroups.public.push(g);
+              }
+            });
+          }
+          if(importData.navCardGroups.private&&typeof importData.navCardGroups.private==='object'){
+            var privKeys=Object.keys(importData.navCardGroups.private);
+            for(var pk=0;pk<privKeys.length;pk++){
+              var pnk=privKeys[pk];
+              var pnv=importData.navCardGroups.private[pnk];
+              if(pnv&&Array.isArray(pnv)){
+                if(!navCardGroups.private[pnk])navCardGroups.private[pnk]=[];
+                pnv.forEach(function(g){
+                  if(g&&!navCardGroups.private[pnk].includes(g)){
+                    navCardGroups.private[pnk].push(g);
+                  }
+                });
+              }
+            }
+          }
+          saveNavCardGroups();
         }
         if(importData.navDisplayStates&&typeof importData.navDisplayStates==='object'){
           navDisplayStates=importData.navDisplayStates;
@@ -15206,9 +15289,13 @@ $('send-envelope').addEventListener('click',function(){
   };
   ll.unshift(letter);
   ls(LL,ll);
+  if(isLFAvailable()){
+    try{window.localforage.setItem(LL,ll)}catch(e){}
+  }
   
   toast('信件已寄出');
   cancelEnvelopeCompose();
+  renderEnvOutboxList();
 });
 
 function renderLetters(){
@@ -15581,7 +15668,7 @@ var navCardCurrentType='public';
 var navCardCurrentContact=null;
 var navCardCurrentCategory='all';
 var navCardCurrentGroup='all';
-var navCardGroups={public:['默认'],private:{}};
+var navCardGroups={public:['默认','天气','时间','心情','空闲状态','对方状态'],private:{}};
 var navCardCollapsedGroups={};
 var navBatchSelectedCards=[];
 
@@ -15613,23 +15700,28 @@ async function getNavCards(type,contactId){
   if(type==='private'&&contactId){
     key+='_'+contactId;
   }
+  var result=[];
+  var lsData=ls(key);
+  if(lsData&&Array.isArray(lsData)&&lsData.length>0){
+    result=lsData;
+  }
+  var localStored=safeGetItem('ml2_lf_'+key);
+  if(localStored){
+    try{var parsed=JSON.parse(localStored);if(parsed&&Array.isArray(parsed)&&parsed.length>0)result=parsed;}catch(e){}
+  }
   if(isLFAvailable()){
     try{
       var stored=await window.localforage.getItem(key);
       if(stored){
         if(typeof stored==='string'){
-          try{return JSON.parse(stored);}catch(e){}
+          try{var parsed=JSON.parse(stored);if(parsed&&Array.isArray(parsed)&&parsed.length>0)result=parsed;}catch(e){}
+        }else if(stored&&Array.isArray(stored)&&stored.length>0){
+          result=stored;
         }
-        return stored;
       }
     }catch(e){}
   }
-  // localStorage fallback
-  var localStored=safeGetItem('ml2_lf_'+key);
-  if(localStored){
-    try{return JSON.parse(localStored);}catch(e){return localStored;}
-  }
-  return [];
+  return result;
 }
 
 async function saveNavCards(cards,type,contactId){
@@ -15637,12 +15729,13 @@ async function saveNavCards(cards,type,contactId){
   if(type==='private'&&contactId){
     key+='_'+contactId;
   }
-  // 同步写入localStorage兜底，避免localforage竞态导致数据丢失
+  var cardsStr=JSON.stringify(cards);
   safeSetItem('ml2_lf_'+key,cards);
+  ls(key,cards);
   if(isLFAvailable()){
-    await window.localforage.setItem(key,JSON.stringify(cards));
+    await window.localforage.setItem(key,cardsStr).catch(function(e){});
+    try{await window.localforage.setItem(key,cards);}catch(e){}
   }
-  // 保存后重置所有联系人的刷新计时器，并立即触发刷新
   resetNavDisplayTimers();
   await checkNavDisplay();
 }
@@ -17566,7 +17659,7 @@ function maybeAutoSend(){
 
       if(document.visibilityState!=='visible'){
         var msgText=reply||(imgSrc?'[图片]':'[表情]');
-        showPushNotification(contact.name,msgText,(contact&&contact.avatar)?contact.avatar:'');
+        showPushNotification(contact.name,msgText,(contact&&contact.avatar)?contact.avatar:'',targetId);
       }
       var rcProb=getSpeed('rc-prob',targetId);if(Math.random()*100<rcProb){
         setTimeout(function(){var all=msgs(targetId);if(all.length>0){var lastMsg=all[all.length-1];lastMsg.retracted=true;lastMsg.originalContent=lastMsg.t||'';lastMsg.originalImg=lastMsg.img||'';lastMsg.t='';lastMsg.img='';}savemsgs(targetId,all);
@@ -18092,12 +18185,13 @@ function togglePushNotify(){
   }
 }
 
-function showPushNotification(contactName, message, avatarUrl){
+function showPushNotification(contactName, message, avatarUrl, contactId){
   if(!pushNotifyEnabled)return;
   if(!('Notification' in window))return;
   if(Notification.permission!=='granted')return;
   
   var icon=avatarUrl||'';
+  var notifTag='xingyan-msg-'+(contactId||'unknown');
   
   // 优先通过 Service Worker 发送通知（Android standalone 模式更可靠）
   if(navigator.serviceWorker&&navigator.serviceWorker.controller){
@@ -18106,7 +18200,9 @@ function showPushNotification(contactName, message, avatarUrl){
         type:'SHOW_NOTIFICATION',
         title:contactName,
         body:message,
-        icon:icon
+        icon:icon,
+        tag:notifTag,
+        contactId:contactId
       });
       return;
     }catch(e){}
@@ -18114,13 +18210,21 @@ function showPushNotification(contactName, message, avatarUrl){
   
   // 降级：直接使用 Notification API
   try{
-    var notifOpts={body:message,tag:'xingyan-msg'};
+    var notifOpts={body:message,tag:notifTag,renotify:true};
     if(icon){notifOpts.icon=icon;notifOpts.badge=icon;}
     var notification=new Notification(contactName,notifOpts);
     notification.onclick=function(){
       window.focus();
       notification.close();
+      if(contactId){
+        var contact=contacts.find(function(c){return c.id===contactId});
+        if(contact){
+          selectContact(contact);
+          if($('tab-chat'))$('tab-chat').click();
+        }
+      }
     };
+    setTimeout(function(){notification.close()},10000);
   }catch(e){
     console.error('Failed to show notification:',e);
   }
@@ -23450,6 +23554,7 @@ async function generateLongScreenshot(){
     var htmlParts=[];
     var cd='',lt=0,GAP=300000;
     var starEn=getSpeed('star-en')===1;
+    var timelineStyle=getContactTimelineStyle(cid);
     
     for(var i=0;i<selectedMsgs.length;i++){
       var x=selectedMsgs[i];
@@ -23550,9 +23655,15 @@ async function generateLongScreenshot(){
       var readIgnoredHtml=(x.s===SELF&&x.readIgnored)?'<div class="message-read-ignored">已读不回</div>':'';
       
       // Time
-      var timeHtml='<div class="mb-time">'+fts(d)+'</div>';
+      var timeHtml='<div class="mt">'+fts(d)+'</div>';
+      var bubbleTimeHtml=timelineStyle==='bubble'?'<div class="mb-time">'+fts(d)+'</div>':(timelineStyle==='inside'?'<div class="mb-time-inside">'+fts(d)+'</div>':'');
       
-      htmlParts.push('<div class="mr '+(x.s===SELF?'self':'other')+(gap?' has-gap':'')+(x.retracted?' retracted':'')+'">'+avatarHtml+'<div class="mc">'+senderNameHtml+starHtml+'<div class="mb">'+quoteHtml+contentHtml+timeHtml+'</div>'+readIgnoredHtml+'</div></div>');
+      // Adjust avatar HTML based on timeline style
+      if(timelineStyle==='avatar'){
+        avatarHtml=avatarHtml.replace('</div></div>',''+timeHtml+'</div></div>');
+      }
+      
+      htmlParts.push('<div class="mr '+(x.s===SELF?'self':'other')+(gap?' has-gap':'')+(x.retracted?' retracted':'')+'">'+avatarHtml+'<div class="mc">'+senderNameHtml+starHtml+'<div class="mb">'+quoteHtml+contentHtml+bubbleTimeHtml+'</div>'+readIgnoredHtml+'</div></div>');
       lt=d.getTime();
     }
     
