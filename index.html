@@ -16021,7 +16021,7 @@ var navCardCurrentType='public';
 var navCardCurrentContact=null;
 var navCardCurrentCategory='all';
 var navCardCurrentGroup='all';
-var navCardGroups={public:['默认','天气','时间','心情','空闲状态','对方状态'],private:{}};
+var navCardGroups={public:['默认'],private:{}};
 var navCardCollapsedGroups={};
 var navBatchSelectedCards=[];
 
@@ -16039,6 +16039,22 @@ async function loadNavCardGroups(){
   if(localStored&&typeof localStored==='object'){
     navCardGroups=localStored;
   }
+  // 迁移：清理"分类名"残留——天气/时间/对方状态/空闲状态/心情是分类，不应作为分组
+  var catNames=['天气','时间','对方状态','空闲状态','心情'];
+  if(navCardGroups&&navCardGroups.public&&Array.isArray(navCardGroups.public)){
+    navCardGroups.public=navCardGroups.public.filter(function(g){return catNames.indexOf(g)<0});
+    if(navCardGroups.public.length===0)navCardGroups.public=['默认'];
+  }
+  if(navCardGroups&&navCardGroups.private&&typeof navCardGroups.private==='object'){
+    var pk=Object.keys(navCardGroups.private);
+    pk.forEach(function(k){
+      if(Array.isArray(navCardGroups.private[k])){
+        navCardGroups.private[k]=navCardGroups.private[k].filter(function(g){return catNames.indexOf(g)<0});
+        if(navCardGroups.private[k].length===0)navCardGroups.private[k]=['默认'];
+      }
+    });
+  }
+  saveNavCardGroups();
 }
 
 function saveNavCardGroups(){
@@ -16046,6 +16062,26 @@ function saveNavCardGroups(){
   if(isLFAvailable()){
     window.localforage.setItem('ml2_nav_card_groups',JSON.stringify(navCardGroups)).catch(function(){});
   }
+}
+
+// 首次使用时自动播种默认公开字卡
+var _defaultNavCards=[
+  // 天气
+  {content:'晴天',group:'默认',category:'weather'},{content:'多云',group:'默认',category:'weather'},{content:'阴天',group:'默认',category:'weather'},{content:'下雨了',group:'默认',category:'weather'},{content:'下雪了',group:'默认',category:'weather'},{content:'起雾了',group:'默认',category:'weather'},{content:'大雾',group:'默认',category:'weather'},{content:'暴雪',group:'默认',category:'weather'},{content:'大雪',group:'默认',category:'weather'},{content:'中雪',group:'默认',category:'weather'},{content:'小雪',group:'默认',category:'weather'},{content:'雷阵雨',group:'默认',category:'weather'},{content:'打雷了（怕怕）',group:'默认',category:'weather'},{content:'风大',group:'默认',category:'weather'},{content:'今天风刮的好大',group:'默认',category:'weather'},{content:'雨停了',group:'默认',category:'weather'},{content:'雪停了',group:'默认',category:'weather'},{content:'雾散了',group:'默认',category:'weather'},{content:'天晴了',group:'默认',category:'weather'},{content:'太阳雨',group:'默认',category:'weather'},{content:'雨过天晴',group:'默认',category:'weather'},{content:'雨夹雪',group:'默认',category:'weather'},{content:'冻雨',group:'默认',category:'weather'},
+  // 时间
+  {content:'卯初（05:00–05:29）',group:'默认',category:'time'},{content:'卯正（05:30–06:29）',group:'默认',category:'time'},{content:'辰初（07:00–07:29）',group:'默认',category:'time'},{content:'辰正（07:30–08:29）',group:'默认',category:'time'},{content:'巳初（09:00–09:29）',group:'默认',category:'time'},{content:'巳正（09:30–10:29）',group:'默认',category:'time'},{content:'午初（11:00–11:29）',group:'默认',category:'time'},{content:'午正（11:30–12:29）',group:'默认',category:'time'},{content:'未初（13:00–13:29）',group:'默认',category:'time'},{content:'未正（13:30–14:29）',group:'默认',category:'time'},{content:'申初（15:00–15:29）',group:'默认',category:'time'},{content:'申正（15:30–16:29）',group:'默认',category:'time'},{content:'酉初（17:00–17:29）',group:'默认',category:'time'},{content:'酉正（17:30–18:29）',group:'默认',category:'time'},{content:'戌初（19:00–19:29）',group:'默认',category:'time'},{content:'戌正（19:30–20:29）',group:'默认',category:'time'},{content:'亥初（21:00–21:29）',group:'默认',category:'time'},{content:'亥正（21:30–22:29）',group:'默认',category:'time'},{content:'子初（23:00–23:29）',group:'默认',category:'time'},{content:'子正（23:30–00:29）',group:'默认',category:'time'},{content:'丑初（01:00–01:29）',group:'默认',category:'time'},{content:'丑正（01:30–02:29）',group:'默认',category:'time'},{content:'寅初（03:00–03:29）',group:'默认',category:'time'},{content:'寅正（03:30–04:29）',group:'默认',category:'time'},
+  // 心情状态
+  {content:'开心',group:'默认',category:'mood'},{content:'有点开心',group:'默认',category:'mood'},{content:'一般般',group:'默认',category:'mood'},{content:'不太开心',group:'默认',category:'mood'},{content:'难过',group:'默认',category:'mood'},{content:'生气',group:'默认',category:'mood'},{content:'烦躁',group:'默认',category:'mood'},{content:'累',group:'默认',category:'mood'},{content:'困',group:'默认',category:'mood'},{content:'无聊',group:'默认',category:'mood'},{content:'想说话',group:'默认',category:'mood'},{content:'不想说话',group:'默认',category:'mood'},{content:'紧张',group:'默认',category:'mood'},{content:'安心',group:'默认',category:'mood'},{content:'委屈',group:'默认',category:'mood'},{content:'懵',group:'默认',category:'mood'},{content:'平静',group:'默认',category:'mood'},{content:'兴奋',group:'默认',category:'mood'},{content:'害怕',group:'默认',category:'mood'},{content:'期待',group:'默认',category:'mood'},{content:'失落',group:'默认',category:'mood'},{content:'满足',group:'默认',category:'mood'},{content:'尴尬',group:'默认',category:'mood'},{content:'害羞',group:'默认',category:'mood'},{content:'骄傲',group:'默认',category:'mood'},{content:'自卑',group:'默认',category:'mood'},{content:'柔软',group:'默认',category:'mood'},{content:'坚硬',group:'默认',category:'mood'},{content:'空空的',group:'默认',category:'mood'},{content:'满满的',group:'默认',category:'mood'},
+  // 空闲状态
+  {content:'空闲',group:'默认',category:'idle'},{content:'很闲',group:'默认',category:'idle'},{content:'有点闲',group:'默认',category:'idle'},{content:'不忙',group:'默认',category:'idle'},{content:'忙',group:'默认',category:'idle'},{content:'有点忙',group:'默认',category:'idle'},{content:'很忙',group:'默认',category:'idle'},{content:'刚忙完',group:'默认',category:'idle'},{content:'没事',group:'默认',category:'idle'},{content:'有事',group:'默认',category:'idle'},{content:'在等',group:'默认',category:'idle'},{content:'在躺',group:'默认',category:'idle'},{content:'在坐',group:'默认',category:'idle'},{content:'在走',group:'默认',category:'idle'},{content:'在吃',group:'默认',category:'idle'},{content:'在喝',group:'默认',category:'idle'},{content:'在听',group:'默认',category:'idle'},{content:'在看',group:'默认',category:'idle'},{content:'在发呆',group:'默认',category:'idle'},{content:'在放空',group:'默认',category:'idle'},{content:'在休息',group:'默认',category:'idle'},{content:'在摸鱼',group:'默认',category:'idle'},{content:'能聊',group:'默认',category:'idle'},{content:'只能一会儿',group:'默认',category:'idle'},{content:'随时断',group:'默认',category:'idle'}
+];
+async function seedDefaultNavCards(){
+  try{
+    var existing=await getNavCards('public',null);
+    if(existing&&existing.length>0)return; // 已有字卡，不覆盖
+    await saveNavCards(_defaultNavCards,'public',null);
+    console.log('[navCards] seeded',_defaultNavCards.length,'default public cards');
+  }catch(e){console.warn('seedDefaultNavCards failed:',e);}
 }
 
 async function getNavCards(type,contactId){
@@ -16793,6 +16829,7 @@ navCardFileInput.addEventListener('change',function(e){
       
       var cards=await getNavCards(navCardCurrentType,navCardCurrentContact);
       var added=0;
+      var skipped=0;
       
       importData.cards.forEach(function(card){
         if(card.content&&!cards.some(function(c){return c.content===card.content&&c.category===card.category})){
@@ -16802,8 +16839,22 @@ navCardFileInput.addEventListener('change',function(e){
             category:card.category||navCardCurrentCategory==='all'?'other':navCardCurrentCategory
           });
           added++;
-        }
+        }else{skipped++;}
       });
+      
+      // 导入后全局去重
+      if(added>0||skipped>0){
+        var seen={};
+        var unique=cards.filter(function(c){
+          var key=c.content+'|||'+c.category;
+          if(seen[key])return false;
+          seen[key]=true;
+          return true;
+        });
+        var deduped=cards.length-unique.length;
+        cards=unique;
+        if(deduped>0)skipped+=deduped;
+      }
       
       if(importData.groups&&Array.isArray(importData.groups)){
         importData.groups.forEach(function(g){
@@ -16813,7 +16864,9 @@ navCardFileInput.addEventListener('change',function(e){
       
       await saveNavCards(cards,navCardCurrentType,navCardCurrentContact);
       renderNavCards();
-      toast('成功导入 '+added+' 张字卡');
+      var msg='成功导入 '+added+' 张字卡';
+      if(skipped>0)msg+='，跳过 '+skipped+' 张重复';
+      toast(msg);
     }catch(err){
       console.error('Import error:',err);
       toast('导入失败，无效的JSON文件');
@@ -16881,6 +16934,7 @@ $('nav-card-dedup-btn').addEventListener('click',async function(){
 
 showPgCallbacks['pg-contact-topbar-settings']=async function(){
   await loadNavCardGroups();
+  await seedDefaultNavCards();
   renderNavCardTypeTabs();
   renderNavCardContactSelect();
   renderNavCardCategoryTabs();
