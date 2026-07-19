@@ -4039,7 +4039,7 @@ canvas{-webkit-backface-visibility:hidden;backface-visibility:hidden;-webkit-tra
           <span>+</span>
           <span>添加背景图片</span>
         </button>
-        <input type="file" id="chat-bg-input" accept="image/*" style="display:none;">
+        <input type="file" id="chat-bg-input" accept="image/*" multiple style="display:none;">
         <button class="btn-sm-outline" id="clear-bg-btn" style="margin-top:8px;width:100%">清除所有背景</button>
       </div>
       
@@ -4279,7 +4279,7 @@ var DEF_SET={pe:true,pp:.5,pmin:2,pmax:5,dmin:3,dmax:7};
 var divineTargets=[];
 var nonInstantMode=false;
 
-function compressImage(file,maxSize,quality,callback){var img=new Image();img.onload=function(){var canvas=document.createElement('canvas');var ctx=canvas.getContext('2d',{alpha:false,desynchronized:true});var ratio=Math.min(maxSize/img.width,maxSize/img.height);canvas.width=img.width*ratio;canvas.height=img.height*ratio;ctx.imageSmoothingEnabled=true;ctx.imageSmoothingQuality='high';ctx.drawImage(img,0,0,canvas.width,canvas.height);var mimeType=file.type.indexOf('png')>-1?'image/png':(file.type.indexOf('gif')>-1?'image/gif':'image/jpeg');var dataUrl=canvas.toDataURL(mimeType,quality);callback(dataUrl);URL.revokeObjectURL(img.src);canvas=null;ctx=null};img.onerror=function(){callback('');URL.revokeObjectURL(img.src)};img.crossOrigin='anonymous';img.src=URL.createObjectURL(file)}
+function compressImage(file,maxSize,quality,callback){var img=new Image();img.onload=function(){try{var canvas=document.createElement('canvas');var ctx=canvas.getContext('2d',{alpha:false});if(!ctx){callback('');URL.revokeObjectURL(img.src);return}var ratio=Math.min(maxSize/img.width,maxSize/img.height,1);canvas.width=Math.round(img.width*ratio);canvas.height=Math.round(img.height*ratio);ctx.imageSmoothingEnabled=true;ctx.imageSmoothingQuality='high';ctx.drawImage(img,0,0,canvas.width,canvas.height);var mimeType=(file.type&&file.type.indexOf('png')>-1)?'image/png':(file.type&&file.type.indexOf('gif')>-1?'image/gif':'image/jpeg');try{var dataUrl=canvas.toDataURL(mimeType,quality);callback(dataUrl)}catch(e){console.warn('compressImage toDataURL failed:',e);callback('')}URL.revokeObjectURL(img.src);canvas.width=0;canvas.height=0;canvas=null;ctx=null}catch(e){console.warn('compressImage failed:',e);callback('');URL.revokeObjectURL(img.src)}};img.onerror=function(){callback('');URL.revokeObjectURL(img.src)};img.src=URL.createObjectURL(file)}
 
 var lazyLoadObserver=null;
 function initLazyLoad(){if('IntersectionObserver' in window){lazyLoadObserver=new IntersectionObserver(function(entries){entries.forEach(function(entry){if(entry.isIntersecting){var img=entry.target;img.src=img.dataset.src;img.removeAttribute('data-src');lazyLoadObserver.unobserve(img)}})},{rootMargin:'100px',threshold:0.01})}var lazyImages=document.querySelectorAll('img[data-src]');lazyImages.forEach(function(img){if(lazyLoadObserver){lazyLoadObserver.observe(img)}else{img.src=img.dataset.src;img.removeAttribute('data-src')}})}
@@ -16016,9 +16016,7 @@ function bindMyPageEvents(){
     var el=$(item[0]);
     if(el){
       el.addEventListener('click',item[1]);
-      // 移动端同时绑定 touchend，检测滑动防误触
       el.addEventListener('touchend',function(e){
-        if(isSwipe())return;
         e.preventDefault();
         e.stopPropagation();
         item[1]();
@@ -18124,8 +18122,14 @@ function importLettersFile(){
         var added=0;
         data.letters.forEach(function(l){
           if(!l||!l.id)return;
+          // 补上 senderName（如果缺的话）
+          if(!l.senderName&&l.fid){var cc=contacts.find(function(x){return x.id===l.fid});if(cc)l.senderName=cc.name;}
           if(!existing.some(function(e){return e.id===l.id})){
             existing.push(l);added++;
+          }else{
+            // 已有信件也补全 senderName
+            var ee=existing.find(function(e){return e.id===l.id});
+            if(ee&&!ee.senderName&&l.senderName)ee.senderName=l.senderName;
           }
         });
         existing.sort(function(a,b){return (b.tm||0)-(a.tm||0)});
@@ -21941,6 +21945,8 @@ async function saveChatBg(contactId, bgData){
     var key='ml2_bg_'+contactId+'_'+timestamp;
     if(isLFAvailable()){
       await window.localforage.setItem(key,bgData);
+    }else{
+      ls(key,bgData);
     }
     return key;
   }catch(e){
@@ -21979,6 +21985,9 @@ async function loadChatBg(key){
     var bg=null;
     if(isLFAvailable()){
       bg=await window.localforage.getItem(key);
+    }
+    if(!bg){
+      bg=await Storage.getAsync(key);
     }
     if(bg){
       chatBgCache[key]=bg;
@@ -22075,48 +22084,68 @@ async function renderChatBgList(contact){
 $('chat-bg-edit').addEventListener('click',function(){$('chat-bg-input').click()});
 $('chat-bg-edit').addEventListener('touchend',function(e){e.preventDefault();$('chat-bg-input').click()});
 $('chat-bg-input').addEventListener('change',function(e){
-  var f=e.target.files[0];if(!f)return;
-  compressImage(f,1920,0.95,async function(res){
-    var entity=groups.find(function(x){return x.id===cid})||contacts.find(function(x){return x.id===cid});
-    if(!entity)return;
-    if(!entity.chatSettings)entity.chatSettings=getDefaultChatSettings();
-    if(!entity.chatSettings.chatBgKeys)entity.chatSettings.chatBgKeys=[];
-    var timestamp=Date.now();
-    var bgKey='ml2_bg_'+entity.id+'_'+timestamp;
-    try{
-      if(isLFAvailable()){
-        await window.localforage.setItem(bgKey,res);
-      }else{
-        ls(bgKey,res);
-      }
-      entity.chatSettings.chatBgKeys.push(bgKey);
-      entity.chatSettings.chatBgIndex=entity.chatSettings.chatBgKeys.length-1;
+  var files=e.target.files;if(!files||files.length===0)return;
+  var entity=groups.find(function(x){return x.id===cid})||contacts.find(function(x){return x.id===cid});
+  if(!entity)return;
+  if(!entity.chatSettings)entity.chatSettings=getDefaultChatSettings();
+  if(!entity.chatSettings.chatBgKeys)entity.chatSettings.chatBgKeys=[];
+  var total=files.length;
+  var done=0;
+  for(var i=0;i<files.length;i++){
+    (function(file){
+      compressImage(file,1920,0.95,async function(res){
+        done++;
+        if(!res){checkDone();return;}
+        var timestamp=Date.now();
+        var bgKey='ml2_bg_'+entity.id+'_'+timestamp+'_'+done;
+        try{
+          if(isLFAvailable()){
+            await window.localforage.setItem(bgKey,res);
+          }else{
+            ls(bgKey,res);
+          }
+          entity.chatSettings.chatBgKeys.push(bgKey);
+          if(done===total){
+            entity.chatSettings.chatBgIndex=entity.chatSettings.chatBgKeys.length-1;
+            saveC();
+            if(groups.find(function(x){return x.id===cid}))ls('ml2_groups',groups);
+            await renderChatBgList(entity);
+            await applyChatSettings(entity);
+            toast('已添加 '+total+' 张背景图片');
+          }
+        }catch(err){
+          console.error('Failed to save chat background:',err);
+          checkDone();
+        }
+      });
+    })(files[i]);
+  }
+  function checkDone(){
+    if(done>=total){
       saveC();
       if(groups.find(function(x){return x.id===cid}))ls('ml2_groups',groups);
-      await renderChatBgList(entity);
-      await applyChatSettings(entity);
-      toast('背景图片已添加');
-    }catch(e){
-      console.error('Failed to save chat background:',e);
-      toast('背景图片保存失败');
+      renderChatBgList(entity);
+      applyChatSettings(entity);
     }
-    e.target.value='';
-  });
+  }
+  e.target.value='';
 });
 
 $('clear-bg-btn').addEventListener('click',async function(){
-  var contact=contacts.find(function(x){return x.id===cid});
-  if(!contact.chatSettings)contact.chatSettings=getDefaultChatSettings();
-  var bgKeys=contact.chatSettings.chatBgKeys||[];
+  var entity=groups.find(function(x){return x.id===cid})||contacts.find(function(x){return x.id===cid});
+  if(!entity){toast('未找到联系人');return;}
+  if(!entity.chatSettings)entity.chatSettings=getDefaultChatSettings();
+  var bgKeys=entity.chatSettings.chatBgKeys||[];
   for(var i=0;i<bgKeys.length;i++){
     var key=bgKeys[i];
     if(!key.startsWith('data:'))await deleteChatBg(key);
   }
-  contact.chatSettings.chatBgKeys=[];
-  contact.chatSettings.chatBgIndex=0;
+  entity.chatSettings.chatBgKeys=[];
+  entity.chatSettings.chatBgIndex=0;
   saveC();
-  await renderChatBgList(contact);
-  await applyChatSettings(contact);
+  if(groups.find(function(x){return x.id===cid}))ls('ml2_groups',groups);
+  await renderChatBgList(entity);
+  await applyChatSettings(entity);
 });
 
 var _beautifyTouched=false;
@@ -22249,7 +22278,7 @@ async function applyChatSettings(contact){
       }
     }
     
-    if(!bg&&window.localforage&&bgKey&&!bgKey.startsWith('data:')){
+    if(!bg&&bgKey&&!bgKey.startsWith('data:')){
       try{
         var fallbackBg=await window.localforage.getItem(bgKey);
         if(fallbackBg){
@@ -22257,6 +22286,15 @@ async function applyChatSettings(contact){
           chatBgCache[bgKey]=bg;
         }
       }catch(e){console.warn('Failed to load bg from localforage:',e);}
+    }
+    if(!bg&&bgKey&&!bgKey.startsWith('data:')){
+      try{
+        var storageBg=await Storage.getAsync(bgKey);
+        if(storageBg){
+          bg=storageBg;
+          chatBgCache[bgKey]=bg;
+        }
+      }catch(e){console.warn('Failed to load bg from Storage:',e);}
     }
     
     if(bg){
