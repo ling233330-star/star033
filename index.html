@@ -1802,7 +1802,7 @@ canvas{-webkit-backface-visibility:hidden;backface-visibility:hidden;-webkit-tra
       </div>
       <div class="my-row" id="more-ta-highlights-btn" style="display:flex;align-items:center;gap:12px;padding:14px 16px;background:var(--c2);border-radius:var(--radius);margin-bottom:12px;cursor:pointer">
         <div style="width:48px;height:48px;border-radius:12px;background:#e8e8e8;display:flex;align-items:center;justify-content:center;font-size:28px">💬</div>
-        <div style="flex:1"><div style="font-weight:500;font-size:15px">TA想说的聊天重点</div><div style="font-size:12px;color:var(--txt2);margin-top:2px">梦角标记的重要消息</div></div>
+        <div style="flex:1"><div style="font-weight:500;font-size:15px">TA想说点重点</div><div style="font-size:12px;color:var(--txt2);margin-top:2px">梦角标记的重要消息</div></div>
         <span style="color:var(--txt3)">›</span>
       </div>
       <div class="my-row" id="more-card-stats-btn" style="display:flex;align-items:center;gap:12px;padding:14px 16px;background:var(--c2);border-radius:var(--radius);margin-bottom:12px;cursor:pointer">
@@ -2044,7 +2044,7 @@ canvas{-webkit-backface-visibility:hidden;backface-visibility:hidden;-webkit-tra
 <div class="page" id="pg-ta-highlights">
   <div class="nav">
     <div class="nl"><button class="btn-nav" onclick="showPg('pg-more')">←</button></div>
-    <span class="tt">💬 TA想说的聊天重点</span>
+    <span class="tt">💬 TA想说点重点</span>
     <div class="nr"><button class="btn-nav" onclick="showTAHighlightsSettings()">⚙️</button></div>
   </div>
   <div style="flex:1;overflow-y:auto;padding:16px;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;transform:translateZ(0);">
@@ -2263,10 +2263,12 @@ canvas{-webkit-backface-visibility:hidden;backface-visibility:hidden;-webkit-tra
     </div>
     <div style="margin-bottom:20px;">
       <div class="set-row"><span>开启免打扰</span><label class="tsw"><input type="checkbox" id="dnd-en-page"><span class="sl"></span></label></div>
+      <div class="set-row" style="margin-top:8px;"><span>禁止联系人主动打电话</span><label class="tsw"><input type="checkbox" id="dnd-block-call-page"><span class="sl"></span></label></div>
+      <div style="font-size:11px;color:var(--txt3);margin-top:6px;line-height:1.4;">开启后，所有联系人不能主动给你打电话（仅你自己可以拨出）</div>
     </div>
     <div style="margin-bottom:20px;padding:12px;background:rgba(255,230,230,0.3);border-radius:8px;">
       <div style="font-size:12px;color:#ff4d4f;line-height:1.5;">
-        ⚠️ 注意：开启后，联系人的主动发消息设置将暂时失效，改为：<br>
+        ⚠️ 注意：开启后，联系人的主动发消息设置将改为：<br>
         • 最短等待：1秒<br>
         • 最长等待：3小时<br>
         • 触发概率：30%<br>
@@ -2571,7 +2573,7 @@ canvas{-webkit-backface-visibility:hidden;backface-visibility:hidden;-webkit-tra
 <!-- TA's Highlights Half-Screen Overlay -->
 <div class="overlay" id="ov-ta-highlights">
   <div class="sheet" style="max-width:420px;">
-    <div class="sh"><h3>💬 TA想说的聊天重点</h3><div style="display:flex;align-items:center;gap:8px;"><button class="btn-nav" onclick="showTAHighlightsSettings()" style="font-size:18px;background:none;border:none;color:var(--txt2);cursor:pointer;padding:4px 8px;" title="设置">⚙️</button><button class="btn-close" onclick="hideOv('ov-ta-highlights')">✕</button></div></div>
+    <div class="sh"><h3>💬 TA想说点重点</h3><div style="display:flex;align-items:center;gap:8px;"><button class="btn-nav" onclick="showTAHighlightsSettings()" style="font-size:18px;background:none;border:none;color:var(--txt2);cursor:pointer;padding:4px 8px;" title="设置">⚙️</button><button class="btn-nav" onclick="summonTAHighlight()" style="font-size:18px;background:none;border:none;color:var(--txt2);cursor:pointer;padding:4px 8px;" title="召唤划重点">🔮</button><button class="btn-close" onclick="hideOv('ov-ta-highlights')">✕</button></div></div>
     <div class="sb" style="padding:16px;max-height:60vh;overflow-y:auto;">
       <div id="ta-highlights-char-msgs"></div>
       <div id="ta-highlights-selected-msgs" style="margin-top:12px;"></div>
@@ -2598,60 +2600,59 @@ canvas{-webkit-backface-visibility:hidden;backface-visibility:hidden;-webkit-tra
 
 <!-- TA's Highlights Settings Modal -->
 <div class="overlay" id="ov-ta-highlights-settings">
-  <div class="modal" style="width:90%;max-width:360px;">
-    <div class="modal-head" style="padding:16px 20px;">
+  <div class="modal" style="width:92%;max-width:380px;max-height:90vh;display:flex;flex-direction:column;">
+    <div class="modal-head" style="padding:14px 18px;flex-shrink:0;">
       <div class="modal-title" style="font-size:16px;font-weight:600;">聊天重点设置</div>
       <button class="btn-nav" onclick="hideOv('ov-ta-highlights-settings')">×</button>
     </div>
-    <div style="padding:16px 20px;max-height:70vh;overflow-y:auto;">
-      <div style="margin-bottom:20px;">
-        <div style="font-size:14px;font-weight:500;color:var(--txt);margin-bottom:8px;">每日随机触发概率</div>
-        <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px;">
-          <input type="range" id="ta-hl-trigger-prob-slider" min="0" max="100" value="30" style="flex:1;" oninput="updateTAHighlightTriggerProb()">
-          <span id="ta-hl-trigger-prob-value" style="font-size:14px;font-weight:600;color:var(--accent);width:40px;text-align:right;">30%</span>
+    <div style="padding:14px 18px;overflow-y:auto;flex:1;-webkit-overflow-scrolling:touch;">
+      <div style="margin-bottom:18px;padding:12px;background:var(--c2);border-radius:10px;">
+        <div style="font-size:14px;font-weight:500;color:var(--txt);margin-bottom:10px;">每日随机触发概率</div>
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px;">
+          <input type="range" id="ta-hl-trigger-prob-slider" min="0" max="100" value="60" style="flex:1;" oninput="updateTAHighlightTriggerProb()">
+          <span id="ta-hl-trigger-prob-value" style="font-size:14px;font-weight:600;color:var(--accent);width:42px;text-align:right;flex-shrink:0;">60%</span>
         </div>
-        <div style="font-size:12px;color:var(--txt2);line-height:1.4;">每天在随机时间点，TA检查是否触发聊天重点功能的概率。设为0%则完全关闭，100%则每天必然触发。</div>
+        <div style="font-size:12px;color:var(--txt2);line-height:1.5;">每天在随机时间点，TA检查是否触发聊天重点功能的概率。设为0%则完全关闭，100%则每天必然触发。</div>
       </div>
-      <div style="margin-bottom:20px;">
-        <div style="font-size:14px;font-weight:500;color:var(--txt);margin-bottom:8px;">每日划重点概率</div>
-        <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px;">
-          <input type="range" id="ta-hl-daily-select-slider" min="0" max="100" value="15" style="flex:1;">
-          <span id="ta-hl-daily-select-value" style="font-size:14px;font-weight:600;color:var(--accent);width:40px;text-align:right;">15%</span>
+      <div style="margin-bottom:18px;padding:12px;background:var(--c2);border-radius:10px;">
+        <div style="font-size:14px;font-weight:500;color:var(--txt);margin-bottom:10px;">每日划重点概率</div>
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px;">
+          <input type="range" id="ta-hl-daily-select-slider" min="0" max="100" value="60" style="flex:1;">
+          <span id="ta-hl-daily-select-value" style="font-size:14px;font-weight:600;color:var(--accent);width:42px;text-align:right;flex-shrink:0;">60%</span>
         </div>
-        <div style="font-size:12px;color:var(--txt2);line-height:1.4;">梦角每天自动勾选聊天消息作为重点的概率。勾选后，梦角会从聊天记录中挑选若干条消息标记为重点。</div>
+        <div style="font-size:12px;color:var(--txt2);line-height:1.5;">梦角每天自动勾选聊天消息作为重点的概率。勾选后,梦角会从聊天记录中挑选若干条消息标记为重点。</div>
       </div>
-      <div style="margin-bottom:20px;">
-        <div style="font-size:14px;font-weight:500;color:var(--txt);margin-bottom:8px;">选择消息数量</div>
-        <div style="display:flex;align-items:center;gap:4px;margin-bottom:8px;">
+      <div style="margin-bottom:18px;padding:12px;background:var(--c2);border-radius:10px;">
+        <div style="font-size:14px;font-weight:500;color:var(--txt);margin-bottom:10px;">选择消息数量</div>
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;flex-wrap:wrap;">
           <span style="font-size:12px;color:var(--txt2);">最少</span>
           <div class="stepper"><button onclick="taHlStepper('selectCountMin',-1)">−</button><input type="number" id="ta-hl-select-min" value="1" style="width:50px;text-align:center;" readonly><button onclick="taHlStepper('selectCountMin',1)">+</button></div>
           <span style="font-size:12px;color:var(--txt2);">最多</span>
           <div class="stepper"><button onclick="taHlStepper('selectCountMax',-1)">−</button><input type="number" id="ta-hl-select-max" value="5" style="width:50px;text-align:center;" readonly><button onclick="taHlStepper('selectCountMax',1)">+</button></div>
         </div>
-        <div style="font-size:12px;color:var(--txt2);line-height:1.4;">梦角每次勾选时，最少和最多选择的消息条数。</div>
+        <div style="font-size:12px;color:var(--txt2);line-height:1.5;">梦角每次勾选时,最少和最多选择的消息条数。</div>
       </div>
-      <div style="margin-bottom:20px;">
-        <div style="font-size:14px;font-weight:500;color:var(--txt);margin-bottom:8px;">留言概率</div>
-        <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px;">
-          <input type="range" id="ta-hl-leave-msg-slider" min="0" max="100" value="30" style="flex:1;">
-          <span id="ta-hl-leave-msg-value" style="font-size:14px;font-weight:600;color:var(--accent);width:40px;text-align:right;">30%</span>
+      <div style="margin-bottom:18px;padding:12px;background:var(--c2);border-radius:10px;">
+        <div style="font-size:14px;font-weight:500;color:var(--txt);margin-bottom:10px;">留言概率</div>
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px;">
+          <input type="range" id="ta-hl-leave-msg-slider" min="0" max="100" value="60" style="flex:1;">
+          <span id="ta-hl-leave-msg-value" style="font-size:14px;font-weight:600;color:var(--accent);width:42px;text-align:right;flex-shrink:0;">60%</span>
         </div>
-        <div style="font-size:12px;color:var(--txt2);line-height:1.4;">梦角勾选重点后，留下字卡消息的概率。消息由1~30个字卡组成，每个字卡中间空一格。由于梦角只能使用你设定的字卡，表达可能不完整，请结合上下文理解。</div>
+        <div style="font-size:12px;color:var(--txt2);line-height:1.5;">梦角勾选重点后,留下字卡消息的概率。消息由1~30个字卡组成,每个字卡中间空一格。</div>
       </div>
-      <div style="margin-bottom:20px;">
-        <div style="font-size:14px;font-weight:500;color:var(--txt);margin-bottom:8px;">留言字卡数量</div>
-        <div style="display:flex;align-items:center;gap:4px;margin-bottom:8px;">
+      <div style="margin-bottom:8px;padding:12px;background:var(--c2);border-radius:10px;">
+        <div style="font-size:14px;font-weight:500;color:var(--txt);margin-bottom:10px;">留言字卡数量</div>
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;flex-wrap:wrap;">
           <span style="font-size:12px;color:var(--txt2);">最少</span>
           <div class="stepper"><button onclick="taHlStepper('msgCardCountMin',-1)">−</button><input type="number" id="ta-hl-msg-min" value="1" style="width:50px;text-align:center;" readonly><button onclick="taHlStepper('msgCardCountMin',1)">+</button></div>
           <span style="font-size:12px;color:var(--txt2);">最多</span>
           <div class="stepper"><button onclick="taHlStepper('msgCardCountMax',-1)">−</button><input type="number" id="ta-hl-msg-max" value="30" style="width:50px;text-align:center;" readonly><button onclick="taHlStepper('msgCardCountMax',1)">+</button></div>
         </div>
-        <div style="font-size:12px;color:var(--txt2);line-height:1.4;">梦角留言时使用的字卡数量范围（1~30个字卡）。</div>
+        <div style="font-size:12px;color:var(--txt2);line-height:1.5;">梦角留言时使用的字卡数量范围（1~30个字卡）。</div>
       </div>
     </div>
-    <div class="modal-buttons" style="padding:16px 20px;border-top:1px solid var(--border);">
+    <div class="modal-buttons" style="padding:12px 18px;border-top:1px solid var(--border);flex-shrink:0;">
       <button class="btn" onclick="hideOv('ov-ta-highlights-settings')" style="flex:1;">保存</button>
-      <button class="btn-primary" onclick="summonTAHighlight()" style="flex:1;">召唤划重点</button>
     </div>
   </div>
 </div>
@@ -2994,7 +2995,7 @@ canvas{-webkit-backface-visibility:hidden;backface-visibility:hidden;-webkit-tra
         <div style="font-size:11px;color:var(--txt3);margin-bottom:8px;">我打电话过去，对方忙线的概率</div>
         <div class="set-row"><span>拒接概率</span><div class="stepper" data-k="call-reject"><button>−</button><input type="number" class="call-sv" id="call-reject-val" value="15"><button>+</button></div><span style="font-size:12px;color:var(--txt3);margin-left:4px">%</span></div>
         <div style="font-size:11px;color:var(--txt3);margin-bottom:8px;">我打电话过去，对方拒绝的概率</div>
-        <div class="set-row"><span>挂断概率</span><div class="stepper" data-k="call-hangup"><button>−</button><input type="number" class="call-sv" id="call-hangup-val" value="30"><button>+</button></div><span style="font-size:12px;color:var(--txt3);margin-left:4px">%</span></div>
+        <div class="set-row"><span>挂断概率</span><div class="stepper" data-k="call-hangup"><button>−</button><input type="number" class="call-sv" id="call-hangup-val" value="0.01" step="0.01"><button>+</button></div><span style="font-size:12px;color:var(--txt3);margin-left:4px">%</span></div>
         <div style="font-size:11px;color:var(--txt3);">通话中对方主动挂断的概率（每秒检查一次）</div>
       </div>
     </div>
@@ -5117,7 +5118,16 @@ async function preloadMsgImages(){
   if(refKeys.length){
     var promises=refKeys.map(function(k){
       return window.localforage.getItem(k).then(function(d){
-        if(d)memoryCache['_img_'+k]=d;
+        if(d){
+          memoryCache['_img_'+k]=d;
+        }else{
+          // 兜底:尝试从localStorage读取
+          try{
+            var raw=safeGetItem(k);
+            if(!raw)raw=safeGetItem('ml2_lf_'+k);
+            if(raw)memoryCache['_img_'+k]=raw;
+          }catch(e){}
+        }
       }).catch(function(){});
     });
     await Promise.all(promises);
@@ -5565,14 +5575,31 @@ async function loadContactMsgImages(id){
     if(msg.img&&typeof msg.img==='string'&&msg.img.startsWith('ml2_msg_img_')){
       if(!memoryCache['_img_'+msg.img]){
         promises.push(window.localforage.getItem(msg.img).then(function(d){
-          if(d)memoryCache['_img_'+msg.img]=d;
+          if(d){
+            memoryCache['_img_'+msg.img]=d;
+          }else{
+            // 兜底:尝试从localStorage读取(兼容旧版本:直读 + localforage lf前缀)
+            try{
+              var raw=safeGetItem(msg.img);
+              if(!raw)raw=safeGetItem('ml2_lf_'+msg.img);
+              if(raw)memoryCache['_img_'+msg.img]=raw;
+            }catch(e){}
+          }
         }).catch(function(){}));
       }
     }
     if(msg.originalImg&&typeof msg.originalImg==='string'&&msg.originalImg.startsWith('ml2_msg_img_')){
       if(!memoryCache['_img_'+msg.originalImg]){
         promises.push(window.localforage.getItem(msg.originalImg).then(function(d){
-          if(d)memoryCache['_img_'+msg.originalImg]=d;
+          if(d){
+            memoryCache['_img_'+msg.originalImg]=d;
+          }else{
+            try{
+              var raw=safeGetItem(msg.originalImg);
+              if(!raw)raw=safeGetItem('ml2_lf_'+msg.originalImg);
+              if(raw)memoryCache['_img_'+msg.originalImg]=raw;
+            }catch(e){}
+          }
         }).catch(function(){}));
       }
     }
@@ -6916,6 +6943,15 @@ async function updateNavWeather(contactId){
     }while(weatherCards.length>1&&newIndex===lastIndex);
     navDisplayStates[contactId].lastWeatherIndex=newIndex;
     weatherText=weatherCards[newIndex].content;
+  }else{
+    // 兜底:从其他分类(其他/默认)字卡中随机选
+    var otherCards=publicCards.filter(function(c){return c.category==='other'||!c.category}).concat(
+      privateCards.filter(function(c){return c.category==='other'||!c.category})
+    );
+    if(otherCards.length>0){
+      var fallbackIdx=Math.floor(Math.random()*otherCards.length);
+      weatherText=otherCards[fallbackIdx].content;
+    }
   }
   navDisplayStates[contactId].weather=weatherText;
   navDisplayStates[contactId].lastWeatherChange=Date.now();
@@ -6946,6 +6982,14 @@ async function updateNavTime(contactId){
     navDisplayStates[contactId].lastTimeIndex=newIndex;
     timeText=timeCards[newIndex].content;
     isCard=true;
+  }else{
+    var otherCards=publicCards.filter(function(c){return c.category==='other'||!c.category}).concat(
+      privateCards.filter(function(c){return c.category==='other'||!c.category})
+    );
+    if(otherCards.length>0){
+      timeText=otherCards[Math.floor(Math.random()*otherCards.length)].content;
+      isCard=true;
+    }
   }
   navDisplayStates[contactId].time=timeText;
   navDisplayStates[contactId].timeIsCard=isCard;
@@ -6974,6 +7018,13 @@ async function updateNavIdle(contactId){
     }while(idleCards.length>1&&newIndex===lastIndex);
     navDisplayStates[contactId].lastIdleIndex=newIndex;
     idleText=idleCards[newIndex].content;
+  }else{
+    var otherCards=publicCards.filter(function(c){return c.category==='other'||!c.category}).concat(
+      privateCards.filter(function(c){return c.category==='other'||!c.category})
+    );
+    if(otherCards.length>0){
+      idleText=otherCards[Math.floor(Math.random()*otherCards.length)].content;
+    }
   }
   navDisplayStates[contactId].idle=idleText;
   navDisplayStates[contactId].lastIdleChange=Date.now();
@@ -7001,6 +7052,13 @@ async function updateNavMood(contactId){
     }while(moodCards.length>1&&newIndex===lastIndex);
     navDisplayStates[contactId].lastMoodIndex=newIndex;
     moodText=moodCards[newIndex].content;
+  }else{
+    var otherCards=publicCards.filter(function(c){return c.category==='other'||!c.category}).concat(
+      privateCards.filter(function(c){return c.category==='other'||!c.category})
+    );
+    if(otherCards.length>0){
+      moodText=otherCards[Math.floor(Math.random()*otherCards.length)].content;
+    }
   }
   navDisplayStates[contactId].mood=moodText;
   navDisplayStates[contactId].lastMoodChange=Date.now();
@@ -7130,6 +7188,13 @@ async function updateNavContactStatus(contact){
     }while(statusCards.length>1&&newIndex===lastIndex);
     navDisplayStates[contact.id].lastStatusIndex=newIndex;
     statusText=statusCards[newIndex].content;
+  }else{
+    var otherCards=publicCards.filter(function(c){return c.category==='other'||!c.category}).concat(
+      privateCards.filter(function(c){return c.category==='other'||!c.category})
+    );
+    if(otherCards.length>0){
+      statusText=otherCards[Math.floor(Math.random()*otherCards.length)].content;
+    }
   }
   navDisplayStates[contact.id].status=statusText;
   navDisplayStates[contact.id].lastStatusChange=Date.now();
@@ -7901,7 +7966,7 @@ function showSearchChatModal(){
   $('search-chat-input').focus();
 }
 
-var callSettings={enabled:true,incomingProbability:8,pickupProbability:70,busyProbability:15,rejectProbability:15,hangupProbability:30,contactSettings:{}};
+var callSettings={enabled:true,incomingProbability:8,pickupProbability:70,busyProbability:15,rejectProbability:15,hangupProbability:0.01,contactSettings:{}};
 var callHistory=[];
 var currentCall=null;
 var callDurationTimer=null;
@@ -8025,7 +8090,7 @@ async function saveCallSettings(){
   var pickupVal=parseFloat($('call-pickup-val').value)||70;
   var busyVal=parseFloat($('call-busy-val').value)||15;
   var rejectVal=parseFloat($('call-reject-val').value)||15;
-  var hangupVal=parseFloat($('call-hangup-val').value)||30;
+  var hangupVal=parseFloat($('call-hangup-val').value)||0.01;
   
   if(!callSettings.contactSettings)callSettings.contactSettings={};
   callSettings.contactSettings[currentCallContactId]={
@@ -8200,7 +8265,7 @@ function showCallingModal(contact,status){
 function startCallDuration(){
   callStartTime=Date.now();
   currentCall.duration=0;
-  
+
   callDurationTimer=setInterval(function(){
     if(!currentCall)return;
     var elapsed=Math.floor((Date.now()-callStartTime)/1000);
@@ -8210,14 +8275,18 @@ function startCallDuration(){
     var timeStr=(minutes<10?'0':'')+minutes+':'+(seconds<10?'0':'')+seconds;
     if($('calling-duration'))$('calling-duration').textContent=timeStr;
     if($('call-mini-time'))$('call-mini-time').textContent=timeStr;
-    
+
     if(minutes>=80){
       endCall('hangup_by_contact',currentCall.duration);
       return;
     }
-    
+
+    // 仅在已接听（connected）状态才检查对方主动挂断概率
+    // 修复：未接听时（ringing/ringing_outgoing）不应被挂断
+    if(currentCall.status!=='connected')return;
+
     var hangupProb=callSettings.hangupProbability;
-    if(hangupProb===undefined||hangupProb===null)hangupProb=30;
+    if(hangupProb===undefined||hangupProb===null)hangupProb=0.01;
     if(Math.random()*100<hangupProb){
       endCall('hangup_by_contact',currentCall.duration);
     }
@@ -8409,6 +8478,7 @@ function startDrag(e){
     var target=e.target.closest('button, .btn-nav, .tab, .citem, .overlay, .sheet, .sh, .sb');
     if(target){
       e.stopPropagation();
+      e.preventDefault();
       return;
     }
   }
@@ -8589,11 +8659,15 @@ function checkIncomingCall(){
 function checkIncomingCallForContact(contactId){
   if(!contactId)return;
   if(currentCall)return;
-  
+
   // 冷却时间：通话结束后60秒内不会再接到同一联系人来电
   var lastEnd=lastCallEndTime[contactId]||0;
   if(Date.now()-lastEnd<60000)return;
-  
+
+  // 检查免打扰是否开启「禁止联系人主动打电话」
+  var _s=ls('ml2_speed')||{};
+  if(_s.dnd_block_call===1)return;
+
   var cs=callSettings.contactSettings[contactId]||{};
   var enabled=cs.enabled!==undefined?cs.enabled:true;
   if(!enabled)return;
@@ -13236,6 +13310,9 @@ function openDndSettings(){
   var dndEn=getSpeed('dnd-en',null);
   var el=$('dnd-en-page');
   if(el)el.checked=dndEn===1;
+  var s=ls('ml2_speed')||{};
+  var dndBlockCall=document.getElementById('dnd-block-call-page');
+  if(dndBlockCall)dndBlockCall.checked=s.dnd_block_call===1;
   showPg('pg-dnd-settings');
 }
 function saveDndSettings(){
@@ -13243,6 +13320,9 @@ function saveDndSettings(){
   var dndEn=el?el.checked?1:0:0;
   var s=ls('ml2_speed')||{contacts:{}};
   s.dnd_en=dndEn;
+  var dndBlockCallEl=document.getElementById('dnd-block-call-page');
+  var dndBlockCall=dndBlockCallEl?(dndBlockCallEl.checked?1:0):0;
+  s.dnd_block_call=dndBlockCall;
   ls('ml2_speed',s);
   if(isLFAvailable())localforage.setItem('ml2_speed',s).catch(function(){});
   toast(dndEn===1?'已开启免打扰模式':'已关闭免打扰模式');
@@ -15933,7 +16013,7 @@ function bindMyPageEvents(){
 
 var navCardCurrentType='public';
 var navCardCurrentContact=null;
-var navCardCurrentCategory='all';
+var navCardCurrentCategory='weather';
 var navCardCurrentGroup='all';
 var navCardGroups={public:['默认','天气','时间','心情','空闲状态','对方状态'],private:{}};
 var navCardCollapsedGroups={};
@@ -16467,12 +16547,20 @@ function toggleNavBatchCard(cardId){
 async function addNavCard(){
   var content=prompt('请输入顶部栏字卡内容：');
   if(!content||!content.trim())return;
-  
+
+  var category=navCardCurrentCategory;
+  if(category==='all'||!category){
+    // 当未选择具体分类时,要求用户选择
+    var pick=prompt('请选择字卡分类(填数字):\n1.天气  2.时间  3.对方状态  4.空闲状态  5.心情状态  6.其他','1');
+    var map={'1':'weather','2':'time','3':'status','4':'idle','5':'mood','6':'other'};
+    category=map[pick]||'weather';
+  }
+
   var cards=await getNavCards(navCardCurrentType,navCardCurrentContact);
   cards.push({
     content:content.trim(),
     group:navCardCurrentGroup==='all'?'默认':navCardCurrentGroup,
-    category:navCardCurrentCategory==='all'?'other':navCardCurrentCategory
+    category:category
   });
   await saveNavCards(cards,navCardCurrentType,navCardCurrentContact);
   renderNavCards();
@@ -17811,6 +17899,20 @@ async function doImportData(data){
     if(data.taHighlightsLastCheck!==undefined)savePromises.push(localforage.setItem('ml2_ta_highlights_last_check',data.taHighlightsLastCheck));
     if(data.taHighlightProbability!==undefined)savePromises.push(localforage.setItem('ml2_ta_highlight_probability',data.taHighlightProbability));
     if(data.taHighlightLastTriggerDate!==undefined)savePromises.push(localforage.setItem('ml2_ta_highlight_last_trigger_date',data.taHighlightLastTriggerDate));
+    if(data.momentsNotifications)savePromises.push(localforage.setItem('ml2_moments_notifications',data.momentsNotifications));
+    if(data.contactTimelines&&typeof data.contactTimelines==='object'){
+      var tlKeys3=Object.keys(data.contactTimelines);
+      for(var i=0;i<tlKeys3.length;i++){
+        savePromises.push(localforage.setItem('ml2_timeline_'+tlKeys3[i],data.contactTimelines[tlKeys3[i]]));
+      }
+    }
+    if(data.contactAnniversaries&&typeof data.contactAnniversaries==='object'){
+      var annKeys3=Object.keys(data.contactAnniversaries);
+      for(var i=0;i<annKeys3.length;i++){
+        savePromises.push(localforage.setItem('ml2_contact_anniversaries_'+annKeys3[i],data.contactAnniversaries[annKeys3[i]]));
+      }
+    }
+    if(data.contactOrder&&Array.isArray(data.contactOrder))savePromises.push(localforage.setItem('ml2_custom_contact_order',data.contactOrder));
     if(data.keepAliveEnabled!==undefined)savePromises.push(localforage.setItem('keepAliveEnabled',data.keepAliveEnabled));
     if(data.pushNotifyEnabled!==undefined)savePromises.push(localforage.setItem('pushNotifyEnabled',data.pushNotifyEnabled));
     if(data.groups)savePromises.push(localforage.setItem('ml2_groups',data.groups));
@@ -19731,6 +19833,15 @@ function saveTAHighlightsSelectedUI(){
 function showTAHighlightsSettings(){
   loadTAHighlightsSettings();
   loadTAHighlightProbability();
+  // 兜底默认值,防止undefined
+  if(taHighlightsSettings.dailySelectProb===undefined||taHighlightsSettings.dailySelectProb===null)taHighlightsSettings.dailySelectProb=60;
+  if(taHighlightsSettings.selectCountMin===undefined||taHighlightsSettings.selectCountMin===null)taHighlightsSettings.selectCountMin=1;
+  if(taHighlightsSettings.selectCountMax===undefined||taHighlightsSettings.selectCountMax===null)taHighlightsSettings.selectCountMax=5;
+  if(taHighlightsSettings.leaveMsgProb===undefined||taHighlightsSettings.leaveMsgProb===null)taHighlightsSettings.leaveMsgProb=60;
+  if(taHighlightsSettings.msgCardCountMin===undefined||taHighlightsSettings.msgCardCountMin===null)taHighlightsSettings.msgCardCountMin=1;
+  if(taHighlightsSettings.msgCardCountMax===undefined||taHighlightsSettings.msgCardCountMax===null)taHighlightsSettings.msgCardCountMax=30;
+  if(taHighlightProbability===undefined||taHighlightProbability===null)taHighlightProbability=60;
+
   $('ta-hl-trigger-prob-slider').value=taHighlightProbability;
   $('ta-hl-trigger-prob-value').textContent=taHighlightProbability+'%';
   $('ta-hl-daily-select-slider').value=taHighlightsSettings.dailySelectProb;
@@ -20236,7 +20347,7 @@ var chatbarItems=[
   {id:'fav_msg',name:'收藏聊天消息',icon:'⭐',fixed:false,category:'消息工具'},
   {id:'my_favs',name:'我的聊天收藏',icon:'📁',fixed:false,category:'其他'},
   {id:'card_stats',name:'字卡使用频率',icon:'📊',fixed:false,category:'数据统计'},
-  {id:'ta_highlights',name:'TA想说的聊天重点',icon:'💬',fixed:false,category:'数据统计'},
+  {id:'ta_highlights',name:'TA想说点重点',icon:'💬',fixed:false,category:'数据统计'},
   {id:'long_screenshot',name:'长截图',icon:'📸',fixed:false,category:'消息工具'},
   {id:'topbar_cards',name:'顶部栏字卡库',icon:'📌',fixed:false,category:'其他'},
   {id:'letters',name:'信箱',icon:'✉️',fixed:false,category:'其他'},
