@@ -18124,8 +18124,14 @@ function importLettersFile(){
         var added=0;
         data.letters.forEach(function(l){
           if(!l||!l.id)return;
+          // 补上 senderName（如果缺的话）
+          if(!l.senderName&&l.fid){var cc=contacts.find(function(x){return x.id===l.fid});if(cc)l.senderName=cc.name;}
           if(!existing.some(function(e){return e.id===l.id})){
             existing.push(l);added++;
+          }else{
+            // 已有信件也补全 senderName
+            var ee=existing.find(function(e){return e.id===l.id});
+            if(ee&&!ee.senderName&&l.senderName)ee.senderName=l.senderName;
           }
         });
         existing.sort(function(a,b){return (b.tm||0)-(a.tm||0)});
