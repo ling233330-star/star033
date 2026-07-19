@@ -8269,7 +8269,8 @@ function showCallingModal(contact,status){
 function startCallDuration(){
   callStartTime=Date.now();
   currentCall.duration=0;
-  callConnectedTime=Date.now(); // connected进入时刻
+  callConnectedTime=Date.now();
+  var _checkCounter=0; // 挂断概率检查计数器
 
   callDurationTimer=setInterval(function(){
     if(!currentCall)return;
@@ -8287,11 +8288,15 @@ function startCallDuration(){
     }
 
     // 仅在已接听（connected）状态才检查对方主动挂断概率
-    // 修复：未接听时（ringing/ringing_outgoing）不应被挂断
     if(currentCall.status!=='connected')return;
 
-    // 保护期：接通后至少3秒内不检查挂断，给用户接听反应时间
-    if(Date.now()-callConnectedTime<3000)return;
+    // 保护期：接通后至少10秒内不检查挂断
+    if(Date.now()-callConnectedTime<10000)return;
+
+    // 每30秒才检查一次挂断概率（用户配置：每30秒检查一次）
+    _checkCounter++;
+    if(_checkCounter<30)return;
+    _checkCounter=0;
 
     var hangupProb=callSettings.hangupProbability;
     if(hangupProb===undefined||hangupProb===null)hangupProb=0.01;
@@ -8600,7 +8605,7 @@ document.addEventListener('visibilitychange',function(){
   }
 });
 
-if($('call-mini-expand-btn')){$('call-mini-expand-btn').addEventListener('click',function(e){
+if($('call-mini-expand-btn')){$('call-mini-expand-btn').addEventListener('touchstart',function(e){e.stopPropagation();});$('call-mini-expand-btn').addEventListener('click',function(e){
   e.stopPropagation();
   if(currentCall){
     $('call-mini-bar').style.display='none';
@@ -24653,21 +24658,51 @@ sendMsg=function(){
       <div id="call-mini-time" style="font-size:10px;color:var(--txt3);line-height:1.2;">00:00</div>
     </div>
   </div>
-  <button id="call-mini-expand-btn" style="background:none;border:none;color:var(--txt3);font-size:16px;cursor:pointer;width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;transition:var(--transition-fast);touch-action:manipulation;-webkit-tap-highlight-color:transparent;z-index:10001;">−</button>
+  <button id="call-mini-expand-btn" style="background:none;border:none;color:var(--txt3);font-size:16px;cursor:pointer;width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;transition:var(--transition-fast);touch-action:manipulation;-webkit-tap-highlight-color:transparent;z-index:10001;" ontouchstart="event.stopPropagation()">−</button>
 </div>
 
 
 <script>
-// PWA Service Worker 注册
+// PWA Service Worker 注册 + 强制更新（解决旧SW缓存问题）
 if('serviceWorker' in navigator){
-  navigator.serviceWorker.register('sw.js',{scope:'/star033/'}).then(function(reg){
-    console.log('SW registered:',reg.scope);
-    // SW 就绪后，尝试发送积压通知
-    navigator.serviceWorker.ready.then(function(){
-      flushPendingNotifications();
+  // 先尝试注销旧SW并清除缓存
+  navigator.serviceWorker.getRegistration().then(function(reg){
+    if(reg){
+      // 清除所有cache
+      if(caches){
+        caches.keys().then(function(names){
+          names.forEach(function(name){caches.delete(name);});
+        });
+      }
+      // 注销旧SW
+      reg.unregister();
+    }
+    // 重新注册新SW（使用相对scope，适配任何部署路径）
+    navigator.serviceWorker.register('sw.js').then(function(reg){
+      console.log('SW registered:',reg.scope);
+      reg.addEventListener('updatefound',function(){
+        var newWorker=reg.installing;
+        newWorker.addEventListener('statechange',function(){
+          if(newWorker.state==='installed'&&navigator.serviceWorker.controller){
+            // 新SW已安装，通知页面刷新
+            console.log('New SW installed, ready for activation');
+          }
+        });
+      });
+      if(reg.active){
+        // SW 就绪后，尝试发送积压通知
+        flushPendingNotifications();
+      }
+    }).catch(function(err){
+      console.warn('SW registration failed:',err);
     });
-  }).catch(function(err){
-    console.warn('SW registration failed:',err);
+  }).catch(function(){
+    // 获取registration失败，直接注册
+    navigator.serviceWorker.register('sw.js').then(function(reg){
+      if(reg.active)flushPendingNotifications();
+    }).catch(function(err){
+      console.warn('SW registration failed:',err);
+    });
   });
 }
 
