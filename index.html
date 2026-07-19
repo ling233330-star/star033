@@ -8224,12 +8224,8 @@ function initiateCall(){
       minimizeCall();
       updateCallMessage(contact.id,'calling',status,0);
     },2000);
-    
-    setTimeout(function(){
-      if(currentCall&&Math.random()*100<(getContactCallSettings(contact.id).hangupProbability)){
-        endCall('hangup_by_contact',currentCall.duration);
-      }
-    },5000);
+    // 注意：挂断概率统一由 startCallDuration() 处理（接听后10秒保护期 + 每30秒检查一次），
+    // 此处不再单独设置定时器，避免重复/过早挂断。
   }else{
     status='missed';
     showCallingModal(contact,status);
@@ -8495,102 +8491,73 @@ function updateMiniCallTime(){
   }
 }
 
-var isDragging=false;
-var hasMoved=false;
-var dragStartX=0;
-var dragStartY=0;
-var barStartX=0;
-var barStartY=0;
 var callMiniBarPos=null; // 保存通话小框的拖拽位置
 
-function startDrag(e){
-  // 如果正在切换页面或点击其他按钮，不启动拖拽
-  if(e.target&&e.target.closest){
-    var target=e.target.closest('button, .btn-nav, .tab, .citem, .overlay, .sheet, .sh, .sb');
-    if(target){
-      e.stopPropagation();
-      e.preventDefault();
-      return;
+// 小窗拖拽 + 点击展开（移动端兼容，统一处理触摸/鼠标）
+(function(){
+  var bar=$('call-mini-bar');
+  if(!bar)return;
+  var btn=$('call-mini-expand-btn');
+  var dragStarted=false,moved=false,startX=0,startY=0;
+
+  function onDown(e){
+    if(e.target===btn)return; // 按钮由自身点击处理，不触发拖拽
+    dragStarted=true;moved=false;
+    var p=e.touches?e.touches[0]:e;
+    startX=p.clientX;startY=p.clientY;
+    bar.style.cursor='grabbing';
+  }
+  function onMove(e){
+    if(!dragStarted)return;
+    var p=e.touches?e.touches[0]:e;
+    if(Math.abs(p.clientX-startX)>5||Math.abs(p.clientY-startY)>5){
+      moved=true;
+      if(e.cancelable)e.preventDefault();
+      var rect=bar.getBoundingClientRect();
+      var newX=rect.left+(p.clientX-startX);
+      var newY=rect.top+(p.clientY-startY);
+      var maxX=window.innerWidth-bar.offsetWidth-4;
+      var maxY=window.innerHeight-bar.offsetHeight-4;
+      newX=Math.max(4,Math.min(newX,maxX));
+      newY=Math.max(4,Math.min(newY,maxY));
+      bar.style.left=newX+'px';bar.style.top=newY+'px';bar.style.bottom='auto';bar.style.transform='none';
     }
   }
-  isDragging=true;
-  hasMoved=false;
-  var bar=$('call-mini-bar');
-  var rect=bar.getBoundingClientRect();
-  var clientX=e.touches?e.touches[0].clientX:e.clientX;
-  var clientY=e.touches?e.touches[0].clientY:e.clientY;
-  dragStartX=clientX;
-  dragStartY=clientY;
-  barStartX=rect.left;
-  barStartY=rect.top;
-  bar.style.cursor='grabbing';
-  
-  document.addEventListener('mousemove',doDrag);
-  document.addEventListener('mouseup',stopDrag);
-  document.addEventListener('touchmove',doDrag,{passive:false});
-  document.addEventListener('touchend',stopDrag);
-  document.addEventListener('touchcancel',stopDrag);
-}
-
-function doDrag(e){
-  if(!isDragging)return;
-  
-  var clientX=e.touches?e.touches[0].clientX:e.clientX;
-  var clientY=e.touches?e.touches[0].clientY:e.clientY;
-  
-  var dx=clientX-dragStartX;
-  var dy=clientY-dragStartY;
-  
-  if(Math.abs(dx)>5||Math.abs(dy)>5){
-    hasMoved=true;
-    e.preventDefault();
-    
-    var newX=barStartX+dx;
-    var newY=barStartY+dy;
-    
-    var maxX=window.innerWidth-160;
-    var maxY=window.innerHeight-72;
-    
-    newX=Math.max(0,Math.min(newX,maxX));
-    newY=Math.max(0,Math.min(newY,maxY));
-    
-    $('call-mini-bar').style.left=newX+'px';
-    $('call-mini-bar').style.top=newY+'px';
-    $('call-mini-bar').style.transform='none';
+  function onUp(){
+    if(dragStarted){
+      dragStarted=false;
+      bar.style.cursor='grab';
+      if(moved){callMiniBarPos={left:bar.style.left,top:bar.style.top,bottom:bar.style.bottom,transform:bar.style.transform};}
+    }
   }
-}
 
-function stopDrag(){
-  isDragging=false;
-  hasMoved=false; // 重置拖拽标志
-  $('call-mini-bar').style.cursor='grab';
-  
-  // 保存拖拽后的位置
-  if(hasMoved){
-    var bar=$('call-mini-bar');
-    callMiniBarPos={
-      left:bar.style.left,
-      top:bar.style.top,
-      bottom:bar.style.bottom,
-      transform:bar.style.transform
+  bar.addEventListener('mousedown',onDown);
+  bar.addEventListener('touchstart',onDown,{passive:true});
+  document.addEventListener('mousemove',onMove);
+  document.addEventListener('touchmove',onMove,{passive:false});
+  document.addEventListener('mouseup',onUp);
+  document.addEventListener('touchend',onUp);
+  document.addEventListener('touchcancel',onUp);
+
+  // 点击小窗空白处：展开通话半框
+  bar.addEventListener('click',function(e){
+    if(e.target===btn||moved)return;
+    if(currentCall){bar.style.display='none';showOv('ov-calling');}
+    else{bar.style.display='none';}
+  });
+
+  // 「−」按钮：展开通话半框（与挂断按钮在同一半框内）
+  // 同时绑定 click 与 touchend（移动端可靠），touchend 中 preventDefault 避免重复触发
+  if(btn){
+    var expandMini=function(e){
+      if(e&&e.preventDefault)e.preventDefault();
+      if(currentCall){bar.style.display='none';showOv('ov-calling');}
+      else{bar.style.display='none';}
     };
+    btn.addEventListener('click',expandMini);
+    btn.addEventListener('touchend',expandMini);
   }
-  
-  document.removeEventListener('mousemove',doDrag);
-  document.removeEventListener('mouseup',stopDrag);
-  document.removeEventListener('touchmove',doDrag);
-  document.removeEventListener('touchend',stopDrag);
-}
-
-if($('call-mini-bar')){$('call-mini-bar').addEventListener('click',function(e){
-  if(!hasMoved&&currentCall){
-    $('call-mini-bar').style.display='none';
-    showOv('ov-calling');
-  }else if(!hasMoved&&!currentCall){
-    // 通话已结束但仍显示小窗→直接隐藏
-    $('call-mini-bar').style.display='none';
-  }
-});}
+})();
 
 document.addEventListener('visibilitychange',function(){
   if(!currentCall)return;
@@ -8604,17 +8571,6 @@ document.addEventListener('visibilitychange',function(){
     }
   }
 });
-
-if($('call-mini-expand-btn')){$('call-mini-expand-btn').addEventListener('touchstart',function(e){e.stopPropagation();});$('call-mini-expand-btn').addEventListener('click',function(e){
-  e.stopPropagation();
-  if(currentCall){
-    $('call-mini-bar').style.display='none';
-    showOv('ov-calling');
-  }else{
-    // 通话已结束但仍显示小窗→直接隐藏
-    $('call-mini-bar').style.display='none';
-  }
-});}
 
 function checkIncomingCall(){
   if(!cid)return;
@@ -8669,27 +8625,22 @@ function checkIncomingCall(){
       try{var n=new Notification(contact.name+' 来电',{body:'对方正在呼叫你...',icon:contact.avatar||'',tag:'milk-call'});n.onclick=function(){window.focus();n.close()};setTimeout(function(){n.close()},30000)}catch(e){}
     }
     
-    // 45-second auto-hangup with countdown
-    var countdownSeconds=45;
+    // 来电最多响铃30秒，超时未接则记为「未接电话」
     if($('calling-countdown'))$('calling-countdown').style.display='block';
-    if($('calling-countdown'))$('calling-countdown').textContent=countdownSeconds+'秒后自动挂断';
-    
-    if(incomingCallTimer){clearInterval(incomingCallTimer)}
+    var _inCount=30;
+    if($('calling-countdown'))$('calling-countdown').textContent=_inCount+'秒后未接听';
+    if(incomingCallTimer){clearInterval(incomingCallTimer);incomingCallTimer=null;}
     incomingCallTimer=setInterval(function(){
-      if(!currentCall||currentCall.direction!=='incoming'){
-        clearInterval(incomingCallTimer);
-        incomingCallTimer=null;
-        return;
+      if(!currentCall||currentCall.direction!=='incoming'||currentCall.status!=='ringing'){
+        clearInterval(incomingCallTimer);incomingCallTimer=null;return;
       }
-      countdownSeconds--;
-      if(countdownSeconds<=0){
-        clearInterval(incomingCallTimer);
-        incomingCallTimer=null;
-        if(currentCall&&currentCall.direction==='incoming'){
-          endCall('missed',currentCall.duration);
-        }
-      }else{
-        if($('calling-countdown'))$('calling-countdown').textContent=countdownSeconds+'秒后自动挂断';
+      _inCount--;
+      if(_inCount<=0){
+        clearInterval(incomingCallTimer);incomingCallTimer=null;
+        if($('calling-countdown'))$('calling-countdown').style.display='none';
+        endCall('missed',0);
+      }else if($('calling-countdown')){
+        $('calling-countdown').textContent=_inCount+'秒后未接听';
       }
     },1000);
   }
@@ -8751,27 +8702,22 @@ function checkIncomingCallForContact(contactId){
       try{var n=new Notification(contact.name+' 来电',{body:'对方正在呼叫你...',icon:contact.avatar||'',tag:'milk-call'});n.onclick=function(){window.focus();n.close()};setTimeout(function(){n.close()},30000)}catch(e){}
     }
     
-    // 45-second auto-hangup with countdown
-    var countdownSeconds=45;
+    // 来电最多响铃30秒，超时未接则记为「未接电话」
     if($('calling-countdown'))$('calling-countdown').style.display='block';
-    if($('calling-countdown'))$('calling-countdown').textContent=countdownSeconds+'秒后自动挂断';
-    
-    if(incomingCallTimer){clearInterval(incomingCallTimer)}
+    var _inCount=30;
+    if($('calling-countdown'))$('calling-countdown').textContent=_inCount+'秒后未接听';
+    if(incomingCallTimer){clearInterval(incomingCallTimer);incomingCallTimer=null;}
     incomingCallTimer=setInterval(function(){
-      if(!currentCall||currentCall.direction!=='incoming'){
-        clearInterval(incomingCallTimer);
-        incomingCallTimer=null;
-        return;
+      if(!currentCall||currentCall.direction!=='incoming'||currentCall.status!=='ringing'){
+        clearInterval(incomingCallTimer);incomingCallTimer=null;return;
       }
-      countdownSeconds--;
-      if(countdownSeconds<=0){
-        clearInterval(incomingCallTimer);
-        incomingCallTimer=null;
-        if(currentCall&&currentCall.direction==='incoming'){
-          endCall('missed',currentCall.duration);
-        }
-      }else{
-        if($('calling-countdown'))$('calling-countdown').textContent=countdownSeconds+'秒后自动挂断';
+      _inCount--;
+      if(_inCount<=0){
+        clearInterval(incomingCallTimer);incomingCallTimer=null;
+        if($('calling-countdown'))$('calling-countdown').style.display='none';
+        endCall('missed',0);
+      }else if($('calling-countdown')){
+        $('calling-countdown').textContent=_inCount+'秒后未接听';
       }
     },1000);
   }
@@ -11198,22 +11144,41 @@ function openCardSettings(){
   allGroupsFolded=false;
   foldedGroups={};
   
-  var categories=['custom','kaomoji','emojis','touch','stickers','voices'];
-  var foundCategory=false;
-  for(var i=0;i<categories.length;i++){
-    var cat=categories[i];
-    var hasCards=globalCards.some(function(c){
-      return c&&c.category===cat&&(c.type==='public'||!c.type);
-    });
-    if(hasCards){
-      currentCardCategory=cat;
-      foundCategory=true;
-      break;
+  // 自动选择第一个有字卡的分类/类型，避免打开后显示0字卡
+  var prefTypes=['public','private'];
+  var allCats=[];
+  globalCards.forEach(function(c){
+    if(c&&c.category&&allCats.indexOf(c.category)<0)allCats.push(c.category);
+  });
+  var foundType=null,foundCat=null;
+  for(var ti=0;ti<prefTypes.length&&!foundType;ti++){
+    for(var ci=0;ci<allCats.length;ci++){
+      var cnt=globalCards.filter(function(c){return c&&c.category===allCats[ci]&&(c.type===prefTypes[ti]||(!c.type&&prefTypes[ti]==='public'));}).length;
+      if(cnt>0){foundType=prefTypes[ti];foundCat=allCats[ci];break;}
     }
   }
-  
-  if(!foundCategory){
-    currentCardCategory='custom';
+  if(foundType){currentCardType=foundType;currentCardCategory=foundCat;}
+  else{currentCardType='public';currentCardCategory='custom';}
+
+  // 若是私有字卡，自动选中第一个有字卡的联系人
+  if(currentCardType==='private'){
+    var pcWithCards=cardPrivateContacts.filter(function(pc){
+      return globalCards.some(function(c){return c.type==='private'&&c.contactId===pc.id});
+    });
+    if(pcWithCards.length){
+      selectedPrivateContact=pcWithCards[0].id;
+    }else if(cardPrivateContacts.length){
+      selectedPrivateContact=cardPrivateContacts[0].id;
+    }
+  }
+
+  document.querySelectorAll('.card-type-tab').forEach(function(t){t.classList.toggle('sel',t.dataset.type===currentCardType)});
+  if(currentCardType==='private'){
+    $('private-contact-sel').style.display='block';
+    renderPrivateContacts();
+  }else{
+    $('private-contact-sel').style.display='none';
+    selectedPrivateContact=null;
   }
   
   document.querySelectorAll('.card-category-tab').forEach(function(t){t.classList.remove('sel')});
@@ -14200,8 +14165,11 @@ var momentsPosts=[],momentsMembers=[],momentsSettings={
 };
 async function loadMomentsData(){
   var savedPosts=await lsGetWithDB('ml2_moments_posts');
+  if(!savedPosts||!Array.isArray(savedPosts))savedPosts=ls('ml2_moments_posts');
   var savedMembers=await lsGetWithDB('ml2_moments_members');
+  if(!savedMembers||!Array.isArray(savedMembers))savedMembers=ls('ml2_moments_members');
   var savedSettings=await lsGetWithDB('ml2_moments_settings');
+  if(!savedSettings||typeof savedSettings!=='object')savedSettings=ls('ml2_moments_settings');
   if(savedPosts&&Array.isArray(savedPosts))momentsPosts=savedPosts;
   if(savedSettings&&typeof savedSettings==='object')Object.assign(momentsSettings,savedSettings);
   
@@ -14232,7 +14200,16 @@ async function loadMomentsData(){
   renderMoments();
   setTimeout(scheduleFriendMoments,5000);
 }
-function saveMomentsData(){ls('ml2_moments_posts',momentsPosts);ls('ml2_moments_members',momentsMembers);ls('ml2_moments_settings',momentsSettings)}
+function saveMomentsData(){
+  ls('ml2_moments_posts',momentsPosts);
+  ls('ml2_moments_members',momentsMembers);
+  ls('ml2_moments_settings',momentsSettings);
+  if(window.localforage){
+    window.localforage.setItem('ml2_moments_posts',momentsPosts).catch(function(){});
+    window.localforage.setItem('ml2_moments_members',momentsMembers).catch(function(){});
+    window.localforage.setItem('ml2_moments_settings',momentsSettings).catch(function(){});
+  }
+}
 
 async function loadLettersFromIndexedDB(){
   try{
@@ -24650,7 +24627,7 @@ sendMsg=function(){
 </div>
 
 <!-- Mini Call Bar -->
-<div id="call-mini-bar" style="display:none;position:fixed;bottom:100px;left:50%;transform:translateX(-50%);width:auto;min-width:120px;height:44px;border-radius:12px;background:#ffffff;box-shadow:0 3px 14px rgba(0,0,0,0.1);z-index:10000;border:1px solid var(--border-light);align-items:center;justify-content:space-between;gap:4px;padding:0 10px;cursor:grab;transition:box-shadow 0.2s;" onmousedown="startDrag(event)" ontouchstart="startDrag(event)">
+<div id="call-mini-bar" style="display:none;position:fixed;bottom:100px;left:50%;transform:translateX(-50%);width:auto;min-width:120px;height:44px;border-radius:12px;background:#ffffff;box-shadow:0 3px 14px rgba(0,0,0,0.1);z-index:10000;border:1px solid var(--border-light);align-items:center;justify-content:space-between;gap:4px;padding:0 10px;cursor:grab;transition:box-shadow 0.2s;">
   <div style="display:flex;align-items:center;gap:8px;">
     <div id="call-mini-avatar" style="width:30px;height:30px;border-radius:50%;background:var(--c3);display:flex;align-items:center;justify-content:center;font-size:10px;color:var(--txt2);overflow:hidden;border:2px solid rgba(255,255,255,0.6);box-shadow:0 2px 6px rgba(0,0,0,0.06);">👤</div>
     <div style="display:flex;flex-direction:column;">
@@ -24658,53 +24635,61 @@ sendMsg=function(){
       <div id="call-mini-time" style="font-size:10px;color:var(--txt3);line-height:1.2;">00:00</div>
     </div>
   </div>
-  <button id="call-mini-expand-btn" style="background:none;border:none;color:var(--txt3);font-size:16px;cursor:pointer;width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;transition:var(--transition-fast);touch-action:manipulation;-webkit-tap-highlight-color:transparent;z-index:10001;" ontouchstart="event.stopPropagation()">−</button>
+  <button id="call-mini-expand-btn" style="background:none;border:none;color:var(--txt3);font-size:18px;font-weight:bold;cursor:pointer;width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;transition:var(--transition-fast);touch-action:manipulation;-webkit-tap-highlight-color:transparent;z-index:10001;">−</button>
 </div>
 
 
 <script>
-// PWA Service Worker 注册 + 强制更新（解决旧SW缓存问题）
-if('serviceWorker' in navigator){
-  // 先尝试注销旧SW并清除缓存
-  navigator.serviceWorker.getRegistration().then(function(reg){
-    if(reg){
-      // 清除所有cache
-      if(caches){
-        caches.keys().then(function(names){
-          names.forEach(function(name){caches.delete(name);});
-        });
-      }
-      // 注销旧SW
-      reg.unregister();
-    }
-    // 重新注册新SW（使用相对scope，适配任何部署路径）
+// PWA Service Worker 注册 + 自动更新（部署新版本后自动刷新一次，避免一直跑旧缓存）
+(function(){
+  if(!('serviceWorker' in navigator))return;
+  var APP_VERSION='1.1.1';
+  window.__APP_VERSION=APP_VERSION;
+
+  function doRegister(){
     navigator.serviceWorker.register('sw.js').then(function(reg){
-      console.log('SW registered:',reg.scope);
+      console.log('SW registered:',reg.scope,'app version',APP_VERSION);
       reg.addEventListener('updatefound',function(){
         var newWorker=reg.installing;
+        if(!newWorker)return;
         newWorker.addEventListener('statechange',function(){
+          // 新版本已安装，且当前页面仍由旧SW控制 → 自动刷新一次加载新版本
           if(newWorker.state==='installed'&&navigator.serviceWorker.controller){
-            // 新SW已安装，通知页面刷新
-            console.log('New SW installed, ready for activation');
+            if(sessionStorage.getItem('sw_reloaded')!==APP_VERSION){
+              sessionStorage.setItem('sw_reloaded',APP_VERSION);
+              location.reload();
+            }
           }
         });
       });
       if(reg.active){
-        // SW 就绪后，尝试发送积压通知
         flushPendingNotifications();
       }
     }).catch(function(err){
       console.warn('SW registration failed:',err);
     });
-  }).catch(function(){
-    // 获取registration失败，直接注册
-    navigator.serviceWorker.register('sw.js').then(function(reg){
-      if(reg.active)flushPendingNotifications();
-    }).catch(function(err){
-      console.warn('SW registration failed:',err);
+  }
+
+  // 页面加载后若由旧SW控制，先让其失效并刷新以加载新SW
+  if(navigator.serviceWorker.controller){
+    navigator.serviceWorker.addEventListener('controllerchange',function(){
+      if(sessionStorage.getItem('sw_reloaded')!==APP_VERSION){
+        sessionStorage.setItem('sw_reloaded',APP_VERSION);
+        location.reload();
+      }
     });
+  }
+  doRegister();
+
+  // 始终可见的版本角标，方便确认当前运行的是哪一版
+  window.addEventListener('DOMContentLoaded',function(){
+    var badge=document.createElement('div');
+    badge.id='app-version-badge';
+    badge.textContent='星言 v'+APP_VERSION;
+    badge.style.cssText='position:fixed;left:6px;bottom:6px;z-index:99999;font-size:10px;color:var(--txt3,#999);opacity:.5;background:rgba(255,255,255,.6);padding:1px 6px;border-radius:8px;pointer-events:none;';
+    document.body.appendChild(badge);
   });
-}
+})();
 
 // 积压通知队列（SW 未就绪时暂存）
 var pendingNotifications=[];
