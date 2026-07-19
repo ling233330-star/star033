@@ -2999,6 +2999,9 @@ canvas{-webkit-backface-visibility:hidden;backface-visibility:hidden;-webkit-tra
         <div style="font-size:11px;color:var(--txt3);">通话中对方主动挂断的概率（每秒检查一次）</div>
       </div>
     </div>
+    <div style="padding:16px 20px;border-top:1px solid var(--border);flex-shrink:0;">
+      <button class="btn-primary" id="save-call-settings" style="width:100%;padding:12px;font-size:15px;">保存设置</button>
+    </div>
   </div>
 </div>
 
@@ -7972,6 +7975,7 @@ var currentCall=null;
 var callDurationTimer=null;
 var lastCallEndTime={}; // 记录每个联系人上次通话结束时间，防止短时间内重复来电
 var callStartTime=0;
+var callConnectedTime=0;
 var lastEmojiGroup='';
 var emojiBatchMode=false;
 var emojiSelectedStickers=[];
@@ -8265,6 +8269,7 @@ function showCallingModal(contact,status){
 function startCallDuration(){
   callStartTime=Date.now();
   currentCall.duration=0;
+  callConnectedTime=Date.now(); // connected进入时刻
 
   callDurationTimer=setInterval(function(){
     if(!currentCall)return;
@@ -8284,6 +8289,9 @@ function startCallDuration(){
     // 仅在已接听（connected）状态才检查对方主动挂断概率
     // 修复：未接听时（ringing/ringing_outgoing）不应被挂断
     if(currentCall.status!=='connected')return;
+
+    // 保护期：接通后至少3秒内不检查挂断，给用户接听反应时间
+    if(Date.now()-callConnectedTime<3000)return;
 
     var hangupProb=callSettings.hangupProbability;
     if(hangupProb===undefined||hangupProb===null)hangupProb=0.01;
@@ -8327,6 +8335,23 @@ function updateCallMessage(contactId,callMsgId,status,duration){
   }
 }
 
+// 用户主动挂断（防止与概率挂断的竞态条件）
+function userEndCall(){
+  if(!currentCall){
+    // 通话可能已被概率挂断结束，直接清理界面
+    if($('call-mini-bar'))$('call-mini-bar').style.display='none';
+    hideOv('ov-calling');
+    return;
+  }
+  // 先清除所有计时器，避免概率检查在 endCall 前触发
+  if(incomingRingtoneAudio){try{incomingRingtoneAudio.pause();incomingRingtoneAudio=null}catch(e){}}
+  if(incomingCallTimer){clearInterval(incomingCallTimer);incomingCallTimer=null}
+  if(callDurationTimer){clearInterval(callDurationTimer);callDurationTimer=null}
+  if($('calling-countdown'))$('calling-countdown').style.display='none';
+  // 用户主动挂断标记为 connected（正常结束）
+  endCall('connected',currentCall.duration);
+}
+
 function endCall(status,duration){
   if(!currentCall)return;
   
@@ -8366,7 +8391,8 @@ function endCall(status,duration){
   if($('calling-countdown'))$('calling-countdown').style.display='none';
   
   hideOv('ov-calling');
-  $('call-mini-bar').style.display='none';
+  // 强制隐藏小窗（兜底：即使之前的操作出错也能隐藏）
+  var mb=$('call-mini-bar');if(mb)mb.style.display='none';
   
   if($('call-history-list'))renderCallHistory();
   if($('contact-profile-call-list')&&cid)renderContactCallHistory(cid);
@@ -8531,6 +8557,7 @@ function doDrag(e){
 
 function stopDrag(){
   isDragging=false;
+  hasMoved=false; // 重置拖拽标志
   $('call-mini-bar').style.cursor='grab';
   
   // 保存拖拽后的位置
@@ -8554,6 +8581,9 @@ if($('call-mini-bar')){$('call-mini-bar').addEventListener('click',function(e){
   if(!hasMoved&&currentCall){
     $('call-mini-bar').style.display='none';
     showOv('ov-calling');
+  }else if(!hasMoved&&!currentCall){
+    // 通话已结束但仍显示小窗→直接隐藏
+    $('call-mini-bar').style.display='none';
   }
 });}
 
@@ -8575,6 +8605,9 @@ if($('call-mini-expand-btn')){$('call-mini-expand-btn').addEventListener('click'
   if(currentCall){
     $('call-mini-bar').style.display='none';
     showOv('ov-calling');
+  }else{
+    // 通话已结束但仍显示小窗→直接隐藏
+    $('call-mini-bar').style.display='none';
   }
 });}
 
@@ -8631,8 +8664,8 @@ function checkIncomingCall(){
       try{var n=new Notification(contact.name+' 来电',{body:'对方正在呼叫你...',icon:contact.avatar||'',tag:'milk-call'});n.onclick=function(){window.focus();n.close()};setTimeout(function(){n.close()},30000)}catch(e){}
     }
     
-    // 30-second auto-hangup with countdown
-    var countdownSeconds=30;
+    // 45-second auto-hangup with countdown
+    var countdownSeconds=45;
     if($('calling-countdown'))$('calling-countdown').style.display='block';
     if($('calling-countdown'))$('calling-countdown').textContent=countdownSeconds+'秒后自动挂断';
     
@@ -8713,8 +8746,8 @@ function checkIncomingCallForContact(contactId){
       try{var n=new Notification(contact.name+' 来电',{body:'对方正在呼叫你...',icon:contact.avatar||'',tag:'milk-call'});n.onclick=function(){window.focus();n.close()};setTimeout(function(){n.close()},30000)}catch(e){}
     }
     
-    // 30-second auto-hangup with countdown
-    var countdownSeconds=30;
+    // 45-second auto-hangup with countdown
+    var countdownSeconds=45;
     if($('calling-countdown'))$('calling-countdown').style.display='block';
     if($('calling-countdown'))$('calling-countdown').textContent=countdownSeconds+'秒后自动挂断';
     
@@ -10425,7 +10458,7 @@ if($('call-hangup-prob-slider'))$('call-hangup-prob-slider').addEventListener('i
 });
 if($('save-call-settings')){$('save-call-settings').addEventListener('click',saveCallSettings);$('save-call-settings').addEventListener('touchend',function(e){e.preventDefault();saveCallSettings()});}
 $('initiate-call-btn')&&($('initiate-call-btn').addEventListener('click',initiateCall),$('initiate-call-btn').addEventListener('touchend',function(e){e.preventDefault();initiateCall()}));
-$('call-end-btn')&&($('call-end-btn').addEventListener('click',function(){if(currentCall)endCall('connected',currentCall.duration)}),$('call-end-btn').addEventListener('touchend',function(e){e.preventDefault();if(currentCall)endCall('connected',currentCall.duration)}));
+$('call-end-btn')&&($('call-end-btn').addEventListener('click',function(){userEndCall()}),$('call-end-btn').addEventListener('touchend',function(e){e.preventDefault();userEndCall()}));
 $('call-answer-btn')&&$('call-answer-btn').addEventListener('click',function(){
   if(!currentCall)return;
   // Stop ringtone
@@ -10438,6 +10471,8 @@ $('call-answer-btn')&&$('call-answer-btn').addEventListener('click',function(){
   if($('calling-end-btn-wrap'))$('calling-end-btn-wrap').style.display='block';
   currentCall.status='connected';
   $('calling-status').textContent='正在通话...';
+  // 更新connected时刻，确保3秒保护期生效(接听时才计算)
+  callConnectedTime=Date.now();
   toast('已接听');
   // Auto-minimize to mini bar after answering
   setTimeout(function(){minimizeCall()},800);
@@ -16013,7 +16048,7 @@ function bindMyPageEvents(){
 
 var navCardCurrentType='public';
 var navCardCurrentContact=null;
-var navCardCurrentCategory='weather';
+var navCardCurrentCategory='all';
 var navCardCurrentGroup='all';
 var navCardGroups={public:['默认','天气','时间','心情','空闲状态','对方状态'],private:{}};
 var navCardCollapsedGroups={};
@@ -24610,15 +24645,15 @@ sendMsg=function(){
 </div>
 
 <!-- Mini Call Bar -->
-<div id="call-mini-bar" style="display:none;position:fixed;bottom:100px;left:50%;transform:translateX(-50%);width:auto;min-width:140px;height:52px;border-radius:14px;background:#ffffff;box-shadow:0 4px 20px rgba(0,0,0,0.12);z-index:10000;border:1px solid var(--border-light);align-items:center;justify-content:space-between;gap:10px;padding:0 14px;cursor:grab;transition:box-shadow 0.2s;" onmousedown="startDrag(event)" ontouchstart="startDrag(event)">
-  <div style="display:flex;align-items:center;gap:10px;">
-    <div id="call-mini-avatar" style="width:36px;height:36px;border-radius:var(--avatar-radius,50%);background:var(--c3);display:flex;align-items:center;justify-content:center;font-size:12px;color:var(--txt2);overflow:hidden;border:2px solid rgba(255,255,255,0.6);box-shadow:0 2px 8px rgba(0,0,0,0.08);">👤</div>
+<div id="call-mini-bar" style="display:none;position:fixed;bottom:100px;left:50%;transform:translateX(-50%);width:auto;min-width:120px;height:44px;border-radius:12px;background:#ffffff;box-shadow:0 3px 14px rgba(0,0,0,0.1);z-index:10000;border:1px solid var(--border-light);align-items:center;justify-content:space-between;gap:4px;padding:0 10px;cursor:grab;transition:box-shadow 0.2s;" onmousedown="startDrag(event)" ontouchstart="startDrag(event)">
+  <div style="display:flex;align-items:center;gap:8px;">
+    <div id="call-mini-avatar" style="width:30px;height:30px;border-radius:50%;background:var(--c3);display:flex;align-items:center;justify-content:center;font-size:10px;color:var(--txt2);overflow:hidden;border:2px solid rgba(255,255,255,0.6);box-shadow:0 2px 6px rgba(0,0,0,0.06);">👤</div>
     <div style="display:flex;flex-direction:column;">
-      <div id="call-mini-name" style="font-size:13px;font-weight:500;color:var(--txt);">通话中</div>
-      <div id="call-mini-time" style="font-size:11px;color:var(--txt3);">00:00</div>
+      <div id="call-mini-name" style="font-size:12px;font-weight:500;color:var(--txt);line-height:1.2;">通话中</div>
+      <div id="call-mini-time" style="font-size:10px;color:var(--txt3);line-height:1.2;">00:00</div>
     </div>
   </div>
-  <button id="call-mini-expand-btn" style="background:none;border:none;color:var(--txt3);font-size:18px;cursor:pointer;width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;transition:var(--transition-fast);touch-action:manipulation;-webkit-tap-highlight-color:transparent;z-index:10001;">−</button>
+  <button id="call-mini-expand-btn" style="background:none;border:none;color:var(--txt3);font-size:16px;cursor:pointer;width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;transition:var(--transition-fast);touch-action:manipulation;-webkit-tap-highlight-color:transparent;z-index:10001;">−</button>
 </div>
 
 
