@@ -4413,9 +4413,8 @@ var Storage = (function(){
       var isImgKey=k.startsWith('ml2_card_img_')||k.startsWith('ml2_msg_img_');
       if(!isImgKey){
         var valStr=typeof v==='object'?JSON.stringify(v):String(v);
-        if(valStr.length<500000){
-          safeSetItem('ml2_lf_'+k, v);
-        }
+        // 不再限制大小——safeSetItem 内部有 try-catch 处理配额超限
+        safeSetItem('ml2_lf_'+k, v);
       }
     } else {
       safeSetItem('ml2_lf_'+k, v);
@@ -4530,8 +4529,11 @@ var Storage = (function(){
             if(!loadedFromLS){
               var val=await window.localforage.getItem(k);
               if(val!==null&&val!==undefined){
-                cache[k]=val;
-                loaded++;
+                // 跳过空数组——避免用 IndexedDB 空值污染缓存
+                if(!(Array.isArray(val)&&val.length===0)){
+                  cache[k]=val;
+                  loaded++;
+                }
               }
             }
           }
@@ -4546,6 +4548,23 @@ var Storage = (function(){
             if(lsVal!==null){
               try{var parsed=JSON.parse(lsVal);cache[lsKey]=parsed;loaded++;}
               catch(e){cache[lsKey]=lsVal;loaded++;}
+            }
+          }
+        }
+        // 第二遍：主动检查 localStorage ml2_ 键是否在缓存中对应的原始键已被污染
+        for(var j2=0;j2<localStorage.length;j2++){
+          var _k=localStorage.key(j2);
+          if(_k&&_k.startsWith('ml2_lf_ml2_')){
+            var origKey=_k.substring(7); // 去掉 ml2_lf_ 前缀
+            if(cache.hasOwnProperty(origKey)){
+              var cached=cache[origKey];
+              // 如果缓存中是空数组，用 localStorage 的真实数据覆盖
+              if(Array.isArray(cached)&&cached.length===0){
+                var _v=safeGetItem(_k);
+                if(_v){
+                  try{var _p=JSON.parse(_v);if(_p&&Array.isArray(_p)&&_p.length>0){cache[origKey]=_p;loaded++;}}catch(e2){}
+                }
+              }
             }
           }
         }
@@ -8318,16 +8337,16 @@ function updateCallMessage(contactId,callMsgId,status,duration){
   var msgIndex=m.findIndex(function(msg){return msg.id===callMsgId});
   if(msgIndex>=0){
     var callMsg='';
+    var contact=contacts.find(function(c){return c.id===contactId});
+    var contactName=contact?contact.name:'对方';
     if(status==='connected'){
-      var contact=contacts.find(function(c){return c.id===contactId});
-      var contactName=contact?contact.name:'对方';
       callMsg='📞 '+contactName+' 已接通电话';
     }else if(status==='busy'){
-      callMsg='📞 对方忙线中';
+      callMsg='📞 '+contactName+' 忙线中';
     }else if(status==='rejected'){
-      callMsg='📞 对方已拒绝通话';
+      callMsg='📞 '+contactName+' 已拒绝通话';
     }else{
-      callMsg='📞 通话未接通';
+      callMsg='📞 '+contactName+' 未接通';
     }
     m[msgIndex].callMessage=callMsg;
     m[msgIndex].callStatus=status;
@@ -8413,11 +8432,11 @@ function endCall(status,duration){
     toast(contactName+' 已挂断');
     callMsg='📞 '+contactName+' 挂断了电话，时长 '+formatDuration(duration);
   }else if(status==='busy'){
-    toast('对方忙线');
-    callMsg='📞 对方忙线中';
+    toast(contactName+' 忙线中');
+    callMsg='📞 '+contactName+' 忙线中';
   }else if(status==='rejected'){
-    toast('对方已拒绝');
-    callMsg='📞 对方已拒绝通话';
+    toast(contactName+' 已拒绝');
+    callMsg='📞 '+contactName+' 已拒绝通话';
   }else if(status==='missed'){
     toast('未接听');
     callMsg='📞 未接听（'+contactName+'）的来电';
@@ -8426,8 +8445,8 @@ function endCall(status,duration){
     toast('通话中断（'+durStr+'）');
     callMsg='📞 通话异常中断（时长 '+durStr+'）';
   }else{
-    toast('未接通');
-    callMsg='📞 通话未接通';
+    toast(contactName+' 未接通');
+    callMsg='📞 '+contactName+' 未接通';
   }
   
   if(contactId){
@@ -10198,7 +10217,7 @@ if($('btn-create-group')){var createGroupFn=function(){
   toast('群聊「'+name+'」已创建');
 };$('btn-create-group').addEventListener('click',createGroupFn);$('btn-create-group').addEventListener('touchend',function(e){e.preventDefault();createGroupFn()});}
 if($('close-add')){var closeAddFn=function(){hideOv('ov-add')};$('close-add').addEventListener('click',closeAddFn);$('close-add').addEventListener('touchend',function(e){e.preventDefault();closeAddFn()});}
-if($('add-av-up'))$('add-av-up').addEventListener('click',function(){$('add-av-inp').click()});
+if($('add-av-up')){$('add-av-up').addEventListener('click',function(){$('add-av-inp').click()});$('add-av-up').addEventListener('touchend',function(e){e.preventDefault();$('add-av-inp').click()})}
 if($('add-av-inp'))$('add-av-inp').addEventListener('change',function(){var f=this.files[0];if(!f)return;compressImage(f,100,0.7,function(res){addAv=res;$('add-av-up').innerHTML='<img src="'+res+'" style="width:100%;height:100%;object-fit:cover">'})});
 $('btn-save-ct').addEventListener('click',function(){var n=$('add-name-inp').value.trim();if(!n){toast('请输入昵称');return}var avatarData=addAv||'';var newContact={id:'c_'+Date.now(),name:n,avatar:avatarData};contacts.push(newContact);saveC();var existingMember=momentsMembers.find(function(m){return m.contactId===newContact.id||m.id===newContact.id});if(!existingMember){momentsMembers.push({id:newContact.id,nickname:newContact.name,avatar:avatarData,enabled:true,sessionId:'',contactId:newContact.id})}saveMomentsData();hideOv('ov-add');renderChatList();renderDContacts();maybeGenMoments();toast('已添加「'+n+'」')});
 $('btn-save-ct').addEventListener('touchend',function(e){e.preventDefault();$('btn-save-ct').click()});
@@ -10206,7 +10225,7 @@ $('btn-save-ct').addEventListener('touchend',function(e){e.preventDefault();$('b
 // ---------- Edit Profile ----------
 var editAv=null;
 if($('close-edit')){var closeEditFn=function(){hideOv('ov-edit')};$('close-edit').addEventListener('click',closeEditFn);$('close-edit').addEventListener('touchend',function(e){e.preventDefault();closeEditFn()});}
-if($('edit-av-up'))$('edit-av-up').addEventListener('click',function(){$('edit-av-inp').click()});
+if($('edit-av-up')){$('edit-av-up').addEventListener('click',function(){$('edit-av-inp').click()});$('edit-av-up').addEventListener('touchend',function(e){e.preventDefault();$('edit-av-inp').click()})}
 if($('edit-av-inp'))$('edit-av-inp').addEventListener('change',function(){var f=this.files[0];if(!f)return;compressImage(f,256,0.8,function(res){editAv=res;$('edit-av-up').innerHTML='<img src="'+res+'" style="width:100%;height:100%;object-fit:cover">'})});
 if($('btn-save-edit')){$('btn-save-edit').addEventListener('click',function(){var n=$('edit-name-inp').value.trim();if(!n){toast('请输入昵称');return}me.name=n;me.avatar=editAv||me.avatar||'';saveP();hideOv('ov-edit');toast('已保存')});$('btn-save-edit').addEventListener('touchend',function(e){e.preventDefault();$('btn-save-edit').click()});}
 function refreshMy(){}
@@ -10350,7 +10369,7 @@ if($('call-hangup-prob-slider'))$('call-hangup-prob-slider').addEventListener('i
 if($('save-call-settings')){$('save-call-settings').addEventListener('click',function(){saveCallSettings();hideOv('ov-call-settings');toast('设置已保存')});$('save-call-settings').addEventListener('touchend',function(e){e.preventDefault();saveCallSettings();hideOv('ov-call-settings');toast('设置已保存')});}
 $('initiate-call-btn')&&($('initiate-call-btn').addEventListener('click',initiateCall),$('initiate-call-btn').addEventListener('touchend',function(e){e.preventDefault();initiateCall()}));
 $('call-end-btn')&&($('call-end-btn').addEventListener('click',function(){userEndCall()}),$('call-end-btn').addEventListener('touchend',function(e){e.preventDefault();userEndCall()}));
-$('call-answer-btn')&&$('call-answer-btn').addEventListener('click',function(){
+$('call-answer-btn')&&($('call-answer-btn').addEventListener('click',function(){
   if(!currentCall)return;
   // Stop ringtone
   if(incomingRingtoneAudio){try{incomingRingtoneAudio.pause();incomingRingtoneAudio=null}catch(e){}}
@@ -10367,7 +10386,20 @@ $('call-answer-btn')&&$('call-answer-btn').addEventListener('click',function(){
   toast('已接听');
   // Auto-minimize to mini bar after answering
   setTimeout(function(){minimizeCall()},800);
-});
+}),$('call-answer-btn').addEventListener('touchend',function(e){
+  e.preventDefault();
+  if(!currentCall)return;
+  if(incomingRingtoneAudio){try{incomingRingtoneAudio.pause();incomingRingtoneAudio=null}catch(e){}}
+  if(incomingCallTimer){clearInterval(incomingCallTimer);incomingCallTimer=null}
+  if($('calling-countdown'))$('calling-countdown').style.display='none';
+  if($('calling-incoming-btns'))$('calling-incoming-btns').style.display='none';
+  if($('calling-end-btn-wrap'))$('calling-end-btn-wrap').style.display='block';
+  currentCall.status='connected';
+  $('calling-status').textContent='正在通话...';
+  callConnectedTime=Date.now();
+  toast('已接听');
+  setTimeout(function(){minimizeCall()},800);
+}));
 $('call-reject-btn')&&($('call-reject-btn').addEventListener('click',function(){
   if(!currentCall)return;
   endCall('rejected',currentCall.duration);
@@ -16005,22 +16037,22 @@ async function getNavCards(type,contactId){
     key+='_'+contactId;
   }
   var result=[];
-  var lsData=ls(key);
-  if(lsData&&Array.isArray(lsData)&&lsData.length>0){
-    result=lsData;
+  // 直接从 localStorage 读（绕过 Storage 缓存，避免 restoreFromDB 空数据污染）
+  var directRaw=safeGetItem(key);
+  if(directRaw){
+    try{var dp=JSON.parse(directRaw);if(dp&&Array.isArray(dp))result=dp;}catch(e){}
   }
-  var localStored=safeGetItem('ml2_lf_'+key);
-  if(localStored){
-    try{var parsed=JSON.parse(localStored);if(parsed&&Array.isArray(parsed)&&parsed.length>0)result=parsed;}catch(e){}
+  var lfPrefix=safeGetItem('ml2_lf_'+key);
+  if(lfPrefix){
+    try{var lp=JSON.parse(lfPrefix);if(lp&&Array.isArray(lp)&&lp.length>result.length)result=lp;}catch(e){}
   }
-  // 再加一层兜底：直接键（无前缀），兼容不同保存路径
-  if(!result||result.length===0){
-    var directRaw=safeGetItem(key);
-    if(directRaw){
-      try{var dp=JSON.parse(directRaw);if(dp&&Array.isArray(dp)&&dp.length>0)result=dp;}catch(e){}
-    }
+  // 再用 ls (Storage 缓存) 作为补充——只在上面都没数据时
+  if(result.length===0){
+    var lsData=ls(key);
+    if(lsData&&Array.isArray(lsData)&&lsData.length>0){result=lsData;}
   }
-  if(isLFAvailable()){
+  // 最后用 IndexedDB 兜底
+  if(result.length===0&&isLFAvailable()){
     try{
       var stored=await window.localforage.getItem(key);
       if(stored){
@@ -18628,6 +18660,7 @@ function openContactSoundSettings(){
   $('contact-recv-en').addEventListener('change',function(){contact.soundSettings.recvEnabled=this.checked});
   
   $('contact-send-sound-btn').addEventListener('click',function(){$('contact-send-sound-input').click()});
+  $('contact-send-sound-btn').addEventListener('touchend',function(e){e.preventDefault();$('contact-send-sound-input').click()});
   $('contact-send-sound-input').addEventListener('change',function(e){
     var file=e.target.files[0];if(!file)return;
     var reader=new FileReader();
@@ -18659,6 +18692,7 @@ function openContactSoundSettings(){
   $('contact-send-sound-delete').addEventListener('click',function(){contact.soundSettings.sendSound='';$('contact-send-sound-info').textContent='未设置';$('contact-send-sound-play').style.display='none';$('contact-send-sound-stop').style.display='none';$('contact-send-sound-delete').style.display='none';$('contact-send-sound-btn').style.display='inline-block';toast('音效已删除')});
   
   $('contact-recv-sound-btn').addEventListener('click',function(){$('contact-recv-sound-input').click()});
+  $('contact-recv-sound-btn').addEventListener('touchend',function(e){e.preventDefault();$('contact-recv-sound-input').click()});
   $('contact-recv-sound-input').addEventListener('change',function(e){
     var file=e.target.files[0];if(!file)return;
     var reader=new FileReader();
@@ -18690,6 +18724,7 @@ function openContactSoundSettings(){
   $('contact-recv-sound-delete').addEventListener('click',function(){contact.soundSettings.recvSound='';$('contact-recv-sound-info').textContent='未设置';$('contact-recv-sound-play').style.display='none';$('contact-recv-sound-stop').style.display='none';$('contact-recv-sound-delete').style.display='none';$('contact-recv-sound-btn').style.display='inline-block';toast('音效已删除')});
   
   $('contact-ringtone-upload-btn').addEventListener('click',function(){$('contact-ringtone-input').click()});
+  $('contact-ringtone-upload-btn').addEventListener('touchend',function(e){e.preventDefault();$('contact-ringtone-input').click()});
   $('contact-ringtone-input').addEventListener('change',function(e){
     var file=e.target.files[0];if(!file)return;
     var reader=new FileReader();
@@ -18737,7 +18772,7 @@ function openContactSoundSettings(){
 if($('close-contact-sound'))$('close-contact-sound').addEventListener('click',function(){saveC();hideOv('ov-contact-sound');toast('音效设置已保存')});
 if($('sound-volume'))$('sound-volume').addEventListener('input',function(){soundSettings.volume=parseInt(this.value);$('sound-volume-val').textContent=this.value+'%';saveSoundSettings()});
 
-if($('send-sound-btn'))$('send-sound-btn').addEventListener('click',function(){$('send-sound-input').click()});
+if($('send-sound-btn')){$('send-sound-btn').addEventListener('click',function(){$('send-sound-input').click()});$('send-sound-btn').addEventListener('touchend',function(e){e.preventDefault();$('send-sound-input').click()})}
 if($('send-sound-input'))$('send-sound-input').addEventListener('change',function(e){
   var file=e.target.files[0];if(!file)return;
   var reader=new FileReader();
@@ -18748,7 +18783,7 @@ if($('send-sound-input'))$('send-sound-input').addEventListener('change',functio
 if($('send-sound-play'))$('send-sound-play').addEventListener('click',function(){playSound('send')});
 if($('send-sound-delete'))$('send-sound-delete').addEventListener('click',function(){if(confirm('确定删除发送音效？')){soundSettings.sendSound='';saveSoundSettings();syncSoundUI();toast('已删除')}});
 
-if($('recv-sound-btn'))$('recv-sound-btn').addEventListener('click',function(){$('recv-sound-input').click()});
+if($('recv-sound-btn')){$('recv-sound-btn').addEventListener('click',function(){$('recv-sound-input').click()});$('recv-sound-btn').addEventListener('touchend',function(e){e.preventDefault();$('recv-sound-input').click()})}
 if($('recv-sound-input'))$('recv-sound-input').addEventListener('change',function(e){
   var file=e.target.files[0];if(!file)return;
   var reader=new FileReader();
@@ -18759,7 +18794,7 @@ if($('recv-sound-input'))$('recv-sound-input').addEventListener('change',functio
 if($('recv-sound-play'))$('recv-sound-play').addEventListener('click',function(){playSound('recv')});
 if($('recv-sound-delete'))$('recv-sound-delete').addEventListener('click',function(){if(confirm('确定删除接收音效？')){soundSettings.recvSound='';saveSoundSettings();syncSoundUI();toast('已删除')}});
 
-if($('noninstant-sound-btn'))$('noninstant-sound-btn').addEventListener('click',function(){$('noninstant-sound-input').click()});
+if($('noninstant-sound-btn')){$('noninstant-sound-btn').addEventListener('click',function(){$('noninstant-sound-input').click()});$('noninstant-sound-btn').addEventListener('touchend',function(e){e.preventDefault();$('noninstant-sound-input').click()})}
 if($('noninstant-sound-input'))$('noninstant-sound-input').addEventListener('change',function(e){
   var file=e.target.files[0];if(!file)return;
   var reader=new FileReader();
