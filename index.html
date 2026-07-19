@@ -4220,6 +4220,11 @@ var $=function(id){return document.getElementById(id)};
 var bindEvt=function(id,evt,fn){var el=$(id);if(el)el.addEventListener(evt,fn);};
 var chatBgCache={};
 var SELF='user',OTHER='partner',LC='ml2_c',LP='ml2_p',LM='ml2_m_',LD='ml2_d_',LL='ml2_letters',LMOM='ml2_moments',LLIKE='ml2_like_';
+// 全局防误触：跟踪touch移动，滑动超过8px视为滚屏而非点击
+var _tsX=0,_tsY=0,_tsM=false;
+document.addEventListener('touchstart',function(e){_tsX=e.touches[0].clientX;_tsY=e.touches[0].clientY;_tsM=false},{passive:true});
+document.addEventListener('touchmove',function(e){if(Math.abs(e.touches[0].clientX-_tsX)>8||Math.abs(e.touches[0].clientY-_tsY)>8)_tsM=true},{passive:true});
+function isSwipe(){return _tsM;}
 
 function setupKeyboardFix(){
   if(/iPhone|iPad|iPod/i.test(navigator.userAgent)){
@@ -15751,7 +15756,8 @@ function renderLetters(){
   el.innerHTML=filtered.map(function(l){var c=contacts.find(function(x){return x.id===l.fid});
     l.type=l.type||'received';
     var ico=l.type==='sent'?'✉':'📬';
-    var fromText=l.type==='sent'?'寄给 '+ (c?c.name:'神秘人'):'来自 '+ (c?c.name:'神秘人');
+    var senderName=l.senderName||(c?c.name:null)||'神秘人';
+    var fromText=l.type==='sent'?'寄给 '+senderName:'来自 '+senderName;
     var status='';
     if(l.partnerReply)status='<span style="font-size:10px;color:var(--accent);margin-left:4px">↩ 对方已回复</span>';
     else if(l.myReply&&l.type==='received')status='<span style="font-size:10px;color:var(--txt3);margin-left:4px">↪ 已回信</span>';
@@ -15765,8 +15771,8 @@ function openLetter(lid){
   currentLetter=l;
   l.r=true;ls(LL,ll);var c=contacts.find(function(x){return x.id===l.fid});
   l.type=l.type||'received';
-  
-  var fromText=l.type==='sent'?'寄给 '+ (c?c.name:'神秘人'):'来自 '+ (c?c.name:'神秘人');
+  var _sn=l.senderName||(c?c.name:null)||'神秘人';
+  var fromText=l.type==='sent'?'寄给 '+_sn:'来自 '+_sn;
   var html='<div class="lf-head"><div class="lf-title">✉ '+l.tt+'</div><div class="lf-from">'+fromText+' · '+flt(l.tm)+'</div></div>';
   
   if(l.type==='received'){
@@ -15846,7 +15852,7 @@ function maybeGenLetter(){
   var minDelay=getSpeed('ld-write-min',sender.id)*60000;
   var maxDelay=getSpeed('ld-write-max',sender.id)*60000;
   var delay=minDelay+Math.random()*(maxDelay-minDelay);
-  setTimeout(function(){var l={id:'l_'+Date.now(),fid:sender.id,tt:tts[Math.floor(Math.random()*tts.length)],ct:ct,tm:Date.now(),r:false,replied:false,type:'received',myReply:null,partnerReply:null};var ll=ls(LL)||[];ll.unshift(l);if(ll.length>20)ll=ll.slice(0,20);ls(LL,ll);if(isLFAvailable()){try{window.localforage.setItem(LL,ll)}catch(e){}}updateBadges();renderLetters()},delay);
+  setTimeout(function(){var ll=ls(LL)||[];var l={id:'l_'+Date.now(),fid:sender.id,senderName:sender.name,tt:tts[Math.floor(Math.random()*tts.length)],ct:ct,tm:Date.now(),r:false,replied:false,type:'received',myReply:null,partnerReply:null};ll.unshift(l);if(ll.length>20)ll=ll.slice(0,20);ls(LL,ll);if(isLFAvailable()){try{window.localforage.setItem(LL,ll)}catch(e){}}updateBadges();renderLetters()},delay);
 }
 function showReplyInput(){
   $('reply-section').style.display='flex';
@@ -16010,8 +16016,9 @@ function bindMyPageEvents(){
     var el=$(item[0]);
     if(el){
       el.addEventListener('click',item[1]);
-      // 移动端同时绑定 touchend 确保可靠触发
+      // 移动端同时绑定 touchend，检测滑动防误触
       el.addEventListener('touchend',function(e){
+        if(isSwipe())return;
         e.preventDefault();
         e.stopPropagation();
         item[1]();
