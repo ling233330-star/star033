@@ -892,6 +892,10 @@ canvas{-webkit-backface-visibility:hidden;backface-visibility:hidden;-webkit-tra
   .sheet{padding-bottom:env(safe-area-inset-bottom)}
   .sf{padding-bottom:calc(env(safe-area-inset-bottom) + 16px)}
   .my-row{min-height:44px}
+  .chat-more-label{font-size:11px}
+  .chat-more-icon{font-size:20px}
+  .chat-more-cat-items{gap:6px}
+  .chat-more-item{padding:10px 4px}
   .chat-more-panel{padding-bottom:env(safe-area-inset-bottom)}
   .emoji-items-container{gap:8px}
   .mr{gap:12px;margin-bottom:14px}
@@ -903,6 +907,8 @@ canvas{-webkit-backface-visibility:hidden;backface-visibility:hidden;-webkit-tra
   #long-screenshot-bar button{min-height:44px;min-width:44px;padding:8px 14px;font-size:13px}
   #fav-msg-bar{bottom:56px;padding:10px 14px}
   #fav-msg-bar button{min-height:44px;min-width:44px;padding:8px 14px;font-size:13px}
+  #copy-msg-bar{bottom:56px;padding:10px 14px}
+  #copy-msg-bar button{min-height:44px;min-width:44px;padding:8px 14px;font-size:13px}
   .overlay.show{animation:fadeIn .15s ease}
   .sheet{animation:su .15s ease}
 }
@@ -919,6 +925,7 @@ canvas{-webkit-backface-visibility:hidden;backface-visibility:hidden;-webkit-tra
   .message-sticker{max-width:90px;max-height:90px}
   #long-screenshot-bar button{min-height:44px;padding:6px 12px;font-size:12px}
   #fav-msg-bar button{min-height:44px;padding:6px 12px;font-size:12px}
+  #copy-msg-bar button{min-height:44px;padding:6px 12px;font-size:12px}
   /* Card library extra small */
   .card-category-tab{padding:5px 8px;font-size:10px}
   .card-item .ctt{font-size:11px}
@@ -2044,6 +2051,9 @@ canvas{-webkit-backface-visibility:hidden;backface-visibility:hidden;-webkit-tra
     <div id="ta-highlights-contact-select-wrap" style="margin-bottom:16px;display:flex;gap:8px;overflow-x:auto;padding-bottom:4px;"></div>
     <div id="ta-highlights-full-content"></div>
   </div>
+  <div style="padding:16px;border-top:1px solid var(--border);">
+    <button class="btn-primary" onclick="summonTAHighlight()" style="width:100%;">🔮 召唤划重点</button>
+  </div>
   <div class="tabs"></div>
 </div>
 
@@ -2207,6 +2217,7 @@ canvas{-webkit-backface-visibility:hidden;backface-visibility:hidden;-webkit-tra
       <div class="my-row" id="settings-btn"><span class="my-ico">📖</span><span class="my-label">聊天字卡库</span><span style="color:var(--txt3)">›</span></div>
       <div class="my-row" id="call-settings-btn"><span class="my-ico">📞</span><span class="my-label">通话设置</span><span style="color:var(--txt3)">›</span></div>
       <div class="my-row" id="reply-settings-btn"><span class="my-ico">💬</span><span class="my-label">回复设置</span><span style="color:var(--txt3)">›</span></div>
+      <div class="my-row" id="dnd-settings-btn"><span class="my-ico">🌙</span><span class="my-label">免打扰模式</span><span style="color:var(--txt3)">›</span></div>
       <div class="my-row" id="import-data-btn" style="cursor:pointer;-webkit-tap-highlight-color:transparent;"><span class="my-ico">📥</span><span class="my-label">导入数据</span><span style="color:var(--txt3)">›</span></div>
       <div class="my-row" id="export-data-btn"><span class="my-ico">📤</span><span class="my-label">导出数据</span><span style="color:var(--txt3)">›</span></div>
 
@@ -2234,6 +2245,37 @@ canvas{-webkit-backface-visibility:hidden;backface-visibility:hidden;-webkit-tra
       <div class="my-row" id="reply-letter-btn"><span class="my-ico">✉️</span><span class="my-label">信箱</span><span style="color:var(--txt3)">›</span></div>
       <div class="my-row" id="reply-noninstant-btn"><span class="my-ico">🕐</span><span class="my-label">非即时传讯</span><span style="color:var(--txt3)">›</span></div>
     </div>
+  </div>
+  <div class="tabs"></div>
+</div>
+
+<!-- DND Settings Page -->
+<div class="page" id="pg-dnd-settings">
+  <div class="nav">
+    <div class="nl"><button class="btn-nav" onclick="showPg('pg-my')">←</button></div>
+    <span class="tt">🌙 免打扰模式</span>
+    <div class="nr"></div>
+  </div>
+  <div style="flex:1;overflow-y:auto;padding:16px;">
+    <div style="margin-bottom:24px;padding:16px;background:var(--c2);border-radius:12px;">
+      <div style="font-size:16px;font-weight:600;color:var(--txt);margin-bottom:8px;">什么是免打扰模式？</div>
+      <div style="font-size:13px;color:var(--txt2);line-height:1.6;">开启免打扰模式后，所有联系人的主动发消息频率会降低。最短等待1秒，最长等待3小时，触发概率降至30%。适合你忙碌时不想被频繁打扰的情况。</div>
+    </div>
+    <div style="margin-bottom:20px;">
+      <div class="set-row"><span>开启免打扰</span><label class="tsw"><input type="checkbox" id="dnd-en-page"><span class="sl"></span></label></div>
+    </div>
+    <div style="margin-bottom:20px;padding:12px;background:rgba(255,230,230,0.3);border-radius:8px;">
+      <div style="font-size:12px;color:#ff4d4f;line-height:1.5;">
+        ⚠️ 注意：开启后，联系人的主动发消息设置将暂时失效，改为：<br>
+        • 最短等待：1秒<br>
+        • 最长等待：3小时<br>
+        • 触发概率：30%<br>
+        • 主动消息条数：1条
+      </div>
+    </div>
+  </div>
+  <div style="padding:16px;border-top:1px solid var(--border);">
+    <button class="btn-primary" onclick="saveDndSettings()" style="width:100%;">保存设置</button>
   </div>
   <div class="tabs"></div>
 </div>
@@ -2412,6 +2454,7 @@ canvas{-webkit-backface-visibility:hidden;backface-visibility:hidden;-webkit-tra
       <span id="long-screenshot-count" style="font-size:13px;color:var(--txt2);">已选 0 条</span>
       <div style="display:flex;gap:8px;">
         <button onclick="selectAllLongScreenshot()" style="font-size:12px;padding:6px 14px;border:1px solid var(--border);border-radius:16px;background:var(--c2);color:var(--txt);cursor:pointer;">全选/取消</button>
+        <button onclick="selectAllLongScreenshot('today')" style="font-size:12px;padding:6px 14px;border:1px solid var(--border);border-radius:16px;background:var(--c2);color:var(--txt);cursor:pointer;">今天</button>
         <button onclick="generateLongScreenshot()" style="font-size:12px;padding:6px 14px;border:none;border-radius:16px;background:var(--accent);color:#fff;cursor:pointer;">生成</button>
         <button onclick="cancelLongScreenshot()" style="font-size:12px;padding:6px 14px;border:1px solid var(--border);border-radius:16px;background:var(--c2);color:var(--txt);cursor:pointer;">取消</button>
       </div>
@@ -2424,6 +2467,17 @@ canvas{-webkit-backface-visibility:hidden;backface-visibility:hidden;-webkit-tra
         <button onclick="selectAllFavMsg()" style="font-size:12px;padding:6px 14px;border:1px solid var(--border);border-radius:16px;background:var(--c2);color:var(--txt);cursor:pointer;">全选/取消</button>
         <button onclick="confirmFavMsgs()" style="font-size:12px;padding:6px 14px;border:none;border-radius:16px;background:var(--accent);color:#fff;cursor:pointer;">⭐ 收藏</button>
         <button onclick="cancelFavMsgMode()" style="font-size:12px;padding:6px 14px;border:1px solid var(--border);border-radius:16px;background:var(--c2);color:var(--txt);cursor:pointer;">取消</button>
+      </div>
+    </div>
+  </div>
+  <div id="copy-msg-bar" style="display:none;position:fixed;bottom:60px;left:0;right:0;z-index:1000;background:rgba(255,255,255,0.97);border-top:1px solid var(--border);padding:12px 16px;box-shadow:0 -2px 10px rgba(0,0,0,0.1);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);">
+    <div style="display:flex;align-items:center;justify-content:space-between;">
+      <span id="copy-msg-count" style="font-size:13px;color:var(--txt2);">已选 0 条</span>
+      <div style="display:flex;gap:8px;">
+        <button onclick="selectAllCopyMsg()" style="font-size:12px;padding:6px 14px;border:1px solid var(--border);border-radius:16px;background:var(--c2);color:var(--txt);cursor:pointer;">全选/取消</button>
+        <button onclick="selectAllCopyMsg('today')" style="font-size:12px;padding:6px 14px;border:1px solid var(--border);border-radius:16px;background:var(--c2);color:var(--txt);cursor:pointer;">今天</button>
+        <button onclick="confirmCopyMsg()" style="font-size:12px;padding:6px 14px;border:none;border-radius:16px;background:var(--accent);color:#fff;cursor:pointer;">📋 复制</button>
+        <button onclick="cancelCopyMsg()" style="font-size:12px;padding:6px 14px;border:1px solid var(--border);border-radius:16px;background:var(--c2);color:var(--txt);cursor:pointer;">取消</button>
       </div>
     </div>
   </div>
@@ -4389,6 +4443,12 @@ var Storage = (function(){
       catch(e){ cache[k] = lsVal; return lsVal; }
     }
     
+    var directVal = safeGetItem(k);
+    if(directVal !== null){
+      try{ var parsed = JSON.parse(directVal); cache[k] = parsed; return parsed; }
+      catch(e){ cache[k] = directVal; return directVal; }
+    }
+    
     return null;
   }
   
@@ -4967,26 +5027,50 @@ function msgs(id){
     }
     if(x.img&&typeof x.img==='string'&&x.img.startsWith('ml2_msg_img_')){
       var imgCached=memoryCache['_img_'+x.img];
-      if(imgCached){x.img=imgCached;}else if(isLFAvailable()){
-        window.localforage.getItem(x.img).then(function(imgData){
-          if(imgData){memoryCache['_img_'+x.img]=imgData;x.img=imgData;renderMsgs(msgs(cid));}
-        }).catch(function(){});
+      if(imgCached){
+        x.img=imgCached;
+      }else{
+        var lsImg=safeGetItem(x.img);
+        if(lsImg){
+          memoryCache['_img_'+x.img]=lsImg;
+          x.img=lsImg;
+        }else if(isLFAvailable()){
+          window.localforage.getItem(x.img).then(function(imgData){
+            if(imgData){memoryCache['_img_'+x.img]=imgData;x.img=imgData;renderMsgs(msgs(cid));}
+          }).catch(function(){});
+        }
       }
     }
     if(x.originalImg&&typeof x.originalImg==='string'&&x.originalImg.startsWith('ml2_msg_img_')){
       var cachedOrig=memoryCache['_img_'+x.originalImg];
-      if(cachedOrig){x.originalImg=cachedOrig;}else if(isLFAvailable()){
-        window.localforage.getItem(x.originalImg).then(function(imgData){
-          if(imgData){memoryCache['_img_'+x.originalImg]=imgData;x.originalImg=imgData;renderMsgs(msgs(cid));}
-        }).catch(function(){});
+      if(cachedOrig){
+        x.originalImg=cachedOrig;
+      }else{
+        var lsOrig=safeGetItem(x.originalImg);
+        if(lsOrig){
+          memoryCache['_img_'+x.originalImg]=lsOrig;
+          x.originalImg=lsOrig;
+        }else if(isLFAvailable()){
+          window.localforage.getItem(x.originalImg).then(function(imgData){
+            if(imgData){memoryCache['_img_'+x.originalImg]=imgData;x.originalImg=imgData;renderMsgs(msgs(cid));}
+          }).catch(function(){});
+        }
       }
     }
     if(x.voice&&typeof x.voice==='string'&&x.voice.startsWith('ml2_msg_voice_')){
       var cachedVoice=memoryCache['_img_'+x.voice];
-      if(cachedVoice){x.voice=cachedVoice;}else if(isLFAvailable()){
-        window.localforage.getItem(x.voice).then(function(vData){
-          if(vData){memoryCache['_img_'+x.voice]=vData;x.voice=vData;renderMsgs(msgs(cid));}
-        }).catch(function(){});
+      if(cachedVoice){
+        x.voice=cachedVoice;
+      }else{
+        var lsVoice=safeGetItem(x.voice);
+        if(lsVoice){
+          memoryCache['_img_'+x.voice]=lsVoice;
+          x.voice=lsVoice;
+        }else if(isLFAvailable()){
+          window.localforage.getItem(x.voice).then(function(vData){
+            if(vData){memoryCache['_img_'+x.voice]=vData;x.voice=vData;renderMsgs(msgs(cid));}
+          }).catch(function(){});
+        }
       }
     }
   });
@@ -5197,6 +5281,11 @@ function showPg(id){
   if(currentPage==='pg-conv'&&cid&&$('msg-inp')){
     sessionStorage.setItem('msg-inp-'+cid,$('msg-inp').value);
   }
+  if(currentPage==='pg-conv'&&id!=='pg-conv'){
+    if(longScreenshotMode)cancelLongScreenshot();
+    if(favMsgMode)cancelFavMsgMode();
+    if(copyMsgMode)cancelCopyMsg();
+  }
   currentPage=id;
   
   document.querySelectorAll('.overlay.show').forEach(function(o){
@@ -5341,7 +5430,7 @@ function getLastMsgSummary(id){
     if(last){
       var ts=last.ts instanceof Date?last.ts:new Date(last.ts);
       return {
-        content:last.retracted?'对方撤回了一条消息':(last.isTouch?function(){var _htCP=_globalHideTouchNames[last.s===SELF?cid:last.senderId]===true;var _ts=last.s===SELF?'我':'';var _tt=last.touchTarget||'';if(_htCP&&last.s!==SELF)_tt='我';return _ts+' '+last.touchAction.replace('你',_tt)}():last.t?last.t:(last.img?'[图片]':(last.voice?'[语音]':''))),
+        content:last.retracted?'对方撤回了一条消息':(last.isTouch?function(){var _htCP=_globalHideTouchNames[last.s===SELF?cid:last.senderId]===true;var _ts=last.s===SELF?'我':'';var _tt=last.touchTarget||'';if(_htCP&&last.s!==SELF)_tt='我';return _ts+' '+last.touchAction.replace('你',_tt)}():last.voice?'[语音]':(last.img?'[图片]':(last.t?last.t:''))),
         time:ts,
         unread:m.filter(function(msg){return msg.s!==SELF&&!msg.read&&!msg.isTouch&&!msg.isSystem}).length
       };
@@ -6642,8 +6731,11 @@ function renderMsgs(messages){
     }else if(favMsgMode&&!x.retracted&&(x.t||x.img||x.isTouch||x.voice)){
       var isFavChecked=selectedFavMsgIds.indexOf(x.id)>=0;
       ssCheckboxHtml='<div class="ss-check-wrap"><input type="checkbox" '+(isFavChecked?'checked':'')+' onclick="event.stopPropagation();toggleFavMsg(\''+x.id+'\')" style="width:16px;height:16px;cursor:pointer;accent-color:var(--accent);"></div>';
+    }else if(copyMsgMode&&!x.retracted&&(x.t||x.isTouch)){
+      var isCopyChecked=selectedCopyMsgIds.indexOf(x.id)>=0;
+      ssCheckboxHtml='<div class="ss-check-wrap"><input type="checkbox" '+(isCopyChecked?'checked':'')+' onclick="event.stopPropagation();toggleCopyMsg(\''+x.id+'\')" style="width:16px;height:16px;cursor:pointer;accent-color:var(--accent);"></div>';
     }
-    html.push('<div class="mr'+((longScreenshotMode||favMsgMode)?' mr-ss':'')+' '+(x.s===SELF?'self':'other')+(gap?' has-gap':'')+(x.retracted?' retracted':'')+'" data-mid="'+x.id+'" data-liked="'+isLiked+'">'+ssCheckboxHtml+avatarHtml+'<div class="mc">'+senderNameHtml+starHtml+'<div class="mb">'+quoteHtml+contentHtml+bubbleTimeHtml+actionsHtml+'</div>'+readIgnoredHtml+'</div></div>');
+    html.push('<div class="mr'+((longScreenshotMode||favMsgMode||copyMsgMode)?' mr-ss':'')+' '+(x.s===SELF?'self':'other')+(gap?' has-gap':'')+(x.retracted?' retracted':'')+'" data-mid="'+x.id+'" data-liked="'+isLiked+'">'+ssCheckboxHtml+avatarHtml+'<div class="mc">'+senderNameHtml+starHtml+'<div class="mb">'+quoteHtml+contentHtml+bubbleTimeHtml+actionsHtml+'</div>'+readIgnoredHtml+'</div></div>');
     lt=d.getTime();
   }
   
@@ -7510,6 +7602,7 @@ function genReply(targetId){
         trackCardUsageStats(senderId,vrc2.id);trackCardUsageLog(senderId,vrc2.id);
         voiceSrc=vrc2.content;
         voiceText=vrc2.voiceText||'';
+        reply='';
       }
       if(!reply&&!imgSrc&&!voiceSrc)reply='请在字卡库里上传字卡后开始聊天';
     }
@@ -7534,9 +7627,9 @@ function genReply(targetId){
   if(document.visibilityState !== 'visible'){
     var item=contacts.find(function(x){return x.id===targetId})||group;
     var msgText='';
-    if(reply){msgText=reply;}
-    else if(voiceSrc){msgText='[语音]';}
+    if(voiceSrc){msgText='[语音]';}
     else if(imgSrc){msgText='[图片]';}
+    else if(reply){msgText=reply;}
     else{msgText='[表情]';}
     showPushNotification(item?item.name:'联系人',msgText,(item&&item.avatar)?item.avatar:'',targetId);
   }
@@ -7673,6 +7766,7 @@ function sendCardMsg(cardId){
   scheduleReply();
   playSound('send',cid);
   haptic('light');
+  simulateTAFavorite();
   
   // Track card usage stats
   trackCardUsageStats(cid, cardId);
@@ -7691,6 +7785,7 @@ function sendImage(imgSrc){
   hideOv('ov-emoji');
   replyingToMsg=null;
   $('quote-preview').style.display='none';
+  simulateTAFavorite();
 }
 var chatSearchTimer=null;
 if($('search-chat-input'))$('search-chat-input').addEventListener('input',function(){
@@ -8118,6 +8213,13 @@ function startCallDuration(){
     
     if(minutes>=80){
       endCall('hangup_by_contact',currentCall.duration);
+      return;
+    }
+    
+    var hangupProb=callSettings.hangupProbability;
+    if(hangupProb===undefined||hangupProb===null)hangupProb=30;
+    if(Math.random()*100<hangupProb){
+      endCall('hangup_by_contact',currentCall.duration);
     }
   },1000);
 }
@@ -8305,7 +8407,10 @@ function startDrag(e){
   // 如果正在切换页面或点击其他按钮，不启动拖拽
   if(e.target&&e.target.closest){
     var target=e.target.closest('button, .btn-nav, .tab, .citem, .overlay, .sheet, .sh, .sb');
-    if(target)return;
+    if(target){
+      e.stopPropagation();
+      return;
+    }
   }
   isDragging=true;
   hasMoved=false;
@@ -13098,7 +13203,7 @@ function saveSpeedSettings(){
   Object.keys(speedSettings).forEach(function(k){
     var m=speedSettings[k];
     var el;
-    if(k==='py-en'||k==='star-en'||k==='enter-send'||k==='as-en'){
+    if(k==='py-en'||k==='star-en'||k==='enter-send'||k==='as-en'||k==='dnd-en'){
       el=$(m.val);
       if(el)s[m.key]=el.checked?1:0;
     }else{
@@ -13113,7 +13218,7 @@ function saveSpeedSettings(){
     Object.keys(speedSettings).forEach(function(k){
       var m=speedSettings[k];
       var el;
-      if(k==='py-en'||k==='star-en'||k==='enter-send'||k==='as-en'){
+      if(k==='py-en'||k==='star-en'||k==='enter-send'||k==='as-en'||k==='dnd-en'){
         el=$(m.val);
         if(el)s.contacts[contactId][m.key]=el.checked?1:0;
       }else{
@@ -13126,7 +13231,22 @@ function saveSpeedSettings(){
   ls('ml2_speed',s);
   toast('设置已保存');
 }
-function syncSpeedUI(){var contactSelect=$('speed-contact-select')||$('letter-contact-select');var contactId=contactSelect?contactSelect.value:null;Object.keys(speedSettings).forEach(function(k){var m=speedSettings[k];if(k==='py-en'||k==='star-en'||k==='enter-send'||k==='as-en'){var el=$(m.val);if(el)el.checked=getSpeed(k,contactId)===1}else{var el=document.getElementById(m.val);if(el)el.value=getSpeed(k,contactId)}})}
+function syncSpeedUI(){var contactSelect=$('speed-contact-select')||$('letter-contact-select');var contactId=contactSelect?contactSelect.value:null;Object.keys(speedSettings).forEach(function(k){var m=speedSettings[k];if(k==='py-en'||k==='star-en'||k==='enter-send'||k==='as-en'||k==='dnd-en'){var el=$(m.val);if(el)el.checked=getSpeed(k,contactId)===1}else{var el=document.getElementById(m.val);if(el)el.value=getSpeed(k,contactId)}})}
+function openDndSettings(){
+  var dndEn=getSpeed('dnd-en',null);
+  var el=$('dnd-en-page');
+  if(el)el.checked=dndEn===1;
+  showPg('pg-dnd-settings');
+}
+function saveDndSettings(){
+  var el=$('dnd-en-page');
+  var dndEn=el?el.checked?1:0:0;
+  var s=ls('ml2_speed')||{contacts:{}};
+  s.dnd_en=dndEn;
+  ls('ml2_speed',s);
+  if(isLFAvailable())localforage.setItem('ml2_speed',s).catch(function(){});
+  toast(dndEn===1?'已开启免打扰模式':'已关闭免打扰模式');
+}
 function populateContactSelect(selectId){var sel=$(selectId);if(!sel)return;sel.innerHTML='';contacts.forEach(function(c){var opt=document.createElement('option');opt.value=c.id;opt.textContent=c.name;sel.appendChild(opt)});}
 function openSpeedSettings(){populateContactSelect('speed-contact-select');if(contacts.length>0){$('speed-contact-select').value=contacts[0].id}syncSpeedUI();showOv('ov-speed')}
 function showLetterSettings(){populateContactSelect('letter-contact-select');if(contacts.length>0){$('letter-contact-select').value=contacts[0].id}syncSpeedUI();showOv('ov-letter-settings')}
@@ -15270,8 +15390,8 @@ function renderEnvInboxList(){
 
 function renderEnvOutboxList(){
   var ll=ls(LL)||[];
-  try{var localStored=safeGetItem('ml2_lf_'+LL);if(localStored){var lfData=JSON.parse(localStored);if(lfData&&Array.isArray(lfData))lfData.forEach(function(l){if(l&&l.type==='sent'){var exists=ll.find(function(x){return x.id===l.id});if(!exists)ll.push(l)}})}}catch(e){}
-  var outboxLetters=filterLettersByContact(ll.filter(function(l){return l&&l.type==='sent'}));
+  try{var localStored=safeGetItem('ml2_lf_'+LL);if(localStored){var lfData=JSON.parse(localStored);if(lfData&&Array.isArray(lfData))lfData.forEach(function(l){if(l&&(l.type==='sent'||(l.type==='received'&&l.replied))){var exists=ll.find(function(x){return x.id===l.id});if(!exists)ll.push(l)}})}}catch(e){}
+  var outboxLetters=filterLettersByContact(ll.filter(function(l){return l&&(l.type==='sent'||(l.type==='received'&&l.replied))}));
   
   var list=$('env-outbox-list');
   if(!list)return;
@@ -15666,6 +15786,7 @@ function bindMyPageEvents(){
     ['touch-settings-btn',openTouchSettings],
     ['settings-btn',openCardSettings],
     ['reply-settings-btn',openReplySettings],
+    ['dnd-settings-btn',openDndSettings],
     ['sound-btn',openSoundSettings],
     ['export-data-btn',exportData],
 
@@ -19789,7 +19910,7 @@ function simulateTAHighlightSelect(contactId){
   var count=minCount+Math.floor(Math.random()*(maxCount-minCount+1));
   count=Math.min(count,allMsgs.length);
 
-  if(!taHighlightsSelected[contactId])taHighlightsSelected[contactId]={};
+  taHighlightsSelected[contactId]={};
   var pool=allMsgs.slice();
   for(var i=0;i<count;i++){
     var idx=Math.floor(Math.random()*pool.length);
@@ -20212,7 +20333,7 @@ function handleChatMoreAction(action){
         showTAFavorites();
         break;
       case 'copy_msg':
-        showCopyMsgModal();
+        showCopyMsg();
         break;
       case 'fav_msg':
         showFavMsgModal();
@@ -20649,6 +20770,7 @@ function showFavMsgModal(){
   if(!cid){toast('请先选择对话');return}
   showChatPage();
   if(longScreenshotMode)cancelLongScreenshot();
+  if(copyMsgMode)cancelCopyMsg();
   favMsgMode=true;
   selectedFavMsgIds=[];
   var bar=$('fav-msg-bar');
@@ -21438,6 +21560,8 @@ function debounceApplyChatSettings(){
     entity.chatSettings.navStatusColor=$('nav-status-color').value;
     entity.chatSettings.timelineFontSize=parseInt($('timeline-font-size-slider').value);
     
+    saveC();
+    if(groups.find(function(x){return x.id===entity.id}))ls('ml2_groups',groups);
     applyChatSettings(entity);
     renderMsgs();
   },300);
@@ -23886,6 +24010,126 @@ function trackCardUsageLog(contactId,cardId){
   saveCardUsageLog(log);
 }
 
+// ---------- Copy Message Mode ----------
+var copyMsgMode=false;
+var selectedCopyMsgIds=[];
+
+function showCopyMsg(){
+  if(!cid){toast('请先选择对话');return}
+  showChatPage();
+  if(longScreenshotMode)cancelLongScreenshot();
+  if(favMsgMode)cancelFavMsgMode();
+  copyMsgMode=true;
+  selectedCopyMsgIds=[];
+  var bar=$('copy-msg-bar');
+  if(bar)bar.style.display='block';
+  updateCopyMsgCount();
+  var m=msgs(cid);
+  if(m)renderMsgs(m);
+  var box=$('msgbox');
+  if(box)requestAnimationFrame(function(){box.scrollTop=box.scrollHeight});
+  toast('点击消息旁的复选框勾选要复制的消息');
+}
+
+function toggleCopyMsg(msgId){
+  var index=selectedCopyMsgIds.indexOf(msgId);
+  if(index>=0){
+    selectedCopyMsgIds.splice(index,1);
+  }else{
+    selectedCopyMsgIds.push(msgId);
+  }
+  updateCopyMsgCount();
+}
+
+function selectAllCopyMsg(filterType){
+  var m=msgs(cid);
+  if(!m||!m.length)return;
+  
+  var selectableMsgs=m.filter(function(msg){
+    return !msg.retracted&&(msg.t||msg.isTouch);
+  });
+  
+  if(filterType==='today'){
+    var today=new Date();
+    today.setHours(0,0,0,0);
+    var todayMs=today.getTime();
+    selectableMsgs=selectableMsgs.filter(function(msg){
+      var ts=msg.ts?new Date(msg.ts).getTime():0;
+      return ts>=todayMs;
+    });
+  }
+  
+  var allSelected=selectableMsgs.length>0&&selectedCopyMsgIds.length===selectableMsgs.length;
+  if(allSelected){
+    selectedCopyMsgIds=[];
+  }else{
+    selectedCopyMsgIds=selectableMsgs.map(function(msg){return msg.id});
+  }
+  var m2=msgs(cid);
+  if(m2)renderMsgs(m2);
+  updateCopyMsgCount();
+}
+
+function updateCopyMsgCount(){
+  var countEl=$('copy-msg-count');
+  if(countEl)countEl.textContent='已选 '+selectedCopyMsgIds.length+' 条';
+}
+
+function cancelCopyMsg(){
+  copyMsgMode=false;
+  selectedCopyMsgIds=[];
+  var bar=$('copy-msg-bar');
+  if(bar)bar.style.display='none';
+  var m=msgs(cid);
+  if(m)renderMsgs(m);
+}
+
+function confirmCopyMsg(){
+  if(selectedCopyMsgIds.length===0){
+    toast('请先选择要复制的消息');
+    return;
+  }
+  
+  var m=msgs(cid);
+  if(!m)return;
+  
+  var c=contacts.find(function(x){return x.id===cid})||groups.find(function(x){return x.id===cid});
+  var myName='我';
+  var contactName=c?c.name:'对方';
+  
+  var selectedMsgs=m.filter(function(msg){return selectedCopyMsgIds.indexOf(msg.id)>=0});
+  selectedMsgs.sort(function(a,b){
+    var ats=a.ts?new Date(a.ts).getTime():0;
+    var bts=b.ts?new Date(b.ts).getTime():0;
+    return ats-bts;
+  });
+  
+  var text='';
+  selectedMsgs.forEach(function(msg){
+    var isSelf=msg.s===SELF;
+    var name=isSelf?myName:contactName;
+    if(msg.isTouch){
+      text+=name+' '+msg.touchAction.replace('你',msg.touchTarget||'你')+'\n';
+    }else{
+      text+=name+'：'+msg.t+'\n';
+    }
+  });
+  
+  var textToCopy=text.trim();
+  if(!textToCopy){toast('无可复制的内容');return;}
+  
+  if(navigator.clipboard&&navigator.clipboard.writeText){
+    navigator.clipboard.writeText(textToCopy).then(function(){
+      toast('已复制到剪贴板');
+      cancelCopyMsg();
+    }).catch(function(){
+      fallbackCopy(textToCopy);
+    });
+  }else{
+    fallbackCopy(textToCopy);
+  }
+}
+
 // ---------- Long Screenshot ----------
 var longScreenshotMode=false;
 var longScreenshotSelectedMsgs=[];
@@ -23894,6 +24138,7 @@ function showLongScreenshot(){
   if(!cid){toast('请先选择对话');return}
   showChatPage();
   if(favMsgMode)cancelFavMsgMode();
+  if(copyMsgMode)cancelCopyMsg();
   longScreenshotMode=true;
   longScreenshotSelectedMsgs=[];
   var bar=$('long-screenshot-bar');
@@ -23928,12 +24173,23 @@ function updateLongScreenshotCount(){
   if(countEl)countEl.textContent='已选 '+longScreenshotSelectedMsgs.length+' 条';
 }
 
-function selectAllLongScreenshot(){
+function selectAllLongScreenshot(filterType){
   var box=$('msgbox');
   if(!box)return;
   var m=msgs(cid);
   if(!m||!m.length)return;
   var selectableMsgs=m.filter(function(x){return !x.retracted&&(x.t||x.img||x.isTouch||x.isCall||x.voice)});
+  
+  if(filterType==='today'){
+    var today=new Date();
+    today.setHours(0,0,0,0);
+    var todayMs=today.getTime();
+    selectableMsgs=selectableMsgs.filter(function(msg){
+      var ts=msg.ts?new Date(msg.ts).getTime():0;
+      return ts>=todayMs;
+    });
+  }
+  
   var allSelected=selectableMsgs.length>0&&longScreenshotSelectedMsgs.length===selectableMsgs.length;
   if(allSelected){
     longScreenshotSelectedMsgs=[];
@@ -24251,7 +24507,7 @@ sendMsg=function(){
       <div id="call-mini-time" style="font-size:11px;color:var(--txt3);">00:00</div>
     </div>
   </div>
-  <button id="call-mini-expand-btn" style="background:none;border:none;color:var(--txt3);font-size:18px;cursor:pointer;width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;transition:var(--transition-fast);">-</button>
+  <button id="call-mini-expand-btn" style="background:none;border:none;color:var(--txt3);font-size:18px;cursor:pointer;width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;transition:var(--transition-fast);touch-action:manipulation;-webkit-tap-highlight-color:transparent;z-index:10001;">−</button>
 </div>
 
 
