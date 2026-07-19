@@ -1385,6 +1385,15 @@ canvas{-webkit-backface-visibility:hidden;backface-visibility:hidden;-webkit-tra
         <div class="set-row"><span>主动发朋友圈概率</span><div class="stepper" data-k="moments-friend-post-prob"><button>−</button><input type="number" class="sv" id="moments-friend-post-prob-val" value="5"><button>+</button></div><span style="font-size:12px;color:var(--txt3);margin-left:4px">%</span></div>
         <div class="set-row"><span>最短发布间隔</span><div class="stepper" data-k="moments-min-interval"><button>−</button><input type="number" class="sv" id="moments-min-interval-val" value="60"><button>+</button></div><span style="font-size:12px;color:var(--txt3);margin-left:4px">分钟</span></div>
         <div class="set-row"><span>最长发布间隔</span><div class="stepper" data-k="moments-max-interval"><button>−</button><input type="number" class="sv" id="moments-max-interval-val" value="360"><button>+</button></div><span style="font-size:12px;color:var(--txt3);margin-left:4px">分钟</span></div>
+        <div class="set-row"><span>最少使用字卡条</span><div class="stepper" data-k="moments-min-cards-post"><button>−</button><input type="number" class="sv" id="moments-min-cards-post-val" value="1"><button>+</button></div><span style="font-size:12px;color:var(--txt3);margin-left:4px">条</span></div>
+        <div class="set-row"><span>最多使用字卡条</span><div class="stepper" data-k="moments-max-cards-post"><button>−</button><input type="number" class="sv" id="moments-max-cards-post-val" value="10"><button>+</button></div><span style="font-size:12px;color:var(--txt3);margin-left:4px">条</span></div>
+        <div style="font-size:12px;color:var(--txt2);margin-bottom:4px;margin-top:8px;font-weight:600">可用字卡类别</div>
+        <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:4px;">
+          <label class="tsw" style="display:flex;align-items:center;gap:4px;font-size:13px;"><input type="checkbox" id="moments-use-main-cards" checked><span class="sl"></span> 主字卡</label>
+          <label class="tsw" style="display:flex;align-items:center;gap:4px;font-size:13px;"><input type="checkbox" id="moments-use-kaomoji-cards"><span class="sl"></span> 颜文字</label>
+          <label class="tsw" style="display:flex;align-items:center;gap:4px;font-size:13px;"><input type="checkbox" id="moments-use-emoji-cards"><span class="sl"></span> emoji</label>
+          <label class="tsw" style="display:flex;align-items:center;gap:4px;font-size:13px;"><input type="checkbox" id="moments-use-image-cards" checked><span class="sl"></span> 图片表情</label>
+        </div>
       </div>
       
       <div style="margin-bottom:16px">
@@ -14150,7 +14159,10 @@ var momentsPosts=[],momentsMembers=[],momentsSettings={
   friendCommentFriendSpeedMin:10,friendCommentFriendSpeedMax:60,
   friendCommentFriendCardProbability:50,friendCommentFriendMaxCards:3,
   friendCommentFriendImageProbability:10,friendReplyFriendProbability:15,
-  friendReplyFriendSpeedMin:5,friendReplyFriendSpeedMax:30
+  friendReplyFriendSpeedMin:5,friendReplyFriendSpeedMax:30,
+  // 好友发帖字卡设置
+  minCardsPerPost:1,maxCardsPerPost:10,
+  useMainCards:true,useKaomojiCards:true,useEmojiCards:true,useImageCards:true
 };
 async function loadMomentsData(){
   var savedPosts=await lsGetWithDB('ml2_moments_posts');
@@ -14269,15 +14281,58 @@ function scheduleFriendMoments(){
       
       var member=momentsMembers.find(function(m){return m.id===c.id});
       var cardId=member&&member.contactId?member.contactId:c.id;
-      var contactCards=getContactCards(cardId).filter(function(card){return card.category==='custom'});
-      if(contactCards.length===0)return;
-      var content=contactCards[Math.floor(Math.random()*contactCards.length)].content;
+      var allCards=getContactCards(cardId);
+      
+      // 根据设置筛选可用类别的字卡
+      var pool=[];
+      var s=momentsSettings;
+      var allowedCats=['custom','kaomoji','emoji','stickers'];
+      var enabled=[];
+      if(s.useMainCards!==false)enabled.push('custom');
+      if(s.useKaomojiCards===true)enabled.push('kaomoji');
+      if(s.useEmojiCards===true)enabled.push('emoji');
+      if(s.useImageCards!==false)enabled.push('stickers');
+      if(enabled.length===0)enabled=['custom']; // 至少有一种
+      
+      allCards.forEach(function(card){
+        if(enabled.indexOf(card.category)>=0)pool.push(card);
+      });
+      
+      var minCards=s.minCardsPerPost||1;
+      var maxCards=s.maxCardsPerPost||10;
+      var cardCount=minCards+Math.floor(Math.random()*(maxCards-minCards+1));
+      
+      var selectedCards=[];
+      var poolCopy=pool.slice();
+      for(var ci=0;ci<cardCount&&poolCopy.length>0;ci++){
+        var idx=Math.floor(Math.random()*poolCopy.length);
+        selectedCards.push(poolCopy[idx]);
+        poolCopy.splice(idx,1);
+      }
+      
+      var contentParts=[];
+      var postImages=[];
+      selectedCards.forEach(function(sc){
+        if(sc.category==='stickers'){
+          // 图片表情：作为图片添加到帖子
+          var imgSrc=sc.content||'';
+          if(imgSrc&&imgSrc.startsWith('ml2_card_img_')){
+            var cached=memoryCache['_img_'+imgSrc];
+            if(cached)imgSrc=cached;
+          }
+          postImages.push(imgSrc);
+        }else{
+          // 主字卡/颜文字/emoji：空格分隔
+          contentParts.push(sc.content);
+        }
+      });
+      var content=contentParts.join(' ');
       
       momentsPosts.unshift({
         id:'m_'+Date.now()+'_'+Math.random().toString(36).slice(2,6),
         authorId:c.id,
         content:content,
-        images:[],
+        images:postImages,
         timestamp:Date.now(),
         likes:[],
         comments:[]
@@ -14829,6 +14884,12 @@ function saveMomentsSettings(){
   momentsSettings.friendPostIntervalMax=parseInt($('moments-max-interval-val').value);
   momentsSettings.friendLikeFriendProbability=parseInt($('moments-friend-like-friend-prob-val').value);
   momentsSettings.friendCommentFriendProbability=parseInt($('moments-friend-comment-friend-prob-val').value);
+  momentsSettings.minCardsPerPost=parseInt($('moments-min-cards-post-val').value)||1;
+  momentsSettings.maxCardsPerPost=parseInt($('moments-max-cards-post-val').value)||10;
+  if($('moments-use-main-cards'))momentsSettings.useMainCards=$('moments-use-main-cards').checked;
+  if($('moments-use-kaomoji-cards'))momentsSettings.useKaomojiCards=$('moments-use-kaomoji-cards').checked;
+  if($('moments-use-emoji-cards'))momentsSettings.useEmojiCards=$('moments-use-emoji-cards').checked;
+  if($('moments-use-image-cards'))momentsSettings.useImageCards=$('moments-use-image-cards').checked;
   saveMomentsData();
 }
 
@@ -14856,6 +14917,13 @@ function showMomentsSettings(){
   
   $('moments-friend-like-friend-prob-val').value=s.friendLikeFriendProbability;
   $('moments-friend-comment-friend-prob-val').value=s.friendCommentFriendProbability;
+  
+  $('moments-min-cards-post-val').value=s.minCardsPerPost||1;
+  $('moments-max-cards-post-val').value=s.maxCardsPerPost||10;
+  if($('moments-use-main-cards'))$('moments-use-main-cards').checked=s.useMainCards!==false;
+  if($('moments-use-kaomoji-cards'))$('moments-use-kaomoji-cards').checked=s.useKaomojiCards===true;
+  if($('moments-use-emoji-cards'))$('moments-use-emoji-cards').checked=s.useEmojiCards===true;
+  if($('moments-use-image-cards'))$('moments-use-image-cards').checked=s.useImageCards!==false;
   
   showOv('ov-moments-settings');
 }
@@ -16078,9 +16146,18 @@ var _defaultNavCards=[
 async function seedDefaultNavCards(){
   try{
     var existing=await getNavCards('public',null);
-    if(existing&&existing.length>0)return; // 已有字卡，不覆盖
-    await saveNavCards(_defaultNavCards,'public',null);
-    console.log('[navCards] seeded',_defaultNavCards.length,'default public cards');
+    var added=0;
+    _defaultNavCards.forEach(function(dc){
+      var exists=existing.some(function(c){return c.content===dc.content&&c.category===dc.category});
+      if(!exists){
+        existing.push({content:dc.content,group:dc.group||'默认',category:dc.category});
+        added++;
+      }
+    });
+    if(added>0){
+      await saveNavCards(existing,'public',null);
+      console.log('[navCards] seeded',added,'default public cards');
+    }
   }catch(e){console.warn('seedDefaultNavCards failed:',e);}
 }
 
