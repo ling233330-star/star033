@@ -10737,7 +10737,7 @@ async function saveGlobalCards(){
       if(card.content&&(card.content.startsWith('data:image/')||card.content.startsWith('data:audio/'))){
         var imgKey='ml2_card_img_'+card.id;
         if(isLFAvailable()){
-          await window.localforage.setItem(imgKey,card.content);
+          try{await window.localforage.setItem(imgKey,card.content);}catch(e){console.warn('saveGlobalCards: setItem failed',imgKey,e);}
         }
         safeSetItem(imgKey,card.content);
         memoryCache['_img_'+imgKey]=card.content;
@@ -10855,7 +10855,7 @@ async function exportCardsJSON(){
   }
   
   if(imageLoadPromises.length>0){
-    await Promise.all(imageLoadPromises);
+    await Promise.allSettled(imageLoadPromises);
   }
   
   exportData.globalCards=cardsToExport;
@@ -11048,7 +11048,7 @@ async function importCardsJSON(){
         }
         
         if(savePromises.length>0){
-          await Promise.all(savePromises);
+          await Promise.allSettled(savePromises);
         }
         
         if(importData.cardGroups&&Array.isArray(importData.cardGroups)){
@@ -17041,7 +17041,8 @@ async function exportData(){
         var k=keys[i];
         if(k.startsWith(LM)||k.startsWith(LMNI)){
           try{
-            var msgsData=await window.localforage.getItem(k);
+            var msgsData=null;
+            try{msgsData=await window.localforage.getItem(k);}catch(e){}
             if(typeof msgsData==='string'){
               msgsData=JSON.parse(msgsData);
             }
@@ -17049,7 +17050,7 @@ async function exportData(){
               var msg=msgsData[j];
               if(msg.img&&msg.img.startsWith('ml2_msg_img_')&&!msgImgData[msg.img]){
                 var imgData=null;
-                imgData=await window.localforage.getItem(msg.img);
+                try{imgData=await window.localforage.getItem(msg.img);}catch(e){}
                 if(imgData){
                   msgImgData[msg.img]=imgData;
                   msg.img=imgData;
@@ -17075,7 +17076,7 @@ async function exportData(){
             if(msg.img&&msg.img.startsWith('ml2_msg_img_')&&!msgImgData[msg.img]){
               var imgData=null;
               if(isLFAvailable()){
-                imgData=await window.localforage.getItem(msg.img);
+                try{imgData=await window.localforage.getItem(msg.img);}catch(e){}
               }
               if(imgData){
                 msgImgData[msg.img]=imgData;
@@ -17101,7 +17102,7 @@ async function exportData(){
             bg=bgKey;
           }else{
             if(isLFAvailable()){
-              bg=await window.localforage.getItem(bgKey);
+              try{bg=await window.localforage.getItem(bgKey);}catch(e){}
             }
           }
           if(bg){
@@ -17137,7 +17138,7 @@ async function exportData(){
     if(card.content&&card.content.startsWith('ml2_card_img_')){
       var imgData=null;
       if(isLFAvailable()){
-        imgData=await window.localforage.getItem(card.content);
+        try{imgData=await window.localforage.getItem(card.content);}catch(e){}
       }
       if(imgData){
         cardImages[card.content]=imgData;
@@ -17768,7 +17769,7 @@ async function doImportData(data){
     for(var i=0;i<imgKeys.length;i++){
       var imgk=imgKeys[i];
       if(isLFAvailable()){
-        await localforage.setItem(imgk,data.cardImages[imgk]);
+        try{await localforage.setItem(imgk,data.cardImages[imgk]);}catch(e){console.warn('doImportData: cardImages setItem failed',imgk,e);}
       }
       memoryCache[imgk]=data.cardImages[imgk];
     }
@@ -17780,7 +17781,7 @@ async function doImportData(data){
     for(var i=0;i<voiceKeys.length;i++){
       var vk=voiceKeys[i];
       if(isLFAvailable()){
-        await localforage.setItem(vk,data.voicesData[vk]);
+        try{await localforage.setItem(vk,data.voicesData[vk]);}catch(e){console.warn('doImportData: voicesData setItem failed',vk,e);}
       }
       memoryCache[vk]=data.voicesData[vk];
     }
@@ -17789,13 +17790,15 @@ async function doImportData(data){
   updateProgress('正在导入字卡...',20);
   if(data.globalCards&&Array.isArray(data.globalCards)){
     globalCards=[];
+    var fullCards=[];
     for(var i=0;i<data.globalCards.length;i++){
       var card=data.globalCards[i];
       var cardCopy=Object.assign({},card);
+      fullCards.push(Object.assign({},card));
       if(card.content&&card.content.startsWith('data:image/')){
         var imgKey='ml2_card_img_'+card.id;
         if(isLFAvailable()){
-          await localforage.setItem(imgKey,card.content);
+          try{await localforage.setItem(imgKey,card.content);}catch(e){console.warn('doImportData: globalCard img setItem failed',imgKey,e);}
         }
         cardCopy.content=imgKey;
       }
@@ -17812,8 +17815,11 @@ async function doImportData(data){
     ls('ml2_custom_card_groups',customCardGroups);
   }
   ls('ml2_global_cards',globalCards);
+  if(typeof fullCards!=='undefined'&&fullCards.length>0){
+    safeSetItem('ml2_global_cards_full',fullCards);
+  }
   if(isLFAvailable()){
-    await localforage.setItem('ml2_global_cards',JSON.stringify(globalCards));
+    await localforage.setItem('ml2_global_cards',JSON.stringify(globalCards)).catch(function(e){console.warn('doImportData: global_cards save failed',e);});
   }
   saveCardGroups();
   
@@ -17840,7 +17846,7 @@ async function doImportData(data){
     });
     ls('ml2_card_private_contacts',JSON.stringify(cardPrivateContacts));
     if(isLFAvailable()){
-      await localforage.setItem('ml2_card_private_contacts',JSON.stringify(cardPrivateContacts));
+      await localforage.setItem('ml2_card_private_contacts',JSON.stringify(cardPrivateContacts)).catch(function(e){console.warn('doImportData: card_private_contacts save failed',e);});
     }
   }
   if(data.navDisplayStates)ls('ml2_nav_display_states',data.navDisplayStates);
@@ -17850,7 +17856,7 @@ async function doImportData(data){
   if(data.navCardsPublic&&Array.isArray(data.navCardsPublic)){
     safeSetItem('ml2_lf_ml2_nav_cards_public',data.navCardsPublic);
     if(isLFAvailable()){
-      await localforage.setItem('ml2_nav_cards_public',JSON.stringify(data.navCardsPublic));
+      await localforage.setItem('ml2_nav_cards_public',JSON.stringify(data.navCardsPublic)).catch(function(e){console.warn('doImportData: nav_cards_public save failed',e);});
     }
   }
   // 导入顶部栏字卡（专享）
@@ -17863,7 +17869,7 @@ async function doImportData(data){
         var navPrivKey='ml2_nav_cards_private_'+pnk;
         safeSetItem('ml2_lf_'+navPrivKey,pnv);
         if(isLFAvailable()){
-          await localforage.setItem(navPrivKey,JSON.stringify(pnv));
+          await localforage.setItem(navPrivKey,JSON.stringify(pnv)).catch(function(e){console.warn('doImportData: nav_private save failed',navPrivKey,e);});
         }
       }
     }
@@ -17894,7 +17900,7 @@ async function doImportData(data){
       var bgKey=bgKeys[i];
       var bgData=data.chatBgData[bgKey];
       if(isLFAvailable()){
-        await window.localforage.setItem(bgKey,bgData);
+        try{await window.localforage.setItem(bgKey,bgData);}catch(e){console.warn('doImportData: chatBg setItem failed',bgKey,e);}
       }
       memoryCache[bgKey]=bgData;
       if(i>0&&i%50===0){
@@ -17914,14 +17920,14 @@ async function doImportData(data){
         if(msg.img&&msg.img.length>1024&&msg.img.startsWith('data:image/')){
           var imgKey='ml2_msg_img_'+msg.id;
           if(isLFAvailable()){
-            await localforage.setItem(imgKey,msg.img);
+            try{await localforage.setItem(imgKey,msg.img);}catch(e){console.warn('doImportData: msg img setItem failed',imgKey,e);}
           }
           msg.img=imgKey;
         }
       }
       ls(msgKey,msgsData);
       if(isLFAvailable()){
-        await localforage.setItem(msgKey,msgsData);
+        await localforage.setItem(msgKey,msgsData).catch(function(e){console.warn('doImportData: msgs save failed',msgKey,e);});
       }
       if(i>0&&i%10===0){
         await new Promise(function(r){setTimeout(r,50)});
@@ -18080,7 +18086,7 @@ async function doImportData(data){
     
     for(var i=0;i<savePromises.length;i+=20){
       var batch=savePromises.slice(i,Math.min(i+20,savePromises.length));
-      await Promise.all(batch);
+      await Promise.allSettled(batch);
       await new Promise(function(r){setTimeout(r,50)});
     }
   }
