@@ -4414,7 +4414,8 @@ var Storage = (function(){
       if(!isImgKey){
         var valStr=typeof v==='object'?JSON.stringify(v):String(v);
         // 不再限制大小——safeSetItem 内部有 try-catch 处理配额超限
-        safeSetItem('ml2_lf_'+k, v);
+        var ok=safeSetItem('ml2_lf_'+k, v);
+        try{sessionStorage.setItem('_lastWrite_'+k, Date.now())}catch(e){}
       }
     } else {
       safeSetItem('ml2_lf_'+k, v);
@@ -4442,6 +4443,10 @@ var Storage = (function(){
       catch(e){ cache[k] = directVal; return directVal; }
     }
     
+    // 诊断：关键数据缺失时打日志
+    if(k==='ml2_c'||k==='ml2_nav_cards_public'||k==='ml2_global_cards'){
+      console.warn('[Storage] MISS key:',k,'localStorage ml2_lf_ had:',!!lsVal,'direct had:',!!directVal);
+    }
     return null;
   }
   
@@ -4577,6 +4582,18 @@ var Storage = (function(){
   }
   
   function init(){
+    // 诊断：启动时记录关键存储状态
+    setTimeout(function(){
+      var diag={};
+      ['ml2_c','ml2_nav_cards_public','ml2_global_cards','ml2_moments_posts','ml2_call_settings'].forEach(function(k){
+        var ls=!!safeGetItem('ml2_lf_'+k);
+        var dr=!!safeGetItem(k);
+        var ch=cache.hasOwnProperty(k);
+        diag[k]={localStorage:ls,direct:dr,cache:ch};
+      });
+      console.log('[Storage] init diagnostics:',JSON.stringify(diag));
+    },1000);
+    
     try{
       if(isLFAvailable()){
         window.localforage.getItem('ml2_storage_stats').then(function(val){
@@ -8215,12 +8232,12 @@ function initiateCall(){
   var random=Math.random()*100;
   var status='';
   
-  createCallMessage(contact.id,'calling',0);
+  var callMsgId=createCallMessage(contact.id,'calling',0);
   
   if(random<callSettings.busyProbability){
     status='busy';
     showCallingModal(contact,status);
-    updateCallMessage(contact.id,'calling',status,0);
+    updateCallMessage(contact.id,callMsgId,status,0);
     setTimeout(function(){endCall(status,0)},3000);
     return;
   }
@@ -8228,7 +8245,7 @@ function initiateCall(){
   if(random<callSettings.busyProbability+callSettings.rejectProbability){
     status='rejected';
     showCallingModal(contact,status);
-    updateCallMessage(contact.id,'calling',status,0);
+    updateCallMessage(contact.id,callMsgId,status,0);
     setTimeout(function(){endCall(status,0)},3000);
     return;
   }
@@ -8240,14 +8257,14 @@ function initiateCall(){
     
     setTimeout(function(){
       minimizeCall();
-      updateCallMessage(contact.id,'calling',status,0);
+      updateCallMessage(contact.id,callMsgId,status,0);
     },2000);
     // 注意：挂断概率统一由 startCallDuration() 处理（接听后10秒保护期 + 每30秒检查一次），
     // 此处不再单独设置定时器，避免重复/过早挂断。
   }else{
     status='missed';
     showCallingModal(contact,status);
-    updateCallMessage(contact.id,'calling',status,0);
+    updateCallMessage(contact.id,callMsgId,status,0);
     setTimeout(function(){endCall(status,0)},5000);
   }
 }
