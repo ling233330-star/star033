@@ -8491,73 +8491,7 @@ function updateMiniCallTime(){
   }
 }
 
-var callMiniBarPos=null; // 保存通话小框的拖拽位置
-
-// 小窗拖拽 + 点击展开（移动端兼容，统一处理触摸/鼠标）
-(function(){
-  var bar=$('call-mini-bar');
-  if(!bar)return;
-  var btn=$('call-mini-expand-btn');
-  var dragStarted=false,moved=false,startX=0,startY=0;
-
-  function onDown(e){
-    if(e.target===btn)return; // 按钮由自身点击处理，不触发拖拽
-    dragStarted=true;moved=false;
-    var p=e.touches?e.touches[0]:e;
-    startX=p.clientX;startY=p.clientY;
-    bar.style.cursor='grabbing';
-  }
-  function onMove(e){
-    if(!dragStarted)return;
-    var p=e.touches?e.touches[0]:e;
-    if(Math.abs(p.clientX-startX)>5||Math.abs(p.clientY-startY)>5){
-      moved=true;
-      if(e.cancelable)e.preventDefault();
-      var rect=bar.getBoundingClientRect();
-      var newX=rect.left+(p.clientX-startX);
-      var newY=rect.top+(p.clientY-startY);
-      var maxX=window.innerWidth-bar.offsetWidth-4;
-      var maxY=window.innerHeight-bar.offsetHeight-4;
-      newX=Math.max(4,Math.min(newX,maxX));
-      newY=Math.max(4,Math.min(newY,maxY));
-      bar.style.left=newX+'px';bar.style.top=newY+'px';bar.style.bottom='auto';bar.style.transform='none';
-    }
-  }
-  function onUp(){
-    if(dragStarted){
-      dragStarted=false;
-      bar.style.cursor='grab';
-      if(moved){callMiniBarPos={left:bar.style.left,top:bar.style.top,bottom:bar.style.bottom,transform:bar.style.transform};}
-    }
-  }
-
-  bar.addEventListener('mousedown',onDown);
-  bar.addEventListener('touchstart',onDown,{passive:true});
-  document.addEventListener('mousemove',onMove);
-  document.addEventListener('touchmove',onMove,{passive:false});
-  document.addEventListener('mouseup',onUp);
-  document.addEventListener('touchend',onUp);
-  document.addEventListener('touchcancel',onUp);
-
-  // 点击小窗空白处：展开通话半框
-  bar.addEventListener('click',function(e){
-    if(e.target===btn||moved)return;
-    if(currentCall){bar.style.display='none';showOv('ov-calling');}
-    else{bar.style.display='none';}
-  });
-
-  // 「−」按钮：展开通话半框（与挂断按钮在同一半框内）
-  // 同时绑定 click 与 touchend（移动端可靠），touchend 中 preventDefault 避免重复触发
-  if(btn){
-    var expandMini=function(e){
-      if(e&&e.preventDefault)e.preventDefault();
-      if(currentCall){bar.style.display='none';showOv('ov-calling');}
-      else{bar.style.display='none';}
-    };
-    btn.addEventListener('click',expandMini);
-    btn.addEventListener('touchend',expandMini);
-  }
-})();
+var callMiniBarPos=null; // 保存通话小框的拖拽位置（监听器在脚本3附加，确保小窗DOM已存在）
 
 document.addEventListener('visibilitychange',function(){
   if(!currentCall)return;
@@ -24681,14 +24615,58 @@ sendMsg=function(){
   }
   doRegister();
 
-  // 始终可见的版本角标，方便确认当前运行的是哪一版
-  window.addEventListener('DOMContentLoaded',function(){
-    var badge=document.createElement('div');
-    badge.id='app-version-badge';
-    badge.textContent='星言 v'+APP_VERSION;
-    badge.style.cssText='position:fixed;left:6px;bottom:6px;z-index:99999;font-size:10px;color:var(--txt3,#999);opacity:.5;background:rgba(255,255,255,.6);padding:1px 6px;border-radius:8px;pointer-events:none;';
-    document.body.appendChild(badge);
-  });
+  // 通话小框拖拽 + 「−」按钮（此脚本在 mini-bar DOM 后执行，元素一定存在）
+  (function(){
+    var bar=$('call-mini-bar');
+    var btn=$('call-mini-expand-btn');
+    if(!bar||!btn)return;
+    var dragStarted=false,moved=false,startX=0,startY=0;
+    function onDown(e){
+      if(e.target===btn)return;
+      dragStarted=true;moved=false;
+      var p=e.touches?e.touches[0]:e;
+      startX=p.clientX;startY=p.clientY;
+      bar.style.cursor='grabbing';
+    }
+    function onMove(e){
+      if(!dragStarted)return;
+      var p=e.touches?e.touches[0]:e;
+      if(Math.abs(p.clientX-startX)>5||Math.abs(p.clientY-startY)>5){
+        moved=true;
+        if(e.cancelable)e.preventDefault();
+        var rect=bar.getBoundingClientRect();
+        bar.style.left=(Math.max(4,Math.min(rect.left+(p.clientX-startX),window.innerWidth-bar.offsetWidth-4)))+'px';
+        bar.style.top=(Math.max(4,Math.min(rect.top+(p.clientY-startY),window.innerHeight-bar.offsetHeight-4)))+'px';
+        bar.style.bottom='auto';bar.style.transform='none';
+      }
+    }
+    function onUp(){
+      if(dragStarted){
+        dragStarted=false;
+        bar.style.cursor='grab';
+        if(moved)callMiniBarPos={left:bar.style.left,top:bar.style.top,bottom:bar.style.bottom,transform:bar.style.transform};
+      }
+    }
+    bar.addEventListener('mousedown',onDown);
+    bar.addEventListener('touchstart',onDown,{passive:true});
+    document.addEventListener('mousemove',onMove);
+    document.addEventListener('touchmove',onMove,{passive:false});
+    document.addEventListener('mouseup',onUp);
+    document.addEventListener('touchend',onUp);
+    document.addEventListener('touchcancel',onUp);
+    bar.addEventListener('click',function(e){
+      if(e.target===btn||moved)return;
+      if(currentCall){bar.style.display='none';showOv('ov-calling');}
+      else{bar.style.display='none';}
+    });
+    var expandMini=function(e){
+      if(e&&e.preventDefault)e.preventDefault();
+      if(currentCall){bar.style.display='none';showOv('ov-calling');}
+      else{bar.style.display='none';}
+    };
+    btn.addEventListener('click',expandMini);
+    btn.addEventListener('touchend',expandMini);
+  })();
 })();
 
 // 积压通知队列（SW 未就绪时暂存）
