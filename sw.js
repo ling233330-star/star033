@@ -1,4 +1,6 @@
 // 星言 PWA Service Worker - v1.1.1
+// 策略：不缓存 HTML/导航请求，始终从网络获取最新页面（避免旧版缓存导致看不到更新/数据异常）
+// 仅用于接收主页面消息并弹出通知（Android Chrome 独立模式更可靠）
 var CACHE_NAME = 'xingyan-v1_1_1';
 
 self.addEventListener('install', function(event) {
@@ -6,6 +8,7 @@ self.addEventListener('install', function(event) {
 });
 
 self.addEventListener('activate', function(event) {
+  // 清理旧缓存，避免残留
   event.waitUntil(
     caches.keys().then(function(cacheNames) {
       return Promise.all(
@@ -15,37 +18,20 @@ self.addEventListener('activate', function(event) {
           }
         })
       );
+    }).then(function() {
+      return self.clients.claim();
     })
   );
-  event.waitUntil(self.clients.claim());
 });
 
-// 缓存策略：网络优先，缓存回退（确保部署后能加载新页面）
+// 不拦截 fetch：浏览器按默认（网络）方式加载，始终获取服务器最新文件
+// 这样部署新版本后，用户（含已安装 PWA）刷新即可看到新代码，不会卡在旧缓存
 self.addEventListener('fetch', function(event) {
-  // HTML 页面请求走网络优先
-  if (event.request.mode === 'navigate') {
-    event.respondWith(
-      fetch(event.request).then(function(response) {
-        var clone = response.clone();
-        caches.open(CACHE_NAME).then(function(cache) {
-          cache.put(event.request, clone);
-        });
-        return response;
-      }).catch(function() {
-        return caches.match(event.request);
-      })
-    );
-    return;
-  }
-  // 其他静态资源走缓存优先
-  event.respondWith(
-    caches.match(event.request).then(function(cached) {
-      return cached || fetch(event.request);
-    })
-  );
+  // 不做 event.respondWith，保持默认网络行为
+  return;
 });
 
-// 接收主页面消息，通过 SW 发送通知（Android Chrome standalone 模式更可靠）
+// 接收主页面消息，通过 SW 发送通知
 self.addEventListener('message', function(event) {
   if (event.data && event.data.type === 'SHOW_NOTIFICATION') {
     var data = event.data;
@@ -67,7 +53,7 @@ self.addEventListener('notificationclick', function(event) {
       if (clients.length > 0) {
         clients[0].focus();
       } else {
-        self.clients.openWindow('/star033/');
+        self.clients.openWindow('./');
       }
     })
   );
