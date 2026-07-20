@@ -24929,6 +24929,8 @@ function withTimeout(promise, ms, fallback){
 
 async function initApp(){
   try{
+    // 先确保 localforage 就绪，再加载数据，防止因 CDN 加载慢导致跳过 IndexedDB
+    try{await withTimeout(waitForLocalforage(),5000,undefined);}catch(e){}
     
     await withTimeout(loadC(),10000,undefined);
     await withTimeout(loadPAsync(),5000,undefined);
@@ -24942,7 +24944,6 @@ async function initApp(){
     try{await withTimeout(loadCallHistory(),3000,undefined);}catch(e){}
     try{await withTimeout(loadNavDisplayStates(),3000,undefined);}catch(e){}
     
-    try{await withTimeout(waitForLocalforage(),2000,undefined);}catch(e){}
     try{await withTimeout(preloadMsgsFromDB(),10000,undefined);}catch(e){}
     
     renderChatList();
