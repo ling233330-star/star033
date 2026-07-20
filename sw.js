@@ -1,7 +1,7 @@
-// 星言 PWA Service Worker - v1.1.1
-// 策略：不缓存 HTML/导航请求，始终从网络获取最新页面（避免旧版缓存导致看不到更新/数据异常）
+// 星言 PWA Service Worker - v1.2.37
+// 策略：不缓存 HTML/导航请求，始终从网络获取最新页面（避免旧版缓存导致更新后看不到更新/数据异常）
 // 仅用于接收主页面消息并弹出通知（Android Chrome 独立模式更可靠）
-var CACHE_NAME = 'xingyan-v1_1_1';
+var CACHE_NAME = 'xingyan-v1_2_40';
 
 self.addEventListener('install', function(event) {
   self.skipWaiting();
@@ -39,7 +39,8 @@ self.addEventListener('message', function(event) {
       body: data.body,
       icon: data.icon,
       badge: data.icon,
-      tag: 'xingyan-msg',
+      tag: data.tag || ('xingyan-msg-'+Date.now()),
+      renotify: true,
       requireInteraction: false
     });
   }
