@@ -4852,7 +4852,6 @@ var SELF='user',OTHER='partner',LC='ml2_c',LP='ml2_p',LM='ml2_m_',LD='ml2_d_',LL
 var _tsX=0,_tsY=0,_tsM=false;
 document.addEventListener('touchstart',function(e){_tsX=e.touches[0].clientX;_tsY=e.touches[0].clientY;_tsM=false},{passive:true});
 document.addEventListener('touchmove',function(e){if(Math.abs(e.touches[0].clientX-_tsX)>15||Math.abs(e.touches[0].clientY-_tsY)>15)_tsM=true},{passive:true});
-document.addEventListener('touchend',function(e){setTimeout(function(){_tsM=false;},300);},{passive:true});
 function isSwipe(){return _tsM;}
 // 全局防滑动误触：滑动后阻止后续click事件
 document.addEventListener('click',function(e){
