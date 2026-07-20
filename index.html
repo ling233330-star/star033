@@ -5645,7 +5645,7 @@ function saveP(){ls(LP,me)}
 async function msgsAsync(id){
   var key=LM+id;
   var cached=memoryCache[key];
-  if(cached){
+  if(cached && Array.isArray(cached) && cached.length > 0){
     return cached;
   }
   
@@ -5723,7 +5723,7 @@ async function msgsAsync(id){
 function msgs(id){
   var key=LM+id;
   var cached=memoryCache[key];
-  if(cached){
+  if(cached && Array.isArray(cached) && cached.length > 0){
     return cached;
   }
   var lsVal=ls(key);
@@ -5733,6 +5733,20 @@ function msgs(id){
   }
   if(!m||!m.length){
     try{var directStored=safeGetItem(key);if(directStored)m=JSON.parse(directStored);}catch(e){}
+  }
+  // 如果localStorage中没有数据，尝试从localforage异步加载
+  if((!m||!m.length) && isLFAvailable()){
+    window.localforage.getItem(key).then(function(dbVal){
+      if(dbVal && Array.isArray(dbVal) && dbVal.length > 0){
+        dbVal.forEach(function(x){
+          if(!(x.ts instanceof Date))x.ts=new Date(x.ts);
+          if(x.read===undefined)x.read=true;
+        });
+        memoryCache[key]=dbVal;
+        ls(key,dbVal);
+        if(cid===id){renderMsgs();}
+      }
+    }).catch(function(){});
   }
 
   m.forEach(function(x){
@@ -6366,7 +6380,8 @@ async function migrateFromMoonlight(){
 
 async function loadMsgsToCache(id){
   var key=LM+id;
-  if(memoryCache[key])return;
+  var cached=memoryCache[key];
+  if(cached && Array.isArray(cached) && cached.length > 0) return;
   
   var lsVal=ls(key);
   if(lsVal&&Array.isArray(lsVal)){
