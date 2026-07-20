@@ -730,7 +730,7 @@ canvas{-webkit-backface-visibility:hidden;backface-visibility:hidden;-webkit-tra
 /* My page */
 #my-scroll{flex:1;overflow-y:auto;padding:12px;-webkit-overflow-scrolling:touch;overscroll-behavior:contain}
 .my-section{background:var(--c1);border-radius:var(--radius);margin-bottom:10px;border:1px solid var(--border);overflow:hidden;box-shadow: var(--shadow-none)}
-.my-row{display:flex;align-items:center;gap:12px;padding:14px;cursor:pointer;border-bottom:1px solid var(--border);transition:background .15s;touch-action:manipulation}
+.my-row{display:flex;align-items:center;gap:14px;padding:16px 18px;min-height:52px;cursor:pointer;border-bottom:1px solid var(--border);transition:background .15s;touch-action:manipulation}
 .my-row:last-child{border-bottom:none}
 .my-row:active{background:var(--c2)}
 .my-row{background:#FFFFFF;margin-bottom:1px;border-bottom:1px solid #E8E8E8}
@@ -740,14 +740,14 @@ canvas{-webkit-backface-visibility:hidden;backface-visibility:hidden;-webkit-tra
 .my-section .my-row:first-child{border-radius:10px 10px 0 0}
 .my-section .my-row:last-child{border-radius:0 0 10px 10px}
 .my-section .my-row:only-child{border-radius:10px}
-.my-ico{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;background:var(--c2);color:var(--txt2)}
-.my-label{flex:1;font-size:14px;color:var(--txt)}
+.my-ico{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;background:var(--c2);color:var(--txt2)}
+.my-label{flex:1;font-size:15px;color:var(--txt)}
 @media (max-width: 375px){
   #my-scroll{padding:8px}
   .my-section{margin-bottom:8px}
-  .my-row{padding:12px}
-  .my-ico{width:28px;height:28px;font-size:14px}
-  .my-label{font-size:13px}
+  .my-row{padding:14px 16px;min-height:48px}
+  .my-ico{width:32px;height:32px;font-size:16px}
+  .my-label{font-size:14px}
 }
 
 @media (max-width: 480px){
@@ -792,9 +792,9 @@ canvas{-webkit-backface-visibility:hidden;backface-visibility:hidden;-webkit-tra
   .rc-head{padding:16px}
   .rc-body{padding:16px}
   .my-section{margin-bottom:16px;border-radius:16px}
-  .my-row{padding:16px;min-height:48px;border-radius:12px}
-  .my-ico{width:40px;height:40px;font-size:18px}
-  .my-label{font-size:14px}
+  .my-row{padding:18px 20px;min-height:56px;border-radius:12px}
+  .my-ico{width:44px;height:44px;font-size:20px}
+  .my-label{font-size:15px}
   .btn-primary,.btn-secondary{min-height:44px;padding:12px 24px;font-size:14px;border-radius:12px}
   .btn-outline{min-height:40px;padding:10px 20px;font-size:14px;border-radius:12px}
   .btn-sm{min-height:36px;padding:8px 16px;font-size:12px;border-radius:8px}
@@ -894,7 +894,7 @@ canvas{-webkit-backface-visibility:hidden;backface-visibility:hidden;-webkit-tra
   .modal-head{padding:14px 16px;padding-top:calc(env(safe-area-inset-top) + 14px)}
   .sheet{padding-bottom:env(safe-area-inset-bottom)}
   .sf{padding-bottom:calc(env(safe-area-inset-bottom) + 16px)}
-  .my-row{min-height:44px}
+  .my-row{min-height:52px}
   .chat-more-label{font-size:11px}
   .chat-more-icon{font-size:20px}
   .chat-more-cat-items{gap:6px}
@@ -2136,68 +2136,62 @@ canvas{-webkit-backface-visibility:hidden;backface-visibility:hidden;-webkit-tra
   <div class="nav"><span class="tt">更多功能</span></div>
   <div id="more-scroll" style="flex:1;overflow-y:auto;padding:16px">
     <div class="my-section">
-      <div class="my-row" id="more-divine-btn" style="display:flex;align-items:center;gap:12px;padding:14px 16px;background:var(--c2);border-radius:var(--radius);margin-bottom:12px;cursor:pointer">
-        <div style="width:48px;height:48px;border-radius:12px;background:#e8e8e8;display:flex;align-items:center;justify-content:center;font-size:28px">🔮</div>
-        <div style="flex:1"><div style="font-weight:500;font-size:15px">占卜</div><div style="font-size:12px;color:var(--txt2);margin-top:2px">塔罗牌、雷诺曼占卜</div></div>
-        <span style="color:var(--txt3)">›</span>
+      <div class="my-row" id="more-divine-btn" style="display:flex;align-items:center;gap:14px;padding:16px 18px;background:var(--c2);border-radius:var(--radius);margin-bottom:12px;cursor:pointer">
+        <div style="width:52px;height:52px;border-radius:12px;background:#e8e8e8;display:flex;align-items:center;justify-content:center;font-size:30px">🔮</div>
+        <div style="flex:1"><div style="font-weight:500;font-size:16px">占卜</div><div style="font-size:13px;color:var(--txt2);margin-top:2px">塔罗牌、雷诺曼占卜</div></div>
+        
       </div>
-      <div class="my-row" id="more-letters-btn" style="display:flex;align-items:center;gap:12px;padding:14px 16px;background:var(--c2);border-radius:var(--radius);margin-bottom:12px;cursor:pointer">
-        <div style="width:48px;height:48px;border-radius:12px;background:#e8e8e8;display:flex;align-items:center;justify-content:center;font-size:28px">✉️</div>
-        <div style="flex:1"><div style="font-weight:500;font-size:15px">信箱</div><div style="font-size:12px;color:var(--txt2);margin-top:2px">寄出信件、收到回信</div></div>
-        <span style="color:var(--txt3)">›</span>
+      <div class="my-row" id="more-letters-btn" style="display:flex;align-items:center;gap:14px;padding:16px 18px;background:var(--c2);border-radius:var(--radius);margin-bottom:12px;cursor:pointer">
+        <div style="width:52px;height:52px;border-radius:12px;background:#e8e8e8;display:flex;align-items:center;justify-content:center;font-size:30px">✉️</div>
+        <div style="flex:1"><div style="font-weight:500;font-size:16px">信箱</div><div style="font-size:13px;color:var(--txt2);margin-top:2px">寄出信件、收到回信</div></div>
+        
       </div>
-      <div class="my-row" id="more-noninstant-btn" style="display:flex;align-items:center;gap:12px;padding:14px 16px;background:var(--c2);border-radius:var(--radius);margin-bottom:12px;cursor:pointer">
-        <div style="width:48px;height:48px;border-radius:12px;background:#e8e8e8;display:flex;align-items:center;justify-content:center;font-size:28px">🕐</div>
-        <div style="flex:1"><div style="font-weight:500;font-size:15px">非即时传讯</div><div style="font-size:12px;color:var(--txt2);margin-top:2px">发送消息，对方24小时内随机时间回复</div></div>
-        <span style="color:var(--txt3)">›</span>
+      <div class="my-row" id="more-noninstant-btn" style="display:flex;align-items:center;gap:14px;padding:16px 18px;background:var(--c2);border-radius:var(--radius);margin-bottom:12px;cursor:pointer">
+        <div style="width:52px;height:52px;border-radius:12px;background:#e8e8e8;display:flex;align-items:center;justify-content:center;font-size:30px">🕐</div>
+        <div style="flex:1"><div style="font-weight:500;font-size:16px">非即时传讯</div><div style="font-size:13px;color:var(--txt2);margin-top:2px">发送消息，对方24小时内随机时间回复</div></div>
+        
       </div>
-      <div class="my-row" id="more-survey-btn" style="display:flex;align-items:center;gap:12px;padding:14px 16px;background:var(--c2);border-radius:var(--radius);margin-bottom:12px;cursor:pointer">
-        <div style="width:48px;height:48px;border-radius:12px;background:#e8e8e8;display:flex;align-items:center;justify-content:center;font-size:28px">📝</div>
-        <div style="flex:1"><div style="font-weight:500;font-size:15px">调查问卷</div><div style="font-size:12px;color:var(--txt2);margin-top:2px">创建问卷，与梦角互动</div></div>
-        <span style="color:var(--txt3)">›</span>
+      <div class="my-row" id="more-survey-btn" style="display:flex;align-items:center;gap:14px;padding:16px 18px;background:var(--c2);border-radius:var(--radius);margin-bottom:12px;cursor:pointer">
+        <div style="width:52px;height:52px;border-radius:12px;background:#e8e8e8;display:flex;align-items:center;justify-content:center;font-size:30px">📝</div>
+        <div style="flex:1"><div style="font-weight:500;font-size:16px">调查问卷</div><div style="font-size:13px;color:var(--txt2);margin-top:2px">创建问卷，与梦角互动</div></div>
+        
       </div>
-      <div class="my-row" id="more-ta-highlights-btn" style="display:flex;align-items:center;gap:12px;padding:14px 16px;background:var(--c2);border-radius:var(--radius);margin-bottom:12px;cursor:pointer">
-        <div style="width:48px;height:48px;border-radius:12px;background:#e8e8e8;display:flex;align-items:center;justify-content:center;font-size:28px">💬</div>
-        <div style="flex:1"><div style="font-weight:500;font-size:15px">TA想说点重点</div><div style="font-size:12px;color:var(--txt2);margin-top:2px">梦角标记的重要消息</div></div>
-        <span style="color:var(--txt3)">›</span>
+      <div class="my-row" id="more-ta-highlights-btn" style="display:flex;align-items:center;gap:14px;padding:16px 18px;background:var(--c2);border-radius:var(--radius);margin-bottom:12px;cursor:pointer">
+        <div style="width:52px;height:52px;border-radius:12px;background:#e8e8e8;display:flex;align-items:center;justify-content:center;font-size:30px">💬</div>
+        <div style="flex:1"><div style="font-weight:500;font-size:16px">TA想说点重点</div><div style="font-size:13px;color:var(--txt2);margin-top:2px">梦角标记的重要消息</div></div>
+        
       </div>
-      <div class="my-row" id="more-card-stats-btn" style="display:flex;align-items:center;gap:12px;padding:14px 16px;background:var(--c2);border-radius:var(--radius);margin-bottom:12px;cursor:pointer">
-        <div style="width:48px;height:48px;border-radius:12px;background:#e8e8e8;display:flex;align-items:center;justify-content:center;font-size:28px">📊</div>
-        <div style="flex:1"><div style="font-weight:500;font-size:15px">文字字卡使用频率</div><div style="font-size:12px;color:var(--txt2);margin-top:2px">查看每个联系人的字卡使用统计</div></div>
-        <span style="color:var(--txt3)">›</span>
+      <div class="my-row" id="more-card-stats-btn" style="display:flex;align-items:center;gap:14px;padding:16px 18px;background:var(--c2);border-radius:var(--radius);margin-bottom:12px;cursor:pointer">
+        <div style="width:52px;height:52px;border-radius:12px;background:#e8e8e8;display:flex;align-items:center;justify-content:center;font-size:30px">📊</div>
+        <div style="flex:1"><div style="font-weight:500;font-size:16px">文字字卡使用频率</div><div style="font-size:13px;color:var(--txt2);margin-top:2px">查看每个联系人的字卡使用统计</div></div>
+        
       </div>
-      <div class="my-row" id="more-board-btn" style="display:flex;align-items:center;gap:12px;padding:14px 16px;background:var(--c2);border-radius:var(--radius);margin-bottom:12px;cursor:pointer">
-        <div style="width:48px;height:48px;border-radius:12px;background:#e8e8e8;display:flex;align-items:center;justify-content:center;font-size:28px">📋</div>
-        <div style="flex:1"><div style="font-weight:500;font-size:15px">留言板</div><div style="font-size:12px;color:var(--txt2);margin-top:2px">保存消息给所有联系人看</div></div>
-        <span style="color:var(--txt3)">›</span>
+      <div class="my-row" id="more-board-btn" style="display:flex;align-items:center;gap:14px;padding:16px 18px;background:var(--c2);border-radius:var(--radius);margin-bottom:12px;cursor:pointer">
+        <div style="width:52px;height:52px;border-radius:12px;background:#e8e8e8;display:flex;align-items:center;justify-content:center;font-size:30px">📋</div>
+        <div style="flex:1"><div style="font-weight:500;font-size:16px">留言板</div><div style="font-size:13px;color:var(--txt2);margin-top:2px">保存消息给所有联系人看</div></div>
+        
       </div>
-      <div class="my-row" id="more-schedule-btn" style="display:flex;align-items:center;gap:12px;padding:14px 16px;background:var(--c2);border-radius:var(--radius);margin-bottom:12px;cursor:pointer">
-        <div style="width:48px;height:48px;border-radius:12px;background:#e8e8e8;display:flex;align-items:center;justify-content:center;font-size:28px">📅</div>
-        <div style="flex:1"><div style="font-weight:500;font-size:15px">日程</div><div style="font-size:12px;color:var(--txt2);margin-top:2px">记录我的行程安排</div></div>
-        <span style="color:var(--txt3)">›</span>
+      <div class="my-row" id="more-schedule-btn" style="display:flex;align-items:center;gap:14px;padding:16px 18px;background:var(--c2);border-radius:var(--radius);margin-bottom:12px;cursor:pointer">
+        <div style="width:52px;height:52px;border-radius:12px;background:#e8e8e8;display:flex;align-items:center;justify-content:center;font-size:30px">📅</div>
+        <div style="flex:1"><div style="font-weight:500;font-size:16px">日程</div><div style="font-size:13px;color:var(--txt2);margin-top:2px">记录我的行程安排</div></div>
+        
       </div>
-      <div class="my-row" id="more-accounting-btn" style="display:flex;align-items:center;gap:12px;padding:14px 16px;background:var(--c2);border-radius:var(--radius);margin-bottom:12px;cursor:pointer">
-        <div style="width:48px;height:48px;border-radius:12px;background:#e8e8e8;display:flex;align-items:center;justify-content:center;font-size:28px">💰</div>
-        <div style="flex:1"><div style="font-weight:500;font-size:15px">记账</div><div style="font-size:12px;color:var(--txt2);margin-top:2px">记录收支，管理财务</div></div>
-        <span style="color:var(--txt3)">›</span>
+      <div class="my-row" id="more-accounting-btn" style="display:flex;align-items:center;gap:14px;padding:16px 18px;background:var(--c2);border-radius:var(--radius);margin-bottom:12px;cursor:pointer">
+        <div style="width:52px;height:52px;border-radius:12px;background:#e8e8e8;display:flex;align-items:center;justify-content:center;font-size:30px">💰</div>
+        <div style="flex:1"><div style="font-weight:500;font-size:16px">记账</div><div style="font-size:13px;color:var(--txt2);margin-top:2px">记录收支，管理财务</div></div>
+        
       </div>
-      <div class="my-row" id="more-todo-btn" style="display:flex;align-items:center;gap:12px;padding:14px 16px;background:var(--c2);border-radius:var(--radius);margin-bottom:12px;cursor:pointer">
-        <div style="width:48px;height:48px;border-radius:12px;background:#e8e8e8;display:flex;align-items:center;justify-content:center;font-size:28px">✅</div>
-        <div style="flex:1"><div style="font-weight:500;font-size:15px">待办事项</div><div style="font-size:12px;color:var(--txt2);margin-top:2px">管理日常待办任务</div></div>
-        <span style="color:var(--txt3)">›</span>
+      <div class="my-row" id="more-todo-btn" style="display:flex;align-items:center;gap:14px;padding:16px 18px;background:var(--c2);border-radius:var(--radius);margin-bottom:12px;cursor:pointer">
+        <div style="width:52px;height:52px;border-radius:12px;background:#e8e8e8;display:flex;align-items:center;justify-content:center;font-size:30px">✅</div>
+        <div style="flex:1"><div style="font-weight:500;font-size:16px">待办事项</div><div style="font-size:13px;color:var(--txt2);margin-top:2px">管理日常待办任务</div></div>
+        
       </div>
-      <div class="my-row" id="more-dream-btn" style="display:flex;align-items:center;gap:12px;padding:14px 16px;background:var(--c2);border-radius:var(--radius);margin-bottom:12px;cursor:pointer">
-        <div style="width:48px;height:48px;border-radius:12px;background:#e8e8e8;display:flex;align-items:center;justify-content:center;font-size:28px">📒</div>
-        <div style="flex:1"><div style="font-weight:500;font-size:15px">日记本</div><div style="font-size:12px;color:var(--txt2);margin-top:2px">记录生活，保存回忆</div></div>
-        <span style="color:var(--txt3)">›</span>
+      <div class="my-row" id="more-dream-btn" style="display:flex;align-items:center;gap:14px;padding:16px 18px;background:var(--c2);border-radius:var(--radius);margin-bottom:12px;cursor:pointer">
+        <div style="width:52px;height:52px;border-radius:12px;background:#e8e8e8;display:flex;align-items:center;justify-content:center;font-size:30px">📒</div>
+        <div style="flex:1"><div style="font-weight:500;font-size:16px">日记本</div><div style="font-size:13px;color:var(--txt2);margin-top:2px">记录生活，保存回忆</div></div>
+        
       </div>
-      <div class="my-row" id="more-touch-btn" style="display:flex;align-items:center;gap:12px;padding:14px 16px;background:var(--c2);border-radius:var(--radius);margin-bottom:12px;cursor:pointer">
-        <div style="width:48px;height:48px;border-radius:12px;background:#e8e8e8;display:flex;align-items:center;justify-content:center;font-size:28px">👋</div>
-        <div style="flex:1"><div style="font-weight:500;font-size:15px">拍一拍</div><div style="font-size:12px;color:var(--txt2);margin-top:2px">查看当前联系人的拍一拍页面</div></div>
-        <span style="color:var(--txt3)">›</span>
       </div>
-      
-    </div>
   </div>
   <div class="tabs"></div>
 </div>
@@ -2574,18 +2568,18 @@ canvas{-webkit-backface-visibility:hidden;backface-visibility:hidden;-webkit-tra
   <div id="my-scroll">
     <div class="my-section">
       
-      <div class="my-row" id="topbar-settings-btn"><span class="my-ico">📌</span><span class="my-label">联系人顶部栏字卡库</span><span style="color:var(--txt3)">›</span></div>
-      <div class="my-row" id="settings-btn"><span class="my-ico">📖</span><span class="my-label">聊天字卡库</span><span style="color:var(--txt3)">›</span></div>
-      <div class="my-row" id="call-settings-btn"><span class="my-ico">📞</span><span class="my-label">通话设置</span><span style="color:var(--txt3)">›</span></div>
-      <div class="my-row" id="reply-settings-btn"><span class="my-ico">💬</span><span class="my-label">回复设置</span><span style="color:var(--txt3)">›</span></div>
-      <div class="my-row" id="dnd-settings-btn"><span class="my-ico">🌙</span><span class="my-label">免打扰模式</span><span style="color:var(--txt3)">›</span></div>
-      <div class="my-row" id="import-data-btn" style="cursor:pointer;-webkit-tap-highlight-color:transparent;"><span class="my-ico">📥</span><span class="my-label">导入数据</span><span style="color:var(--txt3)">›</span></div>
-      <div class="my-row" id="export-data-btn"><span class="my-ico">📤</span><span class="my-label">导出数据</span><span style="color:var(--txt3)">›</span></div>
+      <div class="my-row" id="topbar-settings-btn"><span class="my-ico">📌</span><span class="my-label">联系人顶部栏字卡库</span></div>
+      <div class="my-row" id="settings-btn"><span class="my-ico">📖</span><span class="my-label">聊天字卡库</span></div>
+      <div class="my-row" id="call-settings-btn"><span class="my-ico">📞</span><span class="my-label">通话设置</span></div>
+      <div class="my-row" id="reply-settings-btn"><span class="my-ico">💬</span><span class="my-label">回复设置</span></div>
+      <div class="my-row" id="dnd-settings-btn"><span class="my-ico">🌙</span><span class="my-label">免打扰模式</span></div>
+      <div class="my-row" id="import-data-btn" style="cursor:pointer;-webkit-tap-highlight-color:transparent;"><span class="my-ico">📥</span><span class="my-label">导入数据</span></div>
+      <div class="my-row" id="export-data-btn"><span class="my-ico">📤</span><span class="my-label">导出数据</span></div>
       
 
-      <div class="my-row" id="clear-cache-btn" style="color:#ff4d4f;cursor:pointer;-webkit-tap-highlight-color:transparent;"><span class="my-ico">🗑️</span><span class="my-label">清除数据</span><span style="color:var(--txt3)">›</span></div>
-      <div class="my-row" id="keep-alive-btn" style="display:flex;align-items:center;justify-content:space-between;"><div style="display:flex;align-items:center;gap:12px;"><span class="my-ico">🔋</span><span class="my-label">后台保活</span></div><div style="display:flex;align-items:center;gap:8px;"><span id="keep-alive-status" style="font-size:12px;color:var(--txt3)">已开启</span><span style="color:var(--txt3)">›</span></div></div>
-      <div class="my-row" id="push-notify-btn" style="display:flex;align-items:center;justify-content:space-between;"><div style="display:flex;align-items:center;gap:12px;"><span class="my-ico">🔔</span><span class="my-label">后台消息弹窗</span></div><div style="display:flex;align-items:center;gap:8px;"><span id="push-notify-status" style="font-size:12px;color:var(--txt3)">已开启</span><span style="color:var(--txt3)">›</span></div></div>
+      <div class="my-row" id="clear-cache-btn" style="color:#ff4d4f;cursor:pointer;-webkit-tap-highlight-color:transparent;"><span class="my-ico">🗑️</span><span class="my-label">清除数据</span></div>
+      <div class="my-row" id="keep-alive-btn" style="display:flex;align-items:center;justify-content:space-between;"><div style="display:flex;align-items:center;gap:12px;"><span class="my-ico">🔋</span><span class="my-label">后台保活</span></div><div style="display:flex;align-items:center;gap:8px;"><span id="keep-alive-status" style="font-size:12px;color:var(--txt3)">已开启</span></div></div>
+      <div class="my-row" id="push-notify-btn" style="display:flex;align-items:center;justify-content:space-between;"><div style="display:flex;align-items:center;gap:12px;"><span class="my-ico">🔔</span><span class="my-label">后台消息弹窗</span></div><div style="display:flex;align-items:center;gap:8px;"><span id="push-notify-status" style="font-size:12px;color:var(--txt3)">已开启</span></div></div>
       <input type="file" id="import-data-input" accept=".json" style="display:none;">
       <input type="file" id="tb-import-input" accept=".json" style="display:none;">
     </div>
@@ -2602,10 +2596,10 @@ canvas{-webkit-backface-visibility:hidden;backface-visibility:hidden;-webkit-tra
   </div>
   <div id="reply-settings-scroll" style="flex:1;overflow-y:auto;padding:12px;">
     <div class="my-section">
-      <div class="my-row" id="reply-speed-btn"><span class="my-ico">⚡</span><span class="my-label">聊天</span><span style="color:var(--txt3)">›</span></div>
-      <div class="my-row" id="reply-moments-btn"><span class="my-ico">📸</span><span class="my-label">朋友圈</span><span style="color:var(--txt3)">›</span></div>
-      <div class="my-row" id="reply-letter-btn"><span class="my-ico">✉️</span><span class="my-label">信箱</span><span style="color:var(--txt3)">›</span></div>
-      <div class="my-row" id="reply-noninstant-btn"><span class="my-ico">🕐</span><span class="my-label">非即时传讯</span><span style="color:var(--txt3)">›</span></div>
+      <div class="my-row" id="reply-speed-btn"><span class="my-ico">⚡</span><span class="my-label">聊天</span></div>
+      <div class="my-row" id="reply-moments-btn"><span class="my-ico">📸</span><span class="my-label">朋友圈</span></div>
+      <div class="my-row" id="reply-letter-btn"><span class="my-ico">✉️</span><span class="my-label">信箱</span></div>
+      <div class="my-row" id="reply-noninstant-btn"><span class="my-ico">🕐</span><span class="my-label">非即时传讯</span></div>
     </div>
   </div>
   <div class="tabs"></div>
@@ -4416,6 +4410,22 @@ canvas{-webkit-backface-visibility:hidden;backface-visibility:hidden;-webkit-tra
   </div>
 </div>
 
+<!-- Overlay: Group Touch Member Select -->
+<div class="overlay" id="ov-group-touch-select">
+  <div class="modal" style="width:300px;">
+    <div class="modal-head" style="padding:12px 16px;text-align:center;border:none;background:none">
+      <div style="font-size:16px;font-weight:600;color:var(--txt);margin-bottom:4px">选择拍一拍对象</div>
+      <div style="font-size:13px;color:var(--txt2)">请选择要拍一拍的群成员</div>
+    </div>
+    <div class="modal-body" style="padding:12px;">
+      <div id="group-touch-member-list" style="display:flex;flex-direction:column;gap:6px;max-height:300px;overflow-y:auto;"></div>
+    </div>
+    <div class="modal-footer" style="justify-content:center;">
+      <button class="btn-outline" onclick="hideOv('ov-group-touch-select')">取消</button>
+    </div>
+  </div>
+</div>
+
 <!-- Touch Settings Page -->
 <div class="page" id="pg-touch">
   <div class="nav">
@@ -4855,6 +4865,14 @@ document.addEventListener('touchmove',function(e){if(Math.abs(e.touches[0].clien
 function isSwipe(){return _tsM;}
 // 全局防滑动误触：滑动后阻止后续click事件
 document.addEventListener('click',function(e){
+  if(isSwipe()){
+    e.preventDefault();
+    e.stopPropagation();
+    e.stopImmediatePropagation();
+  }
+},{capture:true});
+// 同样阻止滑动后的touchend事件（防止touchend handler在click之前触发）
+document.addEventListener('touchend',function(e){
   if(isSwipe()){
     e.preventDefault();
     e.stopPropagation();
@@ -8796,8 +8814,6 @@ if($('more-todo-btn')){
 if($('more-dream-btn')){
   $('more-dream-btn').addEventListener('click',function(){showPg('pg-dream');renderDreamList()});
   $('more-dream-btn').addEventListener('touchend',function(e){e.preventDefault();showPg('pg-dream');renderDreamList()});
-  $('more-touch-btn').addEventListener('click',function(){if(cid){showChatTouchMenu(cid);}});
-  $('more-touch-btn').addEventListener('touchend',function(e){e.preventDefault();if(cid){showChatTouchMenu(cid);}});
 }
 if($('more-ta-highlights-btn')){
   $('more-ta-highlights-btn').addEventListener('click',function(){taHighlightViewDate=new Date();showPg('pg-ta-highlights');renderTAHighlightsFull()});
@@ -11204,6 +11220,33 @@ function clearAllTouchCards(){
 
 function showContactTouchMenu(contactId,avatarEl){var contact=contacts.find(function(c){return c.id===contactId});if(!contact)return;$('touch-contact-name').textContent='我对 '+contact.name;var list=$('touch-action-list');list.innerHTML='';TOUCH_ACTIONS.forEach(function(action){var btn=document.createElement('button');btn.className='btn';btn.style.width='100%';btn.style.justifyContent='flex-start';btn.textContent=action;btn.onclick=function(){performTouch(contactId,action);hideOv('ov-contact-touch')};list.appendChild(btn)});showOv('ov-contact-touch')}
 function showChatTouchMenu(contactId){var contact=contacts.find(function(c){return c.id===contactId});if(!contact)return;$('touch-contact-name').textContent='我对 '+contact.name;var list=$('touch-action-list');list.innerHTML='';TOUCH_ACTIONS.forEach(function(action){var btn=document.createElement('button');btn.className='btn';btn.style.width='100%';btn.style.justifyContent='flex-start';btn.textContent=action;btn.onclick=function(){performTouch(contactId,action);hideOv('ov-contact-touch')};list.appendChild(btn)});showOv('ov-contact-touch')}
+function showGroupTouchMemberSelect(groupId){
+  var group = groups.find(function(g){return g.id===groupId});
+  if(!group) return;
+  var list = $('group-touch-member-list');
+  if(!list) return;
+  list.innerHTML = '';
+  var memberIds = group.memberIds || [];
+  if(!memberIds.length){ toast('群内暂无成员'); return; }
+  memberIds.forEach(function(mid){
+    var contact = contacts.find(function(c){return c.id===mid});
+    if(!contact) return;
+    var displayName = contact.name;
+    if(group.memberSettings && group.memberSettings[mid] && group.memberSettings[mid].nickname){
+      displayName = group.memberSettings[mid].nickname;
+    }
+    var row = document.createElement('button');
+    row.className = 'btn';
+    row.style.cssText = 'width:100%;justify-content:flex-start;padding:10px 14px;';
+    row.textContent = displayName;
+    row.onclick = function(){
+      hideOv('ov-group-touch-select');
+      showChatTouchMenu(mid);
+    };
+    list.appendChild(row);
+  });
+  showOv('ov-group-touch-select');
+}
 if($('touch-custom-send-btn'))$('touch-custom-send-btn').addEventListener('click',function(){var val=$('touch-custom-input').value.trim();if(!val){toast('请输入内容');return}var contactId=cid;performTouch(contactId,val);$('touch-custom-input').value='';hideOv('ov-contact-touch')});
 
 if($('call-incoming-prob-input'))$('call-incoming-prob-input').addEventListener('input',function(){
@@ -22293,11 +22336,14 @@ function renderPomodoroStats(view) {
 
 // 设置面板
 async function showPomodoro() {
-  loadPomodoroState();
+  // 如果计时器正在运行，保留当前进度；否则加载保存的状态并重置
+  if (!pomodoroState.isRunning || pomodoroState.isPaused) {
+    loadPomodoroState();
+    pomodoroState.remaining = pomodoroState.totalSeconds;
+  }
   loadPomodoroMessages();
   await loadPomodoroSettings();
   loadPomodoroRecords();
-  pomodoroState.remaining = pomodoroState.totalSeconds;
   updatePomodoroUI();
   updatePomodoroClock();
   showOv('ov-pomodoro');
@@ -22837,7 +22883,13 @@ function handleChatMoreAction(action){
         showPg('pg-my');
         break;
       case 'touch':
-        if(cid){showChatTouchMenu(cid);}
+        if(cid){
+          if(window.currentConvType==='group'){
+            showGroupTouchMemberSelect(cid);
+          }else{
+            showChatTouchMenu(cid);
+          }
+        }
         break;
     }
   }catch(e){
