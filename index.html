@@ -5791,6 +5791,7 @@ var Storage = (function(){
 
 Storage.init();
 loadCardPrivateContacts();
+seedDefaultNavCards();
 
 window.addEventListener('beforeunload', function(){
   if(Storage.flushWrites) Storage.flushWrites();
