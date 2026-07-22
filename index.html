@@ -5791,7 +5791,7 @@ var Storage = (function(){
 
 Storage.init();
 loadCardPrivateContacts();
-seedDefaultNavCards();
+setTimeout(function(){seedDefaultNavCards().catch(function(e){console.warn('seedDefaultNavCards delayed failed:',e);});}, 1500);
 
 window.addEventListener('beforeunload', function(){
   if(Storage.flushWrites) Storage.flushWrites();
@@ -17900,8 +17900,17 @@ var _oldDefaultNavCardsToRemove=[
   {content:'正在确认',category:'status'},{content:'等待你的话',category:'status'},{content:'准备交流',category:'status'},{content:'继续交流',category:'status'},{content:'正在等待',category:'status'},{content:'没有打扰',category:'status'},{content:'回应稍慢',category:'status'}
 ];
 
+var _navCardsVersion='v2';
 async function seedDefaultNavCards(){
   try{
+    var savedVersion=safeGetItem('ml2_nav_cards_version');
+    if(savedVersion!==_navCardsVersion){
+      safeRemoveItem('ml2_nav_cards_public');
+      safeRemoveItem('ml2_lf_ml2_nav_cards_public');
+      if(window.localforage){try{await window.localforage.removeItem('ml2_nav_cards_public');}catch(e){}}
+      safeSetItem('ml2_nav_cards_version',_navCardsVersion);
+      console.log('[navCards] version changed from',savedVersion,'to',_navCardsVersion,'- resetting cards');
+    }
     var existing=await getNavCards('public',null);
     var removed=0;
     var beforeLen=existing.length;
@@ -17923,6 +17932,21 @@ async function seedDefaultNavCards(){
       console.log('[navCards] seeded:',added,'added,',removed,'removed');
     }
   }catch(e){console.warn('seedDefaultNavCards failed:',e);}
+}
+
+async function resetNavCardsToDefault(){
+  try{
+    safeRemoveItem('ml2_nav_cards_public');
+    safeRemoveItem('ml2_lf_ml2_nav_cards_public');
+    if(window.localforage){
+      try{await window.localforage.removeItem('ml2_nav_cards_public');}catch(e){}
+    }
+    var newCards=_defaultNavCards.map(function(dc){return {content:dc.content,group:dc.group||'默认',category:dc.category}});
+    await saveNavCards(newCards,'public',null);
+    console.log('[navCards] reset to default:',newCards.length,'cards');
+    toast('已重置为默认字卡');
+    if(typeof renderNavCards==='function')renderNavCards();
+  }catch(e){console.warn('resetNavCardsToDefault failed:',e);}
 }
 
 async function getNavCards(type,contactId){
