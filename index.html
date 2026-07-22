@@ -25029,14 +25029,15 @@ async function checkAvatarLibRefresh(){
     if(!keys||keys.length===0)continue;
     
     // 初始化各类型最后更换时间和下次更换时间（独立）
-    if(!c.avatarLibLastChange){c.avatarLibLastChange={chat:Date.now(),mail:Date.now(),moment:Date.now()};}
+    // 与顶部栏字卡机制一致：初始lastChange=0, nextChange=0，首次检查立即触发，之后1-8小时更换一次
+    if(!c.avatarLibLastChange){c.avatarLibLastChange={chat:0,mail:0,moment:0};}
     if(!c.avatarLibNextChange){c.avatarLibNextChange={chat:0,mail:0,moment:0};}
     
     var changed=false;
     
     // 聊天头像（独立判断）
     if(c.avatarLib.avatarChat!==false){
-      if((Date.now()-(c.avatarLibLastChange.chat||0))/36e5>=(c.avatarLibNextChange.chat||1)){
+      if((Date.now()-(c.avatarLibLastChange.chat||0))/36e5>=c.avatarLibNextChange.chat){
         var newIdxChat=Math.floor(Math.random()*keys.length);
         var newKeyChat=keys[newIdxChat];
         if(window.localforage){
@@ -25058,7 +25059,7 @@ async function checkAvatarLibRefresh(){
     
     // 信箱头像（独立判断）
     if(c.avatarLib.avatarMail!==false){
-      if((Date.now()-(c.avatarLibLastChange.mail||0))/36e5>=(c.avatarLibNextChange.mail||1)){
+      if((Date.now()-(c.avatarLibLastChange.mail||0))/36e5>=c.avatarLibNextChange.mail){
         var newIdxMail=Math.floor(Math.random()*keys.length);
         var newKeyMail=keys[newIdxMail];
         if(window.localforage){
@@ -25080,7 +25081,7 @@ async function checkAvatarLibRefresh(){
     
     // 朋友圈头像（独立判断）
     if(c.avatarLib.avatarMoment!==false){
-      if((Date.now()-(c.avatarLibLastChange.moment||0))/36e5>=(c.avatarLibNextChange.moment||1)){
+      if((Date.now()-(c.avatarLibLastChange.moment||0))/36e5>=c.avatarLibNextChange.moment){
         var newIdxMoment=Math.floor(Math.random()*keys.length);
         var newKeyMoment=keys[newIdxMoment];
         if(window.localforage){
