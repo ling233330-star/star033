@@ -364,8 +364,8 @@ canvas{-webkit-backface-visibility:hidden;backface-visibility:hidden;-webkit-tra
   .msg-actions{gap:8px;padding:2px 8px}
   .message-img{max-width:240px;max-height:240px}
   .message-sticker{max-width:100px;max-height:100px}
-  .ibar-btn{width:48px;height:48px;font-size:20px}
-  .ibar .send-btn{padding:0 20px;height:48px;font-size:15px}
+  .ibar-btn{width:36px;height:36px;font-size:16px}
+  .ibar .send-btn{border-radius:50%;width:36px;height:36px;font-size:16px;padding:0}
   .ibar textarea{padding:14px 16px;font-size:16px;min-height:48px}
   .chat-more-item{min-height:44px;padding:12px 8px}
   .chat-more-icon{font-size:24px}
@@ -396,7 +396,7 @@ canvas{-webkit-backface-visibility:hidden;backface-visibility:hidden;-webkit-tra
 @media (max-width: 360px){
   .message-img{max-width:200px;max-height:200px}
   .message-sticker{max-width:80px;max-height:80px}
-  .ibar-btn{width:44px;height:44px;font-size:18px}
+  .ibar-btn{width:36px;height:36px;font-size:16px}
   .citem{padding:10px;gap:10px}
   .citem .avatar{width:40px;height:40px}
 }
@@ -467,13 +467,13 @@ canvas{-webkit-backface-visibility:hidden;backface-visibility:hidden;-webkit-tra
 @keyframes touchAnim{0%{opacity:0;transform:translate(-50%,-50%) scale(.5)}30%{opacity:1;transform:translate(-50%,-50%) scale(1.1)}100%{opacity:0;transform:translate(-50%,-50%) scale(1)}}
 
 /* Input */
-.ibar{background:rgba(255,255,255,0.98);display:flex;align-items:flex-end;gap:8px;padding:8px 16px;flex-shrink:0;border-top:1px solid var(--border-light);}
-.ibar-btn{width:44px;height:44px;border-radius:50%;border:none;background:var(--c3);color:var(--txt2);font-size:19px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:var(--transition-fast);touch-action:manipulation}
+.ibar{background:rgba(255,255,255,0.98);display:flex;align-items:center;gap:6px;padding:4px 10px;flex-shrink:0;border-top:1px solid var(--border-light);}
+.ibar-btn{width:32px;height:32px;border-radius:50%;border:none;background:var(--c3);color:var(--txt2);font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:var(--transition-fast);touch-action:manipulation}
 .ibar-btn:active{background:var(--c4);transform:scale(.95)}
-.ibar textarea{flex:1;border:none;outline:none;background:#f5f5f5;border-radius:22px;padding:12px 16px;font-size:15px;resize:none;line-height:1.5;max-height:120px;min-height:44px;font-family:inherit;color:var(--txt);overflow:hidden}
+.ibar textarea{flex:1;border:none;outline:none;background:#f5f5f5;border-radius:18px;padding:8px 12px;font-size:14px;resize:none;line-height:1.5;max-height:120px;min-height:32px;font-family:inherit;color:var(--txt);overflow:hidden}
 .ibar textarea:focus{background:#f0f0f0}
 .ibar textarea::placeholder{color:var(--txt4)}
-.ibar .send-btn{background:#333333;color:#ffffff;border:none;border-radius:22px;padding:0 24px;height:44px;font-size:15px;cursor:pointer;flex-shrink:0;font-weight:500;display:flex;align-items:center;justify-content:center;transition:var(--transition-fast);touch-action:manipulation}
+.ibar .send-btn{background:var(--accent);color:#ffffff;border:none;border-radius:50%;width:32px;height:32px;font-size:14px;cursor:pointer;flex-shrink:0;font-weight:500;display:flex;align-items:center;justify-content:center;transition:var(--transition-fast);touch-action:manipulation;padding:0}
 .ibar .send-btn.disabled{opacity:.3;cursor:not-allowed}
 .ibar .send-btn:active{transform:scale(.96)}
 
@@ -784,10 +784,10 @@ canvas{-webkit-backface-visibility:hidden;backface-visibility:hidden;-webkit-tra
   .cp{font-size:12px}
   .ctm{font-size:12px}
   #msgbox{padding:16px}
-  .ibar{padding:8px 16px;padding-bottom:calc(env(safe-area-inset-bottom) + 8px)}
-  .ibar-btn{width:44px;height:44px}
-  #msg-inp{font-size:14px;min-height:44px;padding:12px 16px}
-  .send-btn{padding:12px 24px;font-size:14px;min-height:44px;border-radius:20px}
+  .ibar{padding:4px 10px;padding-bottom:calc(env(safe-area-inset-bottom) + 4px)}
+  .ibar-btn{width:36px;height:36px}
+  #msg-inp{font-size:14px;min-height:36px;padding:10px 14px}
+  .send-btn{border-radius:50%;width:36px;height:36px;font-size:16px;padding:0}
   .result-card{padding:16px;border-radius:16px}
   .rc-head{padding:16px}
   .rc-body{padding:16px}
@@ -857,9 +857,9 @@ canvas{-webkit-backface-visibility:hidden;backface-visibility:hidden;-webkit-tra
   #msg-action-menu button{padding:6px 8px;font-size:11px;gap:2px}
   .ctm{font-size:12px}
   #msgbox{padding:12px;-webkit-overflow-scrolling:touch}
-  .ibar{padding:8px 10px;padding-bottom:calc(env(safe-area-inset-bottom) + 8px)}
+  .ibar{padding:4px 8px;padding-bottom:calc(env(safe-area-inset-bottom) + 4px)}
   #msg-inp{font-size:14px}
-  .send-btn{padding:10px 20px;font-size:14px}
+  .send-btn{border-radius:50%;width:36px;height:36px;font-size:16px;padding:0}
   .mt{font-size:var(--timeline-font-size,11px)}
   .ss-check-wrap input[type="checkbox"]{width:20px;height:20px}
 }
@@ -881,7 +881,8 @@ canvas{-webkit-backface-visibility:hidden;backface-visibility:hidden;-webkit-tra
 }
 
 @media (hover: none){
-  .btn-nav,.ibar-btn,.tab,.citem,.chat-more-item{min-height:44px;min-width:44px}
+  .btn-nav,.tab,.citem,.chat-more-item{min-height:44px;min-width:44px}
+  .ibar-btn{min-height:32px;min-width:32px}
   .btn-nav:active,.ibar-btn:active,.tab:active,.citem:active,.chat-more-item:active{opacity:0.7}
   .chat-more-item{padding:12px 8px}
   #announcement-next{min-height:48px}
@@ -952,6 +953,47 @@ canvas{-webkit-backface-visibility:hidden;backface-visibility:hidden;-webkit-tra
 @keyframes fadeIn{from{opacity:0}to{opacity:1}}
 .sheet{background:var(--c1);width:100%;max-width:420px;border-radius:14px 14px 0 0;max-height:85vh;display:flex;flex-direction:column;overflow:hidden;animation:su .25s ease}
 @keyframes su{from{transform:translateY(100%);opacity:0}to{transform:translateY(0);opacity:1}}
+
+/* Update Notice */
+#update-notice-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.5);z-index:300;display:none;align-items:center;justify-content:center;backdrop-filter:blur(4px)}
+#update-notice-overlay.show{display:flex;animation:fadeIn .2s ease}
+#update-notice-modal{background:var(--c1);border-radius:var(--radius-lg);max-width:90vw;width:340px;max-height:80vh;display:flex;flex-direction:column;overflow:hidden;box-shadow:var(--shadow-modal);animation:scaleIn .2s ease}
+#update-notice-header{padding:20px 20px 12px;text-align:center;border-bottom:1px solid var(--border)}
+#update-notice-title{font-size:18px;font-weight:600;color:var(--txt);display:flex;align-items:center;justify-content:center;gap:8px}
+#update-notice-version{font-size:14px;color:var(--txt2);margin-top:4px}
+#update-notice-date{font-size:12px;color:var(--txt3);margin-top:2px}
+#update-notice-body{flex:1;overflow-y:auto;padding:20px;line-height:1.7;font-size:14px;color:var(--txt);-webkit-overflow-scrolling:touch}
+#update-notice-body h4{font-size:14px;font-weight:600;color:var(--accent);margin:12px 0 6px;padding-left:4px;border-left:2px solid var(--accent)}
+#update-notice-body p{margin-bottom:8px}
+#update-notice-body ul{margin:0;padding-left:20px}
+#update-notice-body li{margin-bottom:6px}
+#update-notice-body strong{color:var(--accent);font-weight:600}
+#update-notice-footer{padding:16px 20px;border-top:1px solid var(--border)}
+#update-notice-btn{width:100%;padding:14px;border:none;border-radius:12px;background:var(--accent);color:#fff;font-size:16px;font-weight:600;cursor:pointer;min-height:48px}
+#update-notice-btn:active{opacity:.8;transform:scale(.98)}
+
+/* Update History Page */
+.update-history-item{background:var(--c1);border-radius:14px;margin-bottom:10px;border:1px solid var(--border);overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,0.04);}
+.update-history-header{display:flex;align-items:flex-start;justify-content:space-between;padding:14px 16px;cursor:pointer;transition:background .15s;user-select:none;gap:12px;}
+.update-history-header:active{background:var(--c2)}
+.update-history-info{flex:1;min-width:0;}
+.update-history-title{font-size:15px;font-weight:600;color:var(--txt);display:flex;align-items:center;gap:8px;line-height:1.4;}
+.update-history-version{font-size:11px;font-weight:500;background:var(--accent);color:#fff;padding:2px 8px;border-radius:10px;flex-shrink:0;}
+.update-history-item:not(.expanded) .update-history-version{background:var(--c3);color:var(--txt2);}
+.update-history-date{font-size:12px;color:var(--txt3);margin-top:4px;}
+.update-history-summary{font-size:13px;color:var(--txt2);margin-top:6px;line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+.update-history-item.expanded .update-history-summary{-webkit-line-clamp:unset;display:block;}
+.update-history-arrow{font-size:12px;color:var(--txt3);transition:transform .25s;flex-shrink:0;margin-top:6px;}
+.update-history-item.expanded .update-history-arrow{transform:rotate(180deg)}
+.update-history-content{padding:0 16px;max-height:0;overflow:hidden;transition:max-height .35s ease, padding .35s ease;}
+.update-history-item.expanded .update-history-content{max-height:2000px;padding:0 16px 16px;border-top:1px solid var(--border-light);}
+.update-history-content-inner{line-height:1.8;font-size:13px;color:var(--txt);padding-top:8px;}
+.update-history-content-inner h4{font-size:14px;font-weight:600;color:var(--accent);margin:12px 0 6px;padding-left:8px;border-left:3px solid var(--accent);}
+.update-history-content-inner p{margin-bottom:6px}
+.update-history-content-inner ul{margin:0;padding-left:18px}
+.update-history-content-inner li{margin-bottom:4px;line-height:1.6}
+.update-history-content-inner strong{color:var(--accent);font-weight:600}
+
 .sh{padding:16px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
 .sh h3{font-size:16px;font-weight:600;color:var(--txt);letter-spacing:.3px}
 .sh .btn-close{background:none;border:none;font-size:18px;color:var(--txt2);cursor:pointer;width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;transition:all .2s;touch-action:manipulation}
@@ -1089,6 +1131,24 @@ canvas{-webkit-backface-visibility:hidden;backface-visibility:hidden;-webkit-tra
 #nav-card-list .card-group-arrow{font-size:10px;color:var(--txt3);transition:transform .25s;flex-shrink:0}
 #nav-card-list .card-group-items{padding:0 14px 10px;transition:all .3s ease}
 #nav-card-list .card-group-items.folded{max-height:0;opacity:0;overflow:hidden;padding:0 14px}
+
+#mood-card-list .card-group{margin-bottom:10px;border-radius:12px;background:var(--c1);box-shadow:0 1px 3px rgba(0,0,0,.04);overflow:hidden;border:1px solid var(--border)}
+#mood-card-list .card-group-header{display:flex;align-items:center;padding:12px 14px;cursor:pointer;transition:background .2s;gap:10px}
+#mood-card-list .card-group-header:hover{background:var(--c2)}
+#mood-card-list .card-group-name{flex:1;font-size:14px;font-weight:600;color:var(--txt);min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#mood-card-list .card-group-count{font-size:11px;font-weight:700;color:var(--accent);background:#fdf9f2;padding:2px 8px;border-radius:10px;flex-shrink:0}
+#mood-card-list .card-group-arrow{font-size:10px;color:var(--txt3);transition:transform .25s;flex-shrink:0}
+#mood-card-list .card-group-content{padding:0 14px 10px;transition:all .3s ease}
+#mood-card-list .card-group-content.folded{max-height:0;opacity:0;overflow:hidden;padding:0 14px}
+#mood-card-list .card-item{display:flex;align-items:center;gap:8px;padding:8px 12px;background:var(--c2);border-radius:8px;margin-bottom:6px;transition:background .15s;cursor:pointer;border:2px solid transparent}
+#mood-card-list .card-item:last-child{margin-bottom:0}
+#mood-card-list .card-item:hover{background:#f0efe8}
+#mood-card-list .card-content{flex:1;font-size:13px;color:var(--txt);word-break:break-all;line-height:1.5}
+#mood-card-list .card-delete-btn{width:24px;height:24px;border:none;background:rgba(245,34,45,0.1);color:#f5222d;border-radius:6px;font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .15s}
+#mood-card-list .card-delete-btn:hover{background:rgba(245,34,45,0.2)}
+
+.toggle-btn.toggle-on{background:var(--accent)}
+.toggle-btn.toggle-off{background:#ccc}
 
 #nav-card-list .card-item{display:flex;align-items:center;gap:8px;padding:8px 12px;background:var(--c2);border-radius:8px;margin-bottom:6px;transition:background .15s;cursor:pointer;border:2px solid transparent}
 #nav-card-list .card-item.selected{background:rgba(0,150,255,0.1);border-color:var(--accent)}
@@ -1799,6 +1859,754 @@ canvas{-webkit-backface-visibility:hidden;backface-visibility:hidden;-webkit-tra
             .d2-btn { padding: 8px 16px; font-size: 12px; min-width: 80px; }
             .d2-flow-hint { font-size: 10px; }
         }
+/* ===== 生理周期样式 ===== */
+.period-page {
+  --period-bg: #faf8f6;
+  --period-card: #ffffff;
+  --period-rose: #d4788a;
+  --period-rose-light: #f0e0e4;
+  --period-rose-soft: #f8eff1;
+  --period-text: #3a3035;
+  --period-text-mid: #6b5e63;
+  --period-text-sub: #a8989c;
+  --period-border: #ede6e8;
+  --period-shadow: 0 1px 3px rgba(58,48,53,0.04), 0 4px 16px rgba(58,48,53,0.05);
+  --period-shadow-lg: 0 8px 32px rgba(58,48,53,0.08);
+  --period-radius: 16px;
+  --period-radius-sm: 12px;
+  --period-radius-xs: 8px;
+}
+.period-page .period-app {
+  width: 100%;
+  max-width: 440px;
+  padding: 20px 16px 40px;
+}
+.period-page .period-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 0 20px;
+}
+.period-page .period-header-brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.period-page .period-header-logo {
+  width: 42px;
+  height: 42px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #f0d8e0, #e8c4d0);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  box-shadow: 0 2px 8px rgba(212,120,138,0.15);
+}
+.period-page .period-header-title {
+  font-family: "Noto Serif SC", "Source Han Serif SC", "SimSun", "STSong", "Songti SC", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+  font-size: 22px;
+  font-weight: 600;
+  color: var(--period-text);
+  letter-spacing: 0.5px;
+}
+.period-page .period-header-title span { color: var(--period-rose); }
+.period-page .period-header-badge {
+  font-size: 12px;
+  font-weight: 500;
+  padding: 6px 14px;
+  border-radius: 20px;
+  background: var(--period-rose-soft);
+  color: var(--period-text-mid);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  letter-spacing: 0.3px;
+}
+.period-page .period-header-badge .period-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #c8b8bc;
+  transition: 0.3s;
+}
+.period-page .period-header-badge .period-dot.on { background: var(--period-rose); animation: period-pulse-dot 2s ease-in-out infinite; }
+@keyframes period-pulse-dot { 0%,100% { transform: scale(1); opacity: 0.6; } 50% { transform: scale(1.6); opacity: 1; } }
+.period-page .period-status-card {
+  background: var(--period-card);
+  border-radius: var(--period-radius);
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: var(--period-shadow);
+  border: 1px solid var(--period-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.period-page .period-status-left .period-status-label {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--period-text-sub);
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+.period-page .period-status-left .period-status-value {
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--period-text);
+}
+.period-page .period-status-right { text-align: right; }
+.period-page .period-status-right .period-status-prediction {
+  font-size: 13px;
+  color: var(--period-text-mid);
+  font-weight: 500;
+}
+.period-page .period-status-right .period-pred-label {
+  font-size: 12px;
+  color: var(--period-text-sub);
+  display: block;
+  margin-bottom: 2px;
+}
+.period-page .period-status-right .period-status-prediction strong {
+  font-size: 26px;
+  color: var(--period-rose);
+  font-weight: 700;
+  font-family: "Noto Serif SC", "Source Han Serif SC", "SimSun", "STSong", "Songti SC", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+}
+.period-page .period-status-right .period-pred-unit {
+  font-size: 13px;
+  color: var(--period-text-sub);
+  margin-left: 2px;
+}
+.period-page .period-status-right .period-pred-date {
+  font-size: 12px;
+  color: var(--period-text-sub);
+  margin-top: 3px;
+}
+.period-page .period-cal-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  padding: 0 4px;
+}
+.period-page .period-cal-nav .period-month-label {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--period-text);
+  font-family: "Noto Serif SC", "Source Han Serif SC", "SimSun", "STSong", "Songti SC", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+  letter-spacing: 0.3px;
+}
+.period-page .period-cal-nav .period-nav-btns {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+}
+.period-page .period-cal-nav button {
+  background: transparent;
+  border: none;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  font-size: 14px;
+  color: var(--period-text-mid);
+  cursor: pointer;
+  transition: 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: inherit;
+  -webkit-tap-highlight-color: transparent;
+}
+.period-page .period-cal-nav button:active {
+  background: var(--period-rose-soft);
+  color: var(--period-rose);
+}
+.period-page .period-cal-nav .period-today-btn {
+  width: auto;
+  padding: 0 14px;
+  font-size: 13px;
+  font-weight: 500;
+  background: var(--period-rose-soft);
+  border-radius: 20px;
+  color: var(--period-text-mid);
+  height: 32px;
+  letter-spacing: 0.2px;
+}
+.period-page .period-cal-nav .period-today-btn:active {
+  background: var(--period-rose-light);
+  color: var(--period-rose);
+}
+.period-page .period-calendar-wrap {
+  background: var(--period-card);
+  border-radius: var(--period-radius);
+  padding: 14px 10px;
+  margin-bottom: 16px;
+  box-shadow: var(--period-shadow);
+  border: 1px solid var(--period-border);
+}
+.period-page .period-calendar {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 2px;
+}
+.period-page .period-calendar .period-wd {
+  text-align: center;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--period-text-sub);
+  padding: 6px 0 4px;
+  letter-spacing: 0.2px;
+}
+.period-page .period-calendar .period-day {
+  aspect-ratio: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--period-text);
+  border-radius: 50%;
+  cursor: pointer;
+  transition: 0.15s;
+  position: relative;
+  background: transparent;
+  border: none;
+  font-family: inherit;
+  padding: 0;
+  line-height: 1;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+  -webkit-user-select: none;
+}
+.period-page .period-calendar .period-day:active { transform: scale(0.9); }
+.period-page .period-calendar .period-day.other { color: #d8d0d4; pointer-events: none; }
+.period-page .period-calendar .period-day.today {
+  font-weight: 700;
+  color: var(--period-rose);
+  background: rgba(212,120,138,0.06);
+  box-shadow: inset 0 0 0 2px rgba(212,120,138,0.25);
+}
+.period-page .period-calendar .period-day.period {
+  background: #f4e0e6;
+  color: #8a3848;
+  font-weight: 600;
+}
+.period-page .period-calendar .period-day.period.today {
+  background: #ecc8d4;
+  box-shadow: inset 0 0 0 2px rgba(212,120,138,0.35);
+  color: #8a3848;
+}
+.period-page .period-calendar .period-day .period-detail-dot {
+  position: absolute;
+  bottom: 3px;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--period-rose);
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+.period-page .period-calendar .period-day .period-detail-dot.show { opacity: 0.55; }
+.period-page .period-legend {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  margin-bottom: 18px;
+  font-size: 12px;
+  color: var(--period-text-sub);
+}
+.period-page .period-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.period-page .period-legend-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  display: inline-block;
+}
+.period-page .period-legend-dot.period { background: #f4e0e6; }
+.period-page .period-legend-dot.today { background: rgba(212,120,138,0.06); border: 2px solid rgba(212,120,138,0.25); }
+.period-page .period-legend-dot.detail { width: 4px; height: 4px; background: var(--period-rose); opacity: 0.55; }
+.period-page .period-actions-row {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 18px;
+}
+.period-page .period-btn-quick {
+  flex: 1;
+  padding: 14px 16px;
+  border-radius: var(--period-radius-sm);
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  font-family: inherit;
+  transition: 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  letter-spacing: 0.2px;
+  -webkit-tap-highlight-color: transparent;
+}
+.period-page .period-btn-quick:active { transform: scale(0.96); }
+.period-page .period-btn-record {
+  background: var(--period-rose);
+  color: #fff;
+  box-shadow: 0 4px 16px rgba(212,120,138,0.25);
+}
+.period-page .period-btn-add {
+  background: var(--period-card);
+  color: var(--period-text-mid);
+  border: 1.5px solid var(--period-border);
+  box-shadow: var(--period-shadow);
+}
+.period-page .period-add-section {
+  background: var(--period-card);
+  border-radius: var(--period-radius);
+  padding: 18px;
+  margin-bottom: 18px;
+  box-shadow: var(--period-shadow);
+  border: 1px solid var(--period-border);
+}
+.period-page .period-add-section .period-section-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--period-text);
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  letter-spacing: 0.2px;
+}
+.period-page .period-add-fields {
+  display: flex;
+  gap: 10px;
+  align-items: flex-end;
+  flex-wrap: wrap;
+}
+.period-page .period-add-fields .period-field {
+  flex: 1;
+  min-width: 100px;
+}
+.period-page .period-add-fields .period-field label {
+  display: block;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--period-text-sub);
+  margin-bottom: 4px;
+  letter-spacing: 0.3px;
+}
+.period-page .period-add-fields .period-field input[type="date"] {
+  width: 100%;
+  padding: 11px 12px;
+  border: 1.5px solid var(--period-border);
+  border-radius: var(--period-radius-xs);
+  font-size: 14px;
+  color: var(--period-text);
+  background: var(--period-bg);
+  font-family: inherit;
+  outline: none;
+  transition: 0.2s;
+  -webkit-appearance: none;
+  appearance: none;
+}
+.period-page .period-add-fields .period-field input[type="date"]:focus {
+  border-color: var(--period-rose);
+  background: #fff;
+  box-shadow: 0 0 0 4px rgba(212,120,138,0.05);
+}
+.period-page .period-add-fields .period-field input[type="date"]::-webkit-calendar-picker-indicator {
+  opacity: 0.35;
+  cursor: pointer;
+}
+.period-page .period-add-fields .period-btn-save {
+  padding: 11px 28px;
+  background: var(--period-rose);
+  color: #fff;
+  border: none;
+  border-radius: 24px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  white-space: nowrap;
+  transition: 0.2s;
+  box-shadow: 0 4px 14px rgba(212,120,138,0.2);
+  letter-spacing: 0.2px;
+  -webkit-tap-highlight-color: transparent;
+}
+.period-page .period-add-fields .period-btn-save:active {
+  transform: scale(0.96);
+  background: #c46878;
+}
+.period-page .period-add-fields .period-btn-save:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+.period-page .period-add-hint {
+  font-size: 12px;
+  color: var(--period-text-sub);
+  margin-top: 10px;
+  text-align: center;
+  transition: color 0.2s;
+}
+.period-page .period-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  margin-bottom: 20px;
+}
+.period-page .period-stat-card {
+  background: var(--period-card);
+  border-radius: var(--period-radius-sm);
+  padding: 14px 8px;
+  text-align: center;
+  box-shadow: var(--period-shadow);
+  border: 1px solid var(--period-border);
+  transition: 0.2s;
+}
+.period-page .period-stat-card .period-stat-num {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--period-text);
+  font-family: "Noto Serif SC", "Source Han Serif SC", "SimSun", "STSong", "Songti SC", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+  line-height: 1.2;
+}
+.period-page .period-stat-card .period-stat-num .period-unit {
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--period-text-sub);
+}
+.period-page .period-stat-card .period-stat-label {
+  font-size: 11px;
+  color: var(--period-text-sub);
+  margin-top: 2px;
+  letter-spacing: 0.2px;
+}
+.period-page .period-history-section { margin-bottom: 20px; }
+.period-page .period-history-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+  padding: 0 2px;
+}
+.period-page .period-history-header .period-section-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--period-text);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.period-page .period-history-header .period-count-badge {
+  font-size: 12px;
+  color: var(--period-text-sub);
+  background: var(--period-rose-soft);
+  padding: 3px 14px;
+  border-radius: 20px;
+  font-weight: 500;
+}
+.period-page .period-history-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 300px;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+.period-page .period-history-list::-webkit-scrollbar { width: 3px; }
+.period-page .period-history-list::-webkit-scrollbar-track { background: transparent; }
+.period-page .period-history-list::-webkit-scrollbar-thumb { background: var(--period-border); border-radius: 10px; }
+.period-page .period-history-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 16px;
+  background: var(--period-card);
+  border-radius: var(--period-radius-sm);
+  box-shadow: var(--period-shadow);
+  border: 1px solid var(--period-border);
+  animation: period-fadeUp 0.3s ease;
+  transition: 0.15s;
+}
+@keyframes period-fadeUp {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.period-page .period-history-item .period-info .period-dates {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--period-text);
+}
+.period-page .period-history-item .period-info .period-dates .period-arrow {
+  color: var(--period-text-sub);
+  margin: 0 6px;
+}
+.period-page .period-history-item .period-info .period-meta {
+  font-size: 12px;
+  color: var(--period-text-sub);
+  margin-top: 3px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 8px;
+}
+.period-page .period-history-item .period-info .period-meta .period-tag {
+  background: var(--period-rose-soft);
+  padding: 1px 10px;
+  border-radius: 20px;
+  color: var(--period-text-mid);
+  font-weight: 500;
+  font-size: 11px;
+}
+.period-page .period-history-item .period-actions {
+  display: flex;
+  gap: 2px;
+  flex-shrink: 0;
+}
+.period-page .period-history-item .period-actions button {
+  background: transparent;
+  border: none;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  font-size: 15px;
+  color: var(--period-text-sub);
+  cursor: pointer;
+  transition: 0.15s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  -webkit-tap-highlight-color: transparent;
+}
+.period-page .period-history-item .period-actions button:active {
+  background: var(--period-rose-soft);
+  color: var(--period-rose);
+}
+.period-page .period-history-item .period-actions button.del:active {
+  background: #fce4e4;
+  color: #c06060;
+}
+.period-page .period-empty-state {
+  text-align: center;
+  padding: 32px 0 20px;
+  color: var(--period-text-sub);
+}
+.period-page .period-empty-state .period-icon {
+  font-size: 40px;
+  display: block;
+  margin-bottom: 8px;
+  opacity: 0.6;
+}
+.period-page .period-empty-state .period-text {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--period-text-mid);
+}
+.period-page .period-empty-state .period-sub {
+  font-size: 12px;
+  margin-top: 4px;
+  color: var(--period-text-sub);
+}
+.period-page .period-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  height: 100dvh;
+  background: rgba(40,30,38,0.4);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 24px;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s, visibility 0.3s;
+}
+.period-page .period-modal-overlay.open {
+  opacity: 1;
+  visibility: visible;
+}
+.period-page .period-modal {
+  background: var(--period-card);
+  border-radius: 24px;
+  max-width: 360px;
+  width: 100%;
+  padding: 28px 24px 24px;
+  box-shadow: var(--period-shadow-lg);
+  transform: translateY(16px) scale(0.97);
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.period-page .period-modal-overlay.open .period-modal {
+  transform: translateY(0) scale(1);
+}
+.period-page .period-modal .period-modal-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--period-text);
+  margin-bottom: 4px;
+  font-family: "Noto Serif SC", "Source Han Serif SC", "SimSun", "STSong", "Songti SC", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+  letter-spacing: 0.3px;
+}
+.period-page .period-modal .period-modal-sub {
+  font-size: 13px;
+  color: var(--period-text-sub);
+  margin-bottom: 20px;
+}
+.period-page .period-modal .period-modal-fields {
+  display: flex;
+  gap: 14px;
+  margin-bottom: 20px;
+}
+.period-page .period-modal .period-modal-fields .period-field { flex: 1; }
+.period-page .period-modal .period-modal-fields .period-field label {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--period-text-sub);
+  margin-bottom: 5px;
+  letter-spacing: 0.2px;
+}
+.period-page .period-modal .period-modal-fields .period-field select {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1.5px solid var(--period-border);
+  border-radius: var(--period-radius-xs);
+  font-size: 15px;
+  color: var(--period-text);
+  background: var(--period-bg);
+  font-family: inherit;
+  outline: none;
+  transition: 0.2s;
+  -webkit-appearance: none;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23a8989c' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  background-size: 12px;
+  cursor: pointer;
+}
+.period-page .period-modal .period-modal-fields .period-field select:focus {
+  border-color: var(--period-rose);
+  background: #fff;
+  box-shadow: 0 0 0 4px rgba(212,120,138,0.05);
+}
+.period-page .period-modal .period-modal-btns {
+  display: flex;
+  gap: 10px;
+}
+.period-page .period-modal .period-modal-btns button {
+  flex: 1;
+  padding: 13px;
+  border: none;
+  border-radius: 24px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  transition: 0.2s;
+  letter-spacing: 0.2px;
+  -webkit-tap-highlight-color: transparent;
+}
+.period-page .period-modal .period-modal-btns .period-btn-cancel {
+  background: var(--period-bg);
+  color: var(--period-text-mid);
+}
+.period-page .period-modal .period-modal-btns .period-btn-cancel:active {
+  background: var(--period-border);
+}
+.period-page .period-modal .period-modal-btns .period-btn-confirm {
+  background: var(--period-rose);
+  color: #fff;
+  box-shadow: 0 4px 14px rgba(212,120,138,0.2);
+}
+.period-page .period-modal .period-modal-btns .period-btn-confirm:active {
+  transform: scale(0.96);
+  background: #c46878;
+}
+.period-page .period-toast {
+  position: fixed;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%) translateY(100px);
+  background: rgba(50,42,48,0.92);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  color: #fff;
+  padding: 13px 28px;
+  border-radius: 24px;
+  font-size: 14px;
+  font-weight: 500;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.12);
+  opacity: 0;
+  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.3s;
+  pointer-events: none;
+  z-index: 2000;
+  max-width: 90%;
+  text-align: center;
+  letter-spacing: 0.2px;
+}
+.period-page .period-toast.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+@media (max-width: 380px) {
+  .period-page .period-app { padding: 14px 12px 32px; }
+  .period-page .period-header-title { font-size: 19px; }
+  .period-page .period-header-logo { width: 36px; height: 36px; font-size: 19px; border-radius: 12px; }
+  .period-page .period-header-badge { font-size: 11px; padding: 5px 10px; }
+  .period-page .period-status-card { padding: 16px; }
+  .period-page .period-status-left .period-status-value { font-size: 15px; }
+  .period-page .period-status-right .period-status-prediction strong { font-size: 19px; }
+  .period-page .period-calendar { gap: 1px; }
+  .period-page .period-calendar .period-day { font-size: 13px; }
+  .period-page .period-calendar-wrap { padding: 10px 6px; }
+  .period-page .period-add-fields { flex-direction: column; }
+  .period-page .period-add-fields .period-field { width: 100%; min-width: unset; }
+  .period-page .period-add-fields .period-btn-save { width: 100%; }
+  .period-page .period-stats { grid-template-columns: repeat(2, 1fr); gap: 6px; }
+  .period-page .period-stat-card .period-stat-num { font-size: 19px; }
+  .period-page .period-modal { padding: 22px 18px 20px; }
+  .period-page .period-modal .period-modal-fields { flex-direction: column; gap: 12px; }
+  .period-page .period-actions-row { flex-direction: column; }
+}
+@media (max-width: 340px) {
+  .period-page .period-history-item { flex-wrap: wrap; gap: 8px; }
+  .period-page .period-history-item .period-actions { margin-left: auto; }
+}
+/* ===== 批量发送模式 ===== */
+.batch-btn.active { background: var(--accent); color: #fff; }
+.batch-btn:active:not(.active) { background: var(--c4);transform:scale(.95); }
+.batch-preview { position: absolute; bottom: 100%; left: 0; right: 0; max-height: 160px; overflow-y: auto; background: var(--c1, #fff); border: 1px solid var(--border, #e0e0e0); border-radius: 16px; margin-bottom: 8px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); display: none; flex-direction: column; z-index: 10; animation: batchPreviewSlideUp 0.3s ease; }
+.batch-preview.show { display: flex; }
+@keyframes batchPreviewSlideUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+.batch-preview-title { display: flex; align-items: center; justify-content: space-between; padding: 10px 14px; font-size: 13px; font-weight: 600; color: var(--txt, #333); border-bottom: 1px solid var(--border, #e0e0e0); }
+.batch-add-img-btn { width: 30px; height: 30px; border: none; border-radius: 50%; background: var(--c3); color: var(--txt2); font-size: 14px; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: 0.2s; -webkit-tap-highlight-color: transparent; }
+.batch-add-img-btn:active { background: var(--c4); transform: scale(0.95); }
+.batch-preview-list { padding: 8px; display: flex; flex-direction: column; gap: 6px; }
+.batch-preview-item { display: flex; align-items: center; justify-content: space-between; padding: 8px 12px; background: var(--c2, #f5f5f5); border-radius: 8px; animation: batchItemAppear 0.2s ease; }
+@keyframes batchItemAppear { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
+.batch-preview-text { flex: 1; font-size: 13px; color: var(--txt, #333); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; margin-right: 8px; }
+.batch-preview-remove { background: transparent; border: none; width: 24px; height: 24px; border-radius: 50%; font-size: 14px; color: var(--txt3, #aaa); cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: 0.15s; -webkit-tap-highlight-color: transparent; }
+.batch-preview-remove:active { background: #fce4e4; color: #c06060; }
+.batch-actions { display: flex; justify-content: flex-end; gap: 8px; padding: 10px 14px; border-top: 1px solid var(--border, #e0e0e0); }
+.batch-action-btn { padding: 8px 16px; border: none; border-radius: 20px; font-size: 13px; font-weight: 600; cursor: pointer; transition: 0.2s; -webkit-tap-highlight-color: transparent; }
+.batch-cancel-btn { background: transparent; color: var(--txt2, #666); border: 1px solid var(--border, #e0e0e0); }
+.batch-cancel-btn:active { background: var(--border, #e0e0e0); }
+.batch-send-btn { background: var(--accent, #333); color: #fff; }
+.batch-send-btn:disabled { opacity: 0.35; cursor: not-allowed; }
+.batch-send-btn:active:not(:disabled) { transform: scale(0.96); }
 </style>
 <link rel="manifest" href="manifest.json">
 <meta name="apple-mobile-web-app-title" content="星言">
@@ -2013,7 +2821,7 @@ const LENORMAND_IMAGES = {
             </div>
             
             <div style="padding:16px;background:#f8fafc;border-radius:12px;border:1px solid #eeeeee;">
-              <div style="font-size:12px;color:#333333;font-weight:500;margin-bottom:4px;">星言1.35
+              <div style="font-size:12px;color:#333333;font-weight:500;margin-bottom:4px;">
                  测试中</div>
               <div style="font-size:12px;color:#666666;line-height:1.7;">如果有bug可以带上手机型号和问题和我反馈（目前我自己用没什么bug，不知道不同手机是什么情况，最好是说详细点我问问ai修）</div>
             </div>
@@ -2052,6 +2860,21 @@ const LENORMAND_IMAGES = {
       </div>
       
       <button id="announcement-next" style="width:100%;padding:14px;border:none;border-radius:8px;background:#334155;color:#ffffff;font-size:14px;font-weight:500;cursor:pointer;transition:all 0.2s ease;letter-spacing:2px;position:relative;z-index:10;touch-action:manipulation;-webkit-tap-highlight-color:transparent;">下一页</button>
+    </div>
+  </div>
+</div>
+
+<!-- Update Notice Overlay -->
+<div id="update-notice-overlay">
+  <div id="update-notice-modal">
+    <div id="update-notice-header">
+      <div id="update-notice-title">✨ 星言 1.4</div>
+      <div id="update-notice-version"></div>
+      <div id="update-notice-date"></div>
+    </div>
+    <div id="update-notice-body"></div>
+    <div id="update-notice-footer">
+      <button id="update-notice-btn" onclick="closeUpdateNotice()">我知道了</button>
     </div>
   </div>
 </div>
@@ -2610,32 +3433,169 @@ const LENORMAND_IMAGES = {
       </div>
       <div class="my-row" id="more-board-btn" style="display:flex;align-items:center;gap:14px;padding:16px 18px;background:var(--c2);border-radius:var(--radius);margin-bottom:12px;cursor:pointer">
         <div style="width:52px;height:52px;border-radius:12px;background:#e8e8e8;display:flex;align-items:center;justify-content:center;font-size:30px">📋</div>
-        <div style="flex:1"><div style="font-weight:500;font-size:16px">留言板</div><div style="font-size:13px;color:var(--txt2);margin-top:2px">保存消息给所有联系人看</div></div>
+        <div style="flex:1"><div style="font-weight:500;font-size:16px">留言板（现在是阉割版不要使用，待更新）</div><div style="font-size:13px;color:var(--txt2);margin-top:2px">保存消息给所有联系人看</div></div>
         
       </div>
       <div class="my-row" id="more-schedule-btn" style="display:flex;align-items:center;gap:14px;padding:16px 18px;background:var(--c2);border-radius:var(--radius);margin-bottom:12px;cursor:pointer">
         <div style="width:52px;height:52px;border-radius:12px;background:#e8e8e8;display:flex;align-items:center;justify-content:center;font-size:30px">📅</div>
-        <div style="flex:1"><div style="font-weight:500;font-size:16px">日程</div><div style="font-size:13px;color:var(--txt2);margin-top:2px">记录我的行程安排</div></div>
+        <div style="flex:1"><div style="font-weight:500;font-size:16px">日程（现在是阉割版不要使用，待更新）</div><div style="font-size:13px;color:var(--txt2);margin-top:2px">记录我的行程安排</div></div>
         
       </div>
       <div class="my-row" id="more-accounting-btn" style="display:flex;align-items:center;gap:14px;padding:16px 18px;background:var(--c2);border-radius:var(--radius);margin-bottom:12px;cursor:pointer">
         <div style="width:52px;height:52px;border-radius:12px;background:#e8e8e8;display:flex;align-items:center;justify-content:center;font-size:30px">💰</div>
-        <div style="flex:1"><div style="font-weight:500;font-size:16px">记账</div><div style="font-size:13px;color:var(--txt2);margin-top:2px">记录收支，管理财务</div></div>
+        <div style="flex:1"><div style="font-weight:500;font-size:16px">记账（现在是阉割版不要使用，待更新）</div><div style="font-size:13px;color:var(--txt2);margin-top:2px">记录收支，管理财务</div></div>
         
       </div>
       <div class="my-row" id="more-todo-btn" style="display:flex;align-items:center;gap:14px;padding:16px 18px;background:var(--c2);border-radius:var(--radius);margin-bottom:12px;cursor:pointer">
         <div style="width:52px;height:52px;border-radius:12px;background:#e8e8e8;display:flex;align-items:center;justify-content:center;font-size:30px">✅</div>
-        <div style="flex:1"><div style="font-weight:500;font-size:16px">待办事项</div><div style="font-size:13px;color:var(--txt2);margin-top:2px">管理日常待办任务</div></div>
+        <div style="flex:1"><div style="font-weight:500;font-size:16px">待办事项（现在是阉割版不要使用，待更新）</div><div style="font-size:13px;color:var(--txt2);margin-top:2px">管理日常待办任务</div></div>
         
       </div>
       <div class="my-row" id="more-dream-btn" style="display:flex;align-items:center;gap:14px;padding:16px 18px;background:var(--c2);border-radius:var(--radius);margin-bottom:12px;cursor:pointer">
         <div style="width:52px;height:52px;border-radius:12px;background:#e8e8e8;display:flex;align-items:center;justify-content:center;font-size:30px">📒</div>
-        <div style="flex:1"><div style="font-weight:500;font-size:16px">日记本</div><div style="font-size:13px;color:var(--txt2);margin-top:2px">记录生活，保存回忆</div></div>
+        <div style="flex:1"><div style="font-weight:500;font-size:16px">日记本（现在是阉割版不要使用，待更新）</div><div style="font-size:13px;color:var(--txt2);margin-top:2px">记录生活，保存回忆</div></div>
+        
+      </div>
+      <div class="my-row" id="more-period-btn" style="display:flex;align-items:center;gap:14px;padding:16px 18px;background:var(--c2);border-radius:var(--radius);margin-bottom:12px;cursor:pointer">
+        <div style="width:52px;height:52px;border-radius:12px;background:#e8e8e8;display:flex;align-items:center;justify-content:center;font-size:30px">🌸</div>
+        <div style="flex:1"><div style="font-weight:500;font-size:16px">生理周期</div><div style="font-size:13px;color:var(--txt2);margin-top:2px">记录经期，预测周期</div></div>
         
       </div>
       </div>
   </div>
   <div class="tabs"></div>
+</div>
+
+<!-- Period Page -->
+<div class="page period-page" id="pg-period">
+  <div class="nav">
+    <div class="nl"><button class="btn-nav" onclick="showPg('pg-more')">←</button></div>
+    <span class="tt">🌸 生理周期</span>
+    <div class="nr"></div>
+  </div>
+  <div style="flex:1;overflow-y:auto;padding:0;">
+    <div class="period-app" id="periodApp">
+      <div class="period-header">
+        <div class="period-header-brand">
+          <div class="period-header-logo">🌸</div>
+          <div class="period-header-title">经期<span>记录</span></div>
+        </div>
+        <div class="period-header-badge" id="periodHeaderBadge">
+          <span class="period-dot" id="periodStatusDot"></span>
+          <span id="periodStatusLabel">无记录</span>
+        </div>
+      </div>
+      <div class="period-status-card" id="periodStatusCard">
+        <div class="period-status-left">
+          <div class="period-status-label" id="periodStatusLabel2">今天</div>
+          <div class="period-status-value" id="periodTodayDate">--</div>
+        </div>
+        <div class="period-status-right">
+          <div class="period-status-prediction" id="periodNextInfo">
+            <span class="period-pred-label">预测下次</span>
+            <strong id="periodNextDays">--</strong><span class="period-pred-unit">天</span>
+            <div class="period-pred-date" id="periodPredDate"></div>
+          </div>
+        </div>
+      </div>
+      <div class="period-cal-nav">
+        <span class="period-month-label" id="periodMonthLabel">2026年7月</span>
+        <div class="period-nav-btns">
+          <button class="period-today-btn" id="periodTodayBtn">今天</button>
+          <button id="periodPrevBtn" aria-label="上个月">◀</button>
+          <button id="periodNextBtn" aria-label="下个月">▶</button>
+        </div>
+      </div>
+      <div class="period-calendar-wrap">
+        <div class="period-calendar" id="periodCalendarGrid"></div>
+      </div>
+      <div class="period-legend">
+        <div class="period-legend-item"><span class="period-legend-dot period"></span> 经期</div>
+        <div class="period-legend-item"><span class="period-legend-dot today"></span> 今天</div>
+        <div class="period-legend-item"><span class="period-legend-dot detail"></span> 有详情</div>
+      </div>
+      <div class="period-actions-row">
+        <button class="period-btn-quick period-btn-record" id="periodQuickTodayBtn">📝 记录今天</button>
+        <button class="period-btn-quick period-btn-add" id="periodToggleAddBtn">＋ 添加区间</button>
+      </div>
+      <div class="period-add-section" id="periodAddSection" style="display:none;">
+        <div class="period-section-title">📅 添加经期区间</div>
+        <div class="period-add-fields">
+          <div class="period-field">
+            <label for="periodStartDate">开始日期</label>
+            <input type="date" id="periodStartDate"/>
+          </div>
+          <div class="period-field">
+            <label for="periodEndDate">结束日期 <span style="font-weight:400;color:var(--period-text-sub);">(可选)</span></label>
+            <input type="date" id="periodEndDate"/>
+          </div>
+          <button class="period-btn-save" id="periodSaveBtn">保存</button>
+        </div>
+        <div class="period-add-hint" id="periodFormHint">结束日期留空则只记录单日</div>
+      </div>
+      <div class="period-stats" id="periodStatsGrid">
+        <div class="period-stat-card">
+          <div class="period-stat-num" id="periodStatCycle">-- <span class="period-unit">天</span></div>
+          <div class="period-stat-label">平均周期</div>
+        </div>
+        <div class="period-stat-card">
+          <div class="period-stat-num" id="periodStatDuration">-- <span class="period-unit">天</span></div>
+          <div class="period-stat-label">平均经期</div>
+        </div>
+        <div class="period-stat-card">
+          <div class="period-stat-num" id="periodStatAmount">--</div>
+          <div class="period-stat-label">平均经量</div>
+        </div>
+        <div class="period-stat-card">
+          <div class="period-stat-num" id="periodStatPain">--</div>
+          <div class="period-stat-label">平均痛经</div>
+        </div>
+      </div>
+      <div class="period-history-section">
+        <div class="period-history-header">
+          <div class="period-section-title">📋 历史记录</div>
+          <span class="period-count-badge" id="periodHistoryBadge">0 条</span>
+        </div>
+        <div class="period-history-list" id="periodHistoryList">
+          <div class="period-empty-state">
+            <span class="period-icon">📭</span>
+            <div class="period-text">还没有记录</div>
+            <div class="period-sub">快开始记录你的经期吧</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="period-modal-overlay" id="periodModalOverlay">
+      <div class="period-modal">
+        <div class="period-modal-title">📅 经期详情</div>
+        <div class="period-modal-sub" id="periodModalSub">--</div>
+        <div class="period-modal-fields">
+          <div class="period-field">
+            <label for="periodModalAmount">经量</label>
+            <select id="periodModalAmount">
+              <option value="少">少</option>
+              <option value="中" selected>中</option>
+              <option value="多">多</option>
+            </select>
+          </div>
+          <div class="period-field">
+            <label for="periodModalPain">痛经程度</label>
+            <select id="periodModalPain">
+              <option value="无" selected>无</option>
+              <option value="轻">轻</option>
+              <option value="中">中</option>
+              <option value="重">重</option>
+            </select>
+          </div>
+        </div>
+        <div class="period-modal-btns">
+          <button class="period-btn-cancel" id="periodModalCancel">取消</button>
+          <button class="period-btn-confirm" id="periodModalConfirm">保存详情</button>
+        </div>
+      </div>
+    </div>
+    <div class="period-toast" id="periodToast"></div>
+  </div>
 </div>
 
 <!-- Accounting Page -->
@@ -2858,7 +3818,7 @@ const LENORMAND_IMAGES = {
 <div class="page" id="pg-board">
   <div class="nav">
     <div class="nl"><button class="btn-nav" onclick="showPg('pg-more')">←</button></div>
-    <span class="tt">📋 留言板</span>
+    <span class="tt">📋 留言板（现在是阉割版不要使用，待更新）</span>
     <div class="nr"><button class="btn-nav" onclick="showBoardInput()">+</button></div>
   </div>
   <div id="board-scroll" style="flex:1;overflow-y:auto;padding:16px;"></div>
@@ -2916,7 +3876,7 @@ const LENORMAND_IMAGES = {
 <div class="page" id="pg-schedule">
   <div class="nav">
     <div class="nl"><button class="btn-nav" onclick="showPg('pg-more')">←</button></div>
-    <span class="tt">📅 日程</span>
+    <span class="tt">📅 日程（现在是阉割版不要使用，待更新）</span>
     <div class="nr"><button class="btn-nav" onclick="showScheduleInput()">+</button></div>
   </div>
   <div id="schedule-scroll" style="flex:1;overflow-y:auto;">
@@ -3004,13 +3964,28 @@ const LENORMAND_IMAGES = {
   </div>
 </div>
 
+<!-- Update History Page -->
+<div class="page" id="pg-update-history">
+  <div class="nav">
+    <div class="nl"><button class="btn-nav" onclick="showPg('pg-my')">←</button></div>
+    <span class="tt">更新公告</span>
+    <div class="nr"></div>
+  </div>
+  <div id="update-history-scroll" style="flex:1;overflow-y:auto;padding:12px;-webkit-overflow-scrolling:touch;">
+    <div id="update-history-list"></div>
+  </div>
+  <div class="tabs"></div>
+</div>
+
 <!-- My -->
 <div class="page" id="pg-my">
   <div class="nav"><span class="tt">设置</span></div>
   <div id="my-scroll">
     <div class="my-section">
       
+      <div class="my-row" id="update-history-btn"><span class="my-ico">📜</span><span class="my-label">更新公告</span></div>
       <div class="my-row" id="topbar-settings-btn"><span class="my-ico">📌</span><span class="my-label">联系人顶部栏字卡库</span></div>
+      <div class="my-row" id="mood-cards-settings-btn"><span class="my-ico">💭</span><span class="my-label">聊天情绪字卡库</span></div>
       <div class="my-row" id="settings-btn"><span class="my-ico">📖</span><span class="my-label">聊天字卡库</span></div>
       <div class="my-row" id="call-settings-btn"><span class="my-ico">📞</span><span class="my-label">通话设置</span></div>
       <div class="my-row" id="reply-settings-btn"><span class="my-ico">💬</span><span class="my-label">回复设置</span></div>
@@ -3080,6 +4055,60 @@ const LENORMAND_IMAGES = {
   <div class="tabs"></div>
 </div>
 
+<!-- Chat Mood Cards Settings Page -->
+<div class="page" id="pg-mood-cards-settings">
+  <div class="nav">
+    <div class="nl"><button class="btn-nav" id="mood-cards-back">←</button></div>
+    <span class="tt">聊天情绪字卡库</span>
+    <div class="nr"></div>
+  </div>
+  <div id="mood-cards-scroll" style="flex:1;overflow-y:auto;padding:16px 14px">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+      <div style="background:var(--c2);border-radius:10px;padding:12px;flex:1;margin-right:10px;">
+        <div style="font-size:13px;color:var(--txt);line-height:1.6;">
+          <div style="font-weight:600;margin-bottom:4px;">💡 聊天情绪字卡库</div>
+          <div style="font-size:12px;color:var(--txt2);">聊天消息附带情感标签，让对话更生动自然。每条消息有70%概率附带一张情绪字卡。</div>
+          <div style="font-size:10px;color:var(--txt4);margin-top:4px;">灵感来源：好久以前刷到有老师提过情绪字卡类似的功能，昨天晚上刷到@心汋是颗彩虹多宝糖 老师的帖子，网站聊天也有情绪字卡，感觉很有意思，今天就搓了这个功能 7.22</div>
+        </div>
+      </div>
+      <button id="mood-card-help-btn" style="width:44px;height:44px;border:none;border-radius:10px;background:var(--c2);font-size:20px;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;">☁️</button>
+    </div>
+    
+    <div id="mood-card-toolbar" style="display:flex;gap:8px;margin-bottom:16px;align-items:center;">
+      <select id="mood-card-group-filter" style="flex:1;padding:6px 10px;border:1px solid var(--border);border-radius:6px;background:var(--c1);color:var(--txt);font-size:12px;outline:none;">
+        <option value="all">全部分组</option>
+      </select>
+      <button class="btn-sm-outline" id="mood-card-collapse-btn">折叠全部</button>
+    </div>
+    
+    <div style="margin-bottom:16px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+        <span style="font-size:13px;font-weight:600;color:var(--txt);">📋 联系人开关</span>
+        <span style="font-size:11px;color:var(--txt3);">默认开启</span>
+      </div>
+      <div id="mood-card-contact-list" style="display:flex;flex-wrap:wrap;gap:8px;"></div>
+    </div>
+    
+    <div id="mood-card-list" style="min-height:100px;margin-bottom:16px;"></div>
+    <div id="mood-card-empty" style="text-align:center;color:var(--txt3);padding:20px">暂无字卡</div>
+    
+    <div class="batch-card">
+      <div class="batch-card-header">
+        <span class="batch-icon">📥</span>
+        <span class="batch-title">批量导入字卡</span>
+        <span class="batch-hint">一行一张</span>
+      </div>
+      <textarea class="batch-area" id="mood-card-batch-input" placeholder="粘贴字卡内容..."></textarea>
+      <div class="batch-actions">
+        <button class="btn" id="mood-card-import-btn">导入字卡</button>
+        <button class="btn-outline" id="mood-card-dedup-btn" style="margin-left:8px">清除重复</button>
+      </div>
+      <button class="btn-danger-soft" id="mood-card-reset-btn">恢复默认字卡</button>
+    </div>
+  </div>
+  <div class="tabs"></div>
+</div>
+
 <!-- Contact Topbar Settings Page -->
 <div class="page" id="pg-contact-topbar-settings">
   <div class="nav">
@@ -3115,6 +4144,7 @@ const LENORMAND_IMAGES = {
       <button class="btn-sm-outline" id="export-nav-cards-btn">导出JSON</button>
       <button class="btn-sm-outline" id="import-nav-cards-btn">导入JSON</button>
       <button class="btn-sm-outline" id="collapse-nav-cards-btn">折叠全部</button>
+      <button class="btn-sm-outline" id="reset-nav-cards-btn">恢复默认</button>
     </div>
     
     <div style="margin-bottom:12px;">
@@ -3241,12 +4271,16 @@ const LENORMAND_IMAGES = {
     <div id="quote-preview-content" style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--txt);display:flex;align-items:center;gap:4px;"></div>
     <button id="quote-cancel" style="border:none;background:none;color:var(--txt3);cursor:pointer;font-size:14px;line-height:1;">×</button>
   </div>
+  <div class="input-wrap" style="position:relative;flex-shrink:0;">
+  <div class="batch-preview" id="batch-preview"></div>
   <div class="ibar">
     <button class="ibar-btn" id="btn-ibar-more">⋮</button>
     <button class="ibar-btn" id="btn-ibar-emoji">😄</button>
     <textarea id="msg-inp" rows="1" placeholder="输入消息..."></textarea>
-    <button class="send-btn" id="btn-send">发送</button>
+    <button class="ibar-btn batch-btn" id="batch-btn" title="批量发送模式">☰</button>
+    <button class="send-btn" id="btn-send">➤</button>
     <input type="file" id="chat-image-input" accept="image/*" multiple style="display:none;">
+  </div>
   </div>
   <div class="tabs"></div>
   <div id="long-screenshot-bar" style="display:none;position:fixed;bottom:60px;left:0;right:0;z-index:1000;background:rgba(255,255,255,0.97);border-top:1px solid var(--border);padding:12px 16px;box-shadow:0 -2px 10px rgba(0,0,0,0.1);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);">
@@ -5063,6 +6097,13 @@ const LENORMAND_IMAGES = {
             <span style="font-size:10px;color:var(--txt3);">回车键可发送消息</span>
           </div>
         </label>
+        <label style="display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-top:1px solid var(--border-light);cursor:pointer;">
+          <span style="font-size:13px;color:var(--txt);">开启批量发送模式</span>
+          <div style="display:flex;flex-direction:column;align-items:flex-end;gap:1px;">
+            <input type="checkbox" id="enable-batch-send" style="width:18px;height:18px;cursor:pointer;accent-color:var(--accent);">
+            <span style="font-size:10px;color:var(--txt3);">发送按钮左侧显示批量按钮</span>
+          </div>
+        </label>
       </div>
 
 
@@ -5543,11 +6584,7 @@ var Storage = (function(){
     for(var k in queue){
       if(queue.hasOwnProperty(k)){
         if(window.localforage){
-          window.localforage.setItem(k, queue[k]).catch(function(e){
-            safeSetItem('ml2_lf_'+k, queue[k]);
-          });
-        } else {
-          safeSetItem('ml2_lf_'+k, queue[k]);
+          window.localforage.setItem(k, queue[k]).catch(function(e){});
         }
         stats.writes++;
       }
@@ -5573,8 +6610,8 @@ var Storage = (function(){
     if(window.localforage){
       window.localforage.setItem(k, v).catch(function(e){});
     }
-    var isImgKey=k.startsWith('ml2_card_img_')||k.startsWith('ml2_msg_img_')||k.startsWith('ml2_avh_')||k.startsWith('ml2_avatar_lib_');
-    if(!isImgKey){
+    var isLargeDataKey=k.startsWith('ml2_card_img_')||k.startsWith('ml2_msg_img_')||k.startsWith('ml2_avh_')||k.startsWith('ml2_avatar_lib_')||k==='ml2_c'||k==='ml2_groups';
+    if(!isLargeDataKey){
       safeSetItem('ml2_lf_'+k, v);
       try{sessionStorage.setItem('_lastWrite_'+k, Date.now())}catch(e){}
     }
@@ -6470,7 +7507,7 @@ function savemsgs(id,m){
       imgStore[voiceKey]=voice;
       voice=voiceKey;
     }
-    return{id:x.id,s:x.s,t:x.t,img:img,voice:voice,voiceText:x.voiceText,ts:x.ts instanceof Date?x.ts.toISOString():x.ts,pc:x.pc,isAuto:x.isAuto,isInitiative:x.isInitiative,quote:x.quote,liked:x.liked,retracted:x.retracted,originalContent:x.originalContent,originalImg:origImg,readIgnored:x.readIgnored,isSticker:x.isSticker,isVoice:x.isVoice,isTouch:x.isTouch,touchAction:x.touchAction,touchTarget:x.touchTarget,read:x.read,senderName:x.senderName,senderId:x.senderId,isGroup:x.isGroup,isCall:x.isCall,callStatus:x.callStatus,callDuration:x.callDuration,callMessage:x.callMessage,isSystem:x.isSystem,isAvatarChange:x.isAvatarChange};
+    return{id:x.id,s:x.s,t:x.t,img:img,voice:voice,voiceText:x.voiceText,ts:x.ts instanceof Date?x.ts.toISOString():x.ts,pc:x.pc,isAuto:x.isAuto,isInitiative:x.isInitiative,quote:x.quote,liked:x.liked,retracted:x.retracted,originalContent:x.originalContent,originalImg:origImg,readIgnored:x.readIgnored,isSticker:x.isSticker,isVoice:x.isVoice,isTouch:x.isTouch,touchAction:x.touchAction,touchTarget:x.touchTarget,read:x.read,senderName:x.senderName,senderId:x.senderId,isGroup:x.isGroup,isCall:x.isCall,callStatus:x.callStatus,callDuration:x.callDuration,callMessage:x.callMessage,isSystem:x.isSystem,isAvatarChange:x.isAvatarChange,moodCard:x.moodCard};
   });
   var key=LM+id;
   
@@ -6485,7 +7522,6 @@ function savemsgs(id,m){
   }else{
     Object.keys(imgStore).forEach(function(k){
       memoryCache['_img_'+k]=imgStore[k];
-      safeSetItem(k,imgStore[k]);
     });
   }
 }
@@ -6605,7 +7641,7 @@ function initTabs(){
   updateBadges();
 }
 function updateTabs(pg){
-  var m={pg_list:'list',pg_moments:'moments',pg_my:'my',pg_more:'more',pg_conv:'list',pg_letters:'my',pg_letter_detail:'my',pg_cards:'my',pg_touch:'my'};
+  var m={pg_list:'list',pg_moments:'moments',pg_my:'my',pg_more:'more',pg_conv:'list',pg_letters:'my',pg_letter_detail:'my',pg_cards:'my',pg_touch:'my',pg_update_history:'my'};
   var a=pg.replace(/-/g,'_');var t=m[a]||'list';
   document.querySelectorAll('.tabs').forEach(function(el){
     el.querySelectorAll('.tab').forEach(function(tb){
@@ -6779,8 +7815,13 @@ async function retryLoadImg(imgEl,imgKey){
     if(imgData){
       memoryCache['_img_'+imgKey]=imgData;
       imgEl.src=imgData;
+    }else{
+      imgEl.src='data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"%3E%3Crect fill="%23f0f0f0" width="100" height="100" rx="8"/%3E%3Ctext fill="%23999" font-size="12" x="50%25" y="50%25" text-anchor="middle" dy=".3em"%3E图片丢失%3C/text%3E%3C/svg%3E';
     }
-  }catch(e){console.warn('Failed to load img from localforage:',e);}
+  }catch(e){
+    console.warn('Failed to load img from localforage:',e);
+    imgEl.src='data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"%3E%3Crect fill="%23f0f0f0" width="100" height="100" rx="8"/%3E%3Ctext fill="%23999" font-size="12" x="50%25" y="50%25" text-anchor="middle" dy=".3em"%3E加载失败%3C/text%3E%3C/svg%3E';
+  }
 }
 
 async function loadContactMsgImages(id){
@@ -6970,6 +8011,11 @@ function openConv(id,type){
   
   var hideSendBtn=!!(c&&c.hideSendBtn);
   if($('btn-send'))$('btn-send').style.display=hideSendBtn?'none':'';
+  var batchBtn=$('batch-btn');
+  if(batchBtn){
+    var showBatch=c&&c.batchSendEnabled!==false;
+    batchBtn.style.display=showBatch?'':'none';
+  }
   
   var hideAvatars=!!(c&&c.hideChatAvatars);
   document.querySelectorAll('.ibar').forEach(function(el){
@@ -8148,8 +9194,9 @@ function renderMsgs(messages){
         var onerrorHandler='';
         if(!imgUrl.startsWith('data:image/')){
           onerrorHandler=' onerror="retryLoadImg(this,\''+imgKey.replace(/"/g,'&quot;')+'\')"';
+          imgUrl='data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"%3E%3Crect fill="%23f0f0f0" width="100" height="100" rx="8"/%3E%3Ctext fill="%23999" font-size="12" x="50%25" y="50%25" text-anchor="middle" dy=".3em"%3E加载中%3C/text%3E%3C/svg%3E';
         }
-        contentHtml='<img src="'+imgUrl.replace(/"/g,'&quot;')+'" class="'+imgClass+'" data-orig="'+imgUrl.replace(/"/g,'&quot;')+'" loading="lazy" decoding="async"'+onerrorHandler+'>';
+        contentHtml='<img src="'+imgUrl.replace(/"/g,'&quot;')+'" class="'+imgClass+'" data-orig="'+imgUrl.replace(/"/g,'&quot;')+'" data-key="'+imgKey.replace(/"/g,'&quot;')+'" loading="lazy" decoding="async"'+onerrorHandler+'>';
       }else if(x.voice){
         var voiceUrl=x.voice;
         if(voiceUrl&&!voiceUrl.startsWith('data:audio/')){
@@ -8204,6 +9251,11 @@ function renderMsgs(messages){
       starHtml='<span class="message-star" style="color:'+starColor+'">⭐</span>';
     }
     var readIgnoredHtml=(x.s===SELF&&x.readIgnored)?'<div class="message-read-ignored" style="font-size:11px;color:#333;white-space:nowrap;align-self:flex-end;margin-top:2px;">已读不回</div>':'';
+    var moodCardHtml='';
+    if(x.moodCard&&x.moodCard.content){
+      var moodColor=x.s===SELF?'var(--txt2)':'var(--txt3)';
+      moodCardHtml='<div class="message-mood-card" style="font-size:11px;color:'+moodColor+';background:rgba(255,255,255,0.85);padding:3px 10px;border-radius:12px;display:inline-block;margin-top:4px;border:1px solid rgba(0,0,0,0.06);backdrop-filter:blur(4px);max-width:fit-content;width:auto;align-self:flex-start;">💭 '+x.moodCard.content+'</div>';
+    }
     var editBtnHtml=x.s===SELF&&x.t?'<button class="msg-action-btn edit-btn" title="编辑" onclick="handleEditMsg(\''+x.id+'\')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/></svg></button>':'';
     var canRetract=x.s===SELF&&!x.retracted&&(x.t||x.img);
     var retractBtnHtml=canRetract?'<button class="msg-action-btn retract-btn" title="撤回" onclick="handleRetractMsg(\''+x.id+'\')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 7v6h6"/><path d="M21 17a9 9 0 0 0-9-9 9 9 0 0 0-6 2.3L3 13"/></svg></button>':'';
@@ -8260,7 +9312,7 @@ function renderMsgs(messages){
       var isCopyChecked=selectedCopyMsgIds.indexOf(x.id)>=0;
       ssCheckboxHtml='<div class="ss-check-wrap"><input type="checkbox" '+(isCopyChecked?'checked':'')+' onclick="event.stopPropagation();toggleCopyMsg(\''+x.id+'\')" style="width:16px;height:16px;cursor:pointer;accent-color:var(--accent);"></div>';
     }
-    html.push('<div class="mr'+((longScreenshotMode||favMsgMode||copyMsgMode)?' mr-ss':'')+' '+(x.s===SELF?'self':'other')+(gap?' has-gap':'')+(x.retracted?' retracted':'')+'" data-mid="'+x.id+'" data-liked="'+isLiked+'">'+ssCheckboxHtml+avatarHtml+'<div class="mc">'+senderNameHtml+starHtml+'<div class="mb" style="'+bubbleOpacity+'">'+quoteHtml+contentHtml+bubbleTimeHtml+actionsHtml+'</div>'+readIgnoredHtml+'</div></div>');
+    html.push('<div class="mr'+((longScreenshotMode||favMsgMode||copyMsgMode)?' mr-ss':'')+' '+(x.s===SELF?'self':'other')+(gap?' has-gap':'')+(x.retracted?' retracted':'')+'" data-mid="'+x.id+'" data-liked="'+isLiked+'">'+ssCheckboxHtml+avatarHtml+'<div class="mc">'+senderNameHtml+starHtml+'<div class="mb" style="'+bubbleOpacity+'">'+quoteHtml+contentHtml+bubbleTimeHtml+actionsHtml+'</div>'+moodCardHtml+readIgnoredHtml+'</div></div>');
     lt=d.getTime();
   }
   
@@ -8989,12 +10041,174 @@ function showRetractedContent(el){
     original.style.display=original.style.display==='none'?'block':'none';
   }
 };
+// ===== 批量发送模式 =====
+var isBatchMode = false;
+var batchMessages = [];
+
+function toggleBatchMode() {
+  isBatchMode = !isBatchMode;
+  var batchBtn = $('batch-btn');
+  var batchPreview = $('batch-preview');
+  var msgInp = $('msg-inp');
+  
+  if (isBatchMode) {
+    if (batchBtn) batchBtn.classList.add('active');
+    if (batchBtn) batchBtn.title = '退出批量模式';
+    if (batchPreview) { batchPreview.classList.add('show'); batchPreview.style.display = 'flex'; }
+    batchMessages = [];
+    if (msgInp) msgInp.placeholder = '此刻，想说的有很多很多...';
+    updateBatchPreview();
+  } else {
+    if (batchBtn) batchBtn.classList.remove('active');
+    if (batchBtn) batchBtn.title = '批量发送模式';
+    if (batchPreview) { batchPreview.classList.remove('show'); batchPreview.style.display = 'none'; }
+    batchMessages = [];
+    if (msgInp) msgInp.placeholder = '输入消息...';
+  }
+  updateSendBtn();
+}
+
+function addToBatch() {
+  var inp = $('msg-inp');
+  var t = inp.value.trim();
+  if (!t) return;
+  
+  batchMessages.push({
+    id: Date.now() + '_' + batchMessages.length,
+    text: t,
+    type: 'text'
+  });
+  
+  inp.value = '';
+  inp.style.height = 'auto';
+  updateBatchPreview();
+  updateSendBtn();
+  haptic('light');
+}
+
+function updateBatchPreview() {
+  var preview = $('batch-preview');
+  if (!preview) return;
+  
+  var listHTML = '';
+  if (batchMessages.length > 0) {
+    listHTML = batchMessages.map(function(msg, index) {
+      if (msg.type === 'image') {
+        var imgSrc = msg.originalImage || msg.image;
+        return '<div class="batch-preview-item" data-index="' + index + '">' +
+          '<img src="' + imgSrc + '" style="width:60px;height:60px;border-radius:8px;object-fit:cover;flex-shrink:0;">' +
+          '<span class="batch-preview-text">图片</span>' +
+          '<button class="batch-preview-remove">×</button>' +
+        '</div>';
+      }
+      return '<div class="batch-preview-item" data-index="' + index + '">' +
+        '<span class="batch-preview-text">' + escapeHtml(msg.text) + '</span>' +
+        '<button class="batch-preview-remove">×</button>' +
+      '</div>';
+    }).join('');
+  } else {
+    listHTML = '<div style="text-align:center;color:var(--txt3);font-size:12px;padding:10px;">暂无消息</div>';
+  }
+  
+  preview.innerHTML = 
+    '<div class="batch-preview-title">' +
+      '<span style="font-size:10px;color:var(--txt4);">批量发送：支持一次输入多条消息内容，并按照顺序逐条发送到聊天记录中（群友想要，借鉴milk老师的字卡功能搓了，总之感谢milk老师）</span>' +
+      '<button class="batch-add-img-btn" id="batch-add-img-btn" title="添加图片">🖼️</button>' +
+    '</div>' +
+    '<div class="batch-preview-list">' + listHTML + '</div>' +
+    '<div class="batch-actions">' +
+      '<button class="batch-action-btn batch-cancel-btn">取消</button>' +
+      '<button class="batch-action-btn batch-send-btn"' + (batchMessages.length === 0 ? ' disabled' : '') + '>发送全部 (' + batchMessages.length + ')</button>' +
+    '</div>';
+}
+
+function sendBatchMessages() {
+  if (batchMessages.length === 0) return;
+  if (!cid) { toast('请先选择联系人'); return; }
+  
+  toast('正在发送 ' + batchMessages.length + ' 条消息...');
+  
+  var totalDelay = batchMessages.length * 300;
+  
+  batchMessages.forEach(function(msg, index) {
+    setTimeout(function() {
+      var m = msgs(cid);
+      if (msg.type === 'image') {
+        var msgObj = {
+          id: 'm_' + Date.now() + '_' + index + '_' + Math.random().toString(36).substr(2, 5),
+          s: SELF,
+          t: '',
+          img: msg.image,
+          ts: new Date(),
+          pc: false,
+          isSticker: false,
+          isGroup: window.currentConvType === 'group',
+          read: true,
+          senderName: '我',
+          senderId: me.id
+        };
+        m.push(msgObj);
+      } else {
+        var msgObj = {
+          id: 'm_' + Date.now() + '_' + index + '_' + Math.random().toString(36).substr(2, 5),
+          s: SELF,
+          t: msg.text,
+          ts: new Date(),
+          pc: false,
+          isGroup: window.currentConvType === 'group',
+          read: true,
+          senderName: '我',
+          senderId: me.id
+        };
+        m.push(msgObj);
+      }
+      savemsgs(cid, m);
+      renderMsgs(m);
+      $('msgbox').scrollTop = $('msgbox').scrollHeight;
+      
+      if (index === batchMessages.length - 1) {
+        renderChatList();
+      }
+      
+      playSound('send', cid);
+    }, index * 300);
+  });
+  
+  // 统一调度回复
+  setTimeout(function() {
+    if (!pomodoroState.isRunning || !pomodoroState.isPaused || !pomodoroSettings.blockDuringFocus) {
+      scheduleReply();
+    }
+  }, totalDelay);
+  
+  // 退出批量模式
+  isBatchMode = false;
+  batchMessages = [];
+  var batchBtn = $('batch-btn');
+  var batchPreview = $('batch-preview');
+  var msgInp = $('msg-inp');
+  if (batchBtn) batchBtn.classList.remove('active');
+  if (batchPreview) { 
+    batchPreview.classList.remove('show'); 
+    batchPreview.style.display = 'none';
+    batchPreview.innerHTML = '';
+  }
+  if (msgInp) {
+    msgInp.placeholder = '输入消息...';
+    msgInp.value = '';
+    msgInp.style.height = '36px';
+  }
+  updateSendBtn();
+}
+
 function sendMsg(){
-  if(!cid)return;var inp=$('msg-inp'),t=inp.value.trim();if(!t)return;
-  var m=msgs(cid);var msg={id:'m_'+Date.now()+'_'+Math.random().toString(36).substr(2,9),s:SELF,t:t,ts:new Date(),pc:false,quote:replyingToMsg,isGroup:window.currentConvType==='group',read:true,senderName:'我',senderId:me.id};m.push(msg);savemsgs(cid,m);inp.value='';inp.style.height='34px';replyingToMsg=null;$('quote-preview').style.display='none';renderMsgs(m);updateSendBtn();renderChatList();scheduleReply();playSound('send',cid);haptic('light');simulateTAFavorite();
+  if(!cid)return;
+  if(isBatchMode){addToBatch();return;}
+  var inp=$('msg-inp'),t=inp.value.trim();if(!t)return;
+  var m=msgs(cid);var msg={id:'m_'+Date.now()+'_'+Math.random().toString(36).substr(2,9),s:SELF,t:t,ts:new Date(),pc:false,quote:replyingToMsg,isGroup:window.currentConvType==='group',read:true,senderName:'我',senderId:me.id};m.push(msg);savemsgs(cid,m);inp.value='';inp.style.height='36px';replyingToMsg=null;$('quote-preview').style.display='none';renderMsgs(m);updateSendBtn();renderChatList();scheduleReply();playSound('send',cid);haptic('light');simulateTAFavorite();
 }
 function updateSendBtn(){var inp=$('msg-inp'),s=$('btn-send');if(inp.value.trim().length>0){s.classList.remove('disabled')}else{s.classList.add('disabled')}}
-function scheduleReply(){if(!cid||cid==='fh')return;if(pomodoroState.isRunning&&!pomodoroState.isPaused&&pomodoroSettings.blockDuringFocus)return;var rsMin=getSpeed('rs-min',cid),rsMax=getSpeed('rs-max',cid),rnProb=getSpeed('rn-prob',cid);var targetId=cid;$('msgbox').scrollTop=$('msgbox').scrollHeight;if(Math.random()*100<rnProb){rtimers[targetId]=setTimeout(function(){markMessageReadIgnored(targetId)},(1+Math.random()*3)*1000);return}typingStates[targetId]=true;if(cid===window.currentCid)$('typing').style.display='flex';var delay=(rsMin+Math.random()*(rsMax-rsMin))*1000;if(rtimers[targetId])clearTimeout(rtimers[targetId]);rtimers[targetId]=setTimeout(function(){typingStates[targetId]=false;if(targetId===window.currentCid)$('typing').style.display='none';genReply(targetId)},delay)}
+function scheduleReply(){if(!cid||cid==='fh')return;if(isBatchMode)return;if(pomodoroState.isRunning&&!pomodoroState.isPaused&&pomodoroSettings.blockDuringFocus)return;var rsMin=getSpeed('rs-min',cid),rsMax=getSpeed('rs-max',cid),rnProb=getSpeed('rn-prob',cid);var targetId=cid;$('msgbox').scrollTop=$('msgbox').scrollHeight;if(Math.random()*100<rnProb){rtimers[targetId]=setTimeout(function(){markMessageReadIgnored(targetId)},(1+Math.random()*3)*1000);return}typingStates[targetId]=true;if(cid===window.currentCid)$('typing').style.display='flex';var delay=(rsMin+Math.random()*(rsMax-rsMin))*1000;if(rtimers[targetId])clearTimeout(rtimers[targetId]);rtimers[targetId]=setTimeout(function(){typingStates[targetId]=false;if(targetId===window.currentCid)$('typing').style.display='none';genReply(targetId)},delay)}
 function markMessageReadIgnored(targetId,silent){
   var m=msgs(targetId);
   if(m.length===0)return;
@@ -9009,7 +10223,7 @@ function markMessageReadIgnored(targetId,silent){
 
 
 
-function genReply(targetId){
+async function genReply(targetId){
   if(!targetId)targetId=cid;
   if(!targetId)return;
   
@@ -9166,8 +10380,10 @@ function genReply(targetId){
     }
   }
   
+  var moodCard=await getRandomMoodCard(targetId);
+  
   var m=msgs(targetId);
-  var replyMsg={id:'m_'+Date.now()+'_'+Math.random().toString(36).substr(2,9),s:OTHER,t:reply,img:imgSrc,voice:voiceSrc,voiceText:voiceText,ts:new Date(),pc:pc,isAuto:true,isInitiative:false,quote:quoteMsgId,isSticker:imgSrc?true:false,isVoice:voiceSrc?true:false,senderName:senderName,senderId:senderId,isGroup:isGroup,read:(targetId===cid)};
+  var replyMsg={id:'m_'+Date.now()+'_'+Math.random().toString(36).substr(2,9),s:OTHER,t:reply,img:imgSrc,voice:voiceSrc,voiceText:voiceText,ts:new Date(),pc:pc,isAuto:true,isInitiative:false,quote:quoteMsgId,isSticker:imgSrc?true:false,isVoice:voiceSrc?true:false,senderName:senderName,senderId:senderId,isGroup:isGroup,read:(targetId===cid),moodCard:moodCard};
   m.push(replyMsg);
   savemsgs(targetId,m);
   if(targetId===window.currentCid)renderMsgs(m);renderChatList();playSound('recv',targetId);
@@ -9206,6 +10422,56 @@ if($('msg-inp')){$('msg-inp').addEventListener('keydown',function(e){if(e.key===
 if($('btn-send')){
   $('btn-send').addEventListener('click',sendMsg);
   $('btn-send').addEventListener('touchend',function(e){e.preventDefault();sendMsg()});
+}
+// 批量发送事件委托
+if($('batch-preview')){
+  $('batch-preview').addEventListener('click', function(e) {
+    var removeBtn = e.target.closest('.batch-preview-remove');
+    if (removeBtn) {
+      var item = removeBtn.closest('.batch-preview-item');
+      if (item) {
+        var idx = parseInt(item.dataset.index);
+        if (!isNaN(idx) && idx >= 0 && idx < batchMessages.length) {
+          batchMessages.splice(idx, 1);
+          updateBatchPreview();
+          updateSendBtn();
+        }
+      }
+      return;
+    }
+    var addImgBtn = e.target.closest('.batch-add-img-btn');
+    if (addImgBtn) {
+      var inp = $('chat-image-input');
+      if (inp) inp.click();
+      return;
+    }
+    var sendBtn = e.target.closest('.batch-send-btn');
+    if (sendBtn && !sendBtn.disabled) {
+      sendBatchMessages();
+      return;
+    }
+    if (e.target.matches('.batch-cancel-btn') || e.target.closest('.batch-cancel-btn')) {
+      isBatchMode = false;
+      batchMessages = [];
+      var bbtn = $('batch-btn');
+      var bprev = $('batch-preview');
+      var binp = $('msg-inp');
+      if (bbtn) bbtn.classList.remove('active');
+      if (bprev) { bprev.classList.remove('show'); bprev.style.display = 'none'; }
+      if (binp) binp.placeholder = '输入消息...';
+      updateSendBtn();
+      return;
+    }
+  });
+}
+
+if($('batch-btn')){
+  $('batch-btn').addEventListener('click', function(){toggleBatchMode()});
+  $('batch-btn').addEventListener('touchend', function(e){e.preventDefault();toggleBatchMode()});
+}
+if($('btn-ibar-emoji')){
+  $('btn-ibar-emoji').addEventListener('click',function(){if($('msg-inp'))$('msg-inp').blur();toggleChatEmoji()});
+  $('btn-ibar-emoji').addEventListener('touchend',function(e){e.preventDefault();if($('msg-inp'))$('msg-inp').blur();toggleChatEmoji()});
 }
 if($('btn-more')){
   $('btn-more').addEventListener('click',function(){
@@ -9359,6 +10625,32 @@ if($('search-chat-back-btn')){
 }
 if($('chat-image-input')){
 $('chat-image-input').addEventListener('change',function(e){
+  if (isBatchMode) {
+    var files = this.files;
+    for (var i = 0; i < files.length; i++) {
+      (function(file) {
+        var reader = new FileReader();
+        reader.onload = function(e) {
+          var originalImg = e.target.result;
+          compressImage(file, 2000, 0.98, function(res) {
+            batchMessages.push({
+              id: Date.now() + '_' + batchMessages.length,
+              type: 'image',
+              image: res,
+              originalImage: originalImg,
+              text: ''
+            });
+            updateBatchPreview();
+            updateSendBtn();
+            haptic('light');
+          });
+        };
+        reader.readAsDataURL(file);
+      })(files[i]);
+    }
+    this.value = '';
+    return;
+  }
   var files=e.target.files;
   if(!files||files.length===0)return;
   var uploaded=0;
@@ -9373,32 +10665,6 @@ $('chat-image-input').addEventListener('change',function(e){
     });
   }
 });
-}
-if($('btn-ibar-emoji')){
-  var _emojiClicked=false;
-  function toggleChatEmoji(){
-    if(_emojiClicked)return;
-    _emojiClicked=true;
-    setTimeout(function(){_emojiClicked=false},300);
-    if($('ov-emoji').classList.contains('show')){
-      hideOv('ov-emoji');
-      var activeTab=document.querySelector('.emoji-tab.sel');
-      if(activeTab)ls('last_emoji_tab',activeTab.dataset.tab);
-    }else{
-      hideOv('ov-chat-more');
-      var lastTab=ls('last_emoji_tab')||'public';
-      renderEmojiPanel(lastTab);
-    }
-  }
-  $('btn-ibar-emoji').addEventListener('click',function(){
-    if($('msg-inp'))$('msg-inp').blur();
-    toggleChatEmoji();
-  });
-  $('btn-ibar-emoji').addEventListener('touchend',function(e){
-    e.preventDefault();
-    if($('msg-inp'))$('msg-inp').blur();
-    toggleChatEmoji();
-  });
 }
 if($('more-divine-btn')){
   $('more-divine-btn').addEventListener('click',function(){d2ShowDivination()});
@@ -9435,6 +10701,10 @@ if($('more-todo-btn')){
 if($('more-dream-btn')){
   $('more-dream-btn').addEventListener('click',function(){showPg('pg-dream');renderDreamList()});
   $('more-dream-btn').addEventListener('touchend',function(e){e.preventDefault();showPg('pg-dream');renderDreamList()});
+}
+if($('more-period-btn')){
+  $('more-period-btn').addEventListener('click',function(){showPg('pg-period');renderPeriod()});
+  $('more-period-btn').addEventListener('touchend',function(e){e.preventDefault();showPg('pg-period');renderPeriod()});
 }
 if($('more-ta-highlights-btn')){
   $('more-ta-highlights-btn').addEventListener('click',function(){taHighlightViewDate=new Date();showPg('pg-ta-highlights');renderTAHighlightsFull()});
@@ -9611,8 +10881,6 @@ async function loadCallHistory(){
 
 async function saveCallHistory(){
   ls('ml2_call_history',callHistory);
-  // 同步写入localStorage兜底，确保beforeunload时数据不丢失
-  safeSetItem('ml2_lf_ml2_call_history',callHistory);
 }
 
 function renderCallHistory(){
@@ -10586,7 +11854,7 @@ function sendNonInstantMsg(){
   m.push({id:Date.now(),s:SELF,t:t,ts:new Date(),pc:false,read:true});
   saveNonInstantMsgs(nonInstantCid,m);
   inp.value='';
-  inp.style.height='34px';
+  inp.style.height='36px';
   renderNonInstantMsgs();
   playSound('send',nonInstantCid);
   scheduleNonInstantReply(nonInstantCid);
@@ -11975,8 +13243,8 @@ function performTouch(targetId,action){
   renderChatList();
   scheduleTouchReply(sendTargetId);
 }
-function scheduleTouchReply(targetId){if(!targetId)return;var rnProb=getSpeed('rn-prob');if(Math.random()*100<rnProb){markMessageReadIgnored(targetId,true);return}var rsMin=getSpeed('rs-min'),rsMax=getSpeed('rs-max');typingStates[targetId]=true;if(cid===window.currentCid)$('typing').style.display='flex';var delay=(rsMin+Math.random()*(rsMax-rsMin))*1000;if(rtimers[targetId])clearTimeout(rtimers[targetId]);rtimers[targetId]=setTimeout(function(){typingStates[targetId]=false;if(targetId===window.currentCid)$('typing').style.display='none';genReply(targetId)},delay)}
-function scheduleReply(){var targetId=cid;if(!targetId)return;var rnProb=getSpeed('rn-prob');if(Math.random()*100<rnProb){markMessageReadIgnored(targetId,true);return}var rsMin=getSpeed('rs-min'),rsMax=getSpeed('rs-max');typingStates[targetId]=true;if(cid===window.currentCid)$('typing').style.display='flex';var delay=(rsMin+Math.random()*(rsMax-rsMin))*1000;if(rtimers[targetId])clearTimeout(rtimers[targetId]);rtimers[targetId]=setTimeout(function(){typingStates[targetId]=false;if(targetId===window.currentCid)$('typing').style.display='none';genReply(targetId)},delay)}
+function scheduleTouchReply(targetId){if(!targetId)return;var rnProb=getSpeed('rn-prob');if(Math.random()*100<rnProb){markMessageReadIgnored(targetId,true);return}var rsMin=getSpeed('rs-min'),rsMax=getSpeed('rs-max');typingStates[targetId]=true;if(cid===window.currentCid)$('typing').style.display='flex';var delay=(rsMin+Math.random()*(rsMax-rsMin))*1000;if(rtimers[targetId])clearTimeout(rtimers[targetId]);rtimers[targetId]=setTimeout(async function(){typingStates[targetId]=false;if(targetId===window.currentCid)$('typing').style.display='none';await genReply(targetId)},delay)}
+function scheduleReply(){var targetId=cid;if(!targetId)return;var rnProb=getSpeed('rn-prob');if(Math.random()*100<rnProb){markMessageReadIgnored(targetId,true);return}var rsMin=getSpeed('rs-min'),rsMax=getSpeed('rs-max');typingStates[targetId]=true;if(cid===window.currentCid)$('typing').style.display='flex';var delay=(rsMin+Math.random()*(rsMax-rsMin))*1000;if(rtimers[targetId])clearTimeout(rtimers[targetId]);rtimers[targetId]=setTimeout(async function(){typingStates[targetId]=false;if(targetId===window.currentCid)$('typing').style.display='none';await genReply(targetId)},delay)}
 function showTouchAnimation(action,targetName,isOther){var el=document.createElement('div');el.style.position='fixed';el.style.top='50%';el.style.left='50%';el.style.transform='translate(-50%,-50%)';el.style.background='rgba(0,0,0,.7)';el.style.color='#fff';el.style.padding='12px 24px';el.style.borderRadius='20px';el.style.fontSize='14px';el.style.zIndex='300';el.style.animation='touchAnim .8s ease-out forwards';el.textContent=isOther?(targetName||'对方')+' '+action:action.replace('你',targetName||'你');document.body.appendChild(el);setTimeout(function(){if(el.parentNode)el.remove()},800)}
 function contactPerformTouch(contactId){
   var cards=[];
@@ -12618,7 +13886,7 @@ async function importCardsJSON(){
         
         // 导入顶部栏字卡数据
         if(importData.navCardsPublic&&Array.isArray(importData.navCardsPublic)){
-          safeSetItem('ml2_lf_ml2_nav_cards_public',importData.navCardsPublic);
+          ls('ml2_nav_cards_public',importData.navCardsPublic);
           if(window.localforage){window.localforage.setItem('ml2_nav_cards_public',JSON.stringify(importData.navCardsPublic)).catch(function(){});}
         }
         if(importData.navCardsPrivate&&typeof importData.navCardsPrivate==='object'){
@@ -12628,7 +13896,7 @@ async function importCardsJSON(){
             var pnv=importData.navCardsPrivate[pnk];
             if(pnv&&Array.isArray(pnv)){
               var navPrivKey='ml2_nav_cards_private_'+pnk;
-              safeSetItem('ml2_lf_'+navPrivKey,pnv);
+              ls(navPrivKey,pnv);
               if(window.localforage){window.localforage.setItem(navPrivKey,JSON.stringify(pnv)).catch(function(){});}
             }
           }
@@ -12899,20 +14167,20 @@ function renderPrivateContacts(){
   
   sel.innerHTML=html;
   
-  // 后续绑定事件
   sel.querySelector('#add-private-contact-btn').addEventListener('click',function(){
-    var name=prompt('请输入字卡联系人昵称：');
-    if(!name)return;
-    name=name.trim();
-    if(!name){toast('请输入昵称');return}
-    var newPc={id:'pc_'+Date.now(),name:name,bindContactId:null};
-    cardPrivateContacts.push(newPc);
-    saveCardPrivateContacts();
-    selectedPrivateContact=newPc.id;
-    renderPrivateContacts();
-    renderCardGroups();
-    renderCardList();
-    toast('已添加字卡联系人「'+name+'」');
+    customPrompt('请输入字卡联系人昵称：','').then(function(name){
+      if(!name)return;
+      name=name.trim();
+      if(!name){toast('请输入昵称');return}
+      var newPc={id:'pc_'+Date.now(),name:name,bindContactId:null};
+      cardPrivateContacts.push(newPc);
+      saveCardPrivateContacts();
+      selectedPrivateContact=newPc.id;
+      renderPrivateContacts();
+      renderCardGroups();
+      renderCardList();
+      toast('已添加字卡联系人「'+name+'」');
+    });
   });
   
   sel.querySelectorAll('.private-contact-row').forEach(function(row){
@@ -17689,6 +18957,7 @@ function bindMyPageEvents(){
     ['call-settings-btn',function(){renderCallSettings();showOv('ov-call-settings')}],
     ['touch-settings-btn',openTouchSettings],
     ['settings-btn',openCardSettings],
+    ['mood-cards-settings-btn',openMoodCardsSettings],
     ['reply-settings-btn',openReplySettings],
     ['dnd-settings-btn',openDndSettings],
     ['sound-btn',openSoundSettings],
@@ -17901,6 +19170,373 @@ var _oldDefaultNavCardsToRemove=[
 ];
 
 var _navCardsVersion='v2';
+
+var _defaultMoodCards=[
+  {group:'喜悦与正向',weight:30,cards:['开心','快乐','愉悦','高兴','满足','幸福','安心','放松','轻松','温暖','舒心','欣慰','愉快','期待','兴奋','惊喜','雀跃','满足感','充实','踏实','安心感','幸运','庆幸','感激','感动','欣喜','释然']},
+  {group:'亲近与爱意',weight:20,cards:['喜欢','在意','珍惜','信任','依赖','亲近','眷恋','想念','思念','牵挂','心软','心疼','怜惜','宠溺','偏爱','包容','纵容','依恋','舍不得','想靠近','想陪伴','想照顾','想保护','想了解','想回应']},
+  {group:'悲伤与低落',weight:4,cards:['难过','伤心','失落','遗憾','孤单','孤独','寂寞','委屈','无奈','疲惫','疲倦','低落','沮丧','失望','心酸','苦涩','空虚','迷茫','迷失','沉重','压抑','痛苦','悲伤','哀伤','落寞']},
+  {group:'愤怒与不满',weight:1,cards:['生气','愤怒','恼火','烦躁','不耐烦','不满','厌烦','抗拒','排斥','恼怒','气恼','不甘','嫉妒','吃醋','愤懑','委屈','赌气','冷淡','疏离']},
+  {group:'不安与恐惧',weight:3,cards:['害怕','恐惧','担心','忧虑','焦虑','紧张','不安','慌张','慌乱','害怕失去','忐忑','不知所措','心慌','压力','担忧','敏感']},
+  {group:'害羞与社交情绪',weight:6,cards:['害羞','不好意思','脸红','羞涩','尴尬','拘谨','腼腆','害臊','紧张','小心翼翼','不自然','犹豫','迟疑','想说又停下']},
+  {group:'思考与复杂情绪',weight:10,cards:['疑惑','困惑','好奇','惊讶','意外','震惊','犹豫','纠结','矛盾','迟疑','怀疑','不确定','复杂','说不清','想不明白','若有所思','沉思','认真','专注']},
+  {group:'自我情绪',weight:1,cards:['骄傲','自豪','自信','满足','羞愧','自责','后悔','内疚','不甘心','委屈自己','怀疑自己','失落感','无力','疲惫感','释怀','接受','放下']},
+  {group:'克制与隐藏',weight:8,cards:['平静','冷静','克制','忍耐','沉默','压下情绪','隐藏情绪','假装平静','表面平静','心里在意','偷偷开心','偷偷难过','默默期待','默默守护','不愿表达','不知道怎么说']},
+  {group:'中性与日常',weight:15,cards:['普通','平常','淡然','随意','自然','放空','发呆','安静','专注','认真','观察','等待','好奇','期待中','没有特别情绪']},
+  {group:'特殊表达情绪',weight:2,cards:['想被理解','想被看见','想确认','想解释','想安慰你','想陪着你','想靠近一点','舍不得离开','放心了','安心下来','松了一口气','忍不住开心','忍不住在意','藏着心事','有话想说','不知道怎么表达']}
+];
+
+var _moodCardsVersion='v1';
+
+async function loadMoodCards(){
+  try{
+    var data=null;
+    if(window.localforage){
+      data=await window.localforage.getItem('ml2_mood_cards');
+    }
+    if(!data){
+      var lsData=safeGetItem('ml2_lf_ml2_mood_cards');
+      if(lsData)try{data=JSON.parse(lsData);}catch(e){}
+    }
+    if(!data||!Array.isArray(data)){
+      data=[];
+    }
+    return data;
+  }catch(e){
+    console.warn('loadMoodCards failed:',e);
+    return [];
+  }
+}
+
+async function saveMoodCards(cards){
+  try{
+    ls('ml2_mood_cards',cards);
+    if(window.localforage){
+      await window.localforage.setItem('ml2_mood_cards',cards);
+    }
+    console.log('[moodCards] saved',cards.length,'cards');
+  }catch(e){
+    console.warn('saveMoodCards failed:',e);
+  }
+}
+
+async function seedDefaultMoodCards(){
+  try{
+    var savedVersion=safeGetItem('ml2_mood_cards_version');
+    if(savedVersion!==_moodCardsVersion){
+      var newCards=[];
+      _defaultMoodCards.forEach(function(g){
+        g.cards.forEach(function(card){
+          newCards.push({content:card,group:g.group});
+        });
+      });
+      await saveMoodCards(newCards);
+      safeSetItem('ml2_mood_cards_version',_moodCardsVersion);
+      console.log('[moodCards] seeded default:',newCards.length,'cards');
+      return newCards;
+    }
+    var existing=await loadMoodCards();
+    var added=0;
+    _defaultMoodCards.forEach(function(g){
+      g.cards.forEach(function(card){
+        var exists=existing.some(function(c){return c.content===card&&c.group===g.group});
+        if(!exists){
+          existing.push({content:card,group:g.group});
+          added++;
+        }
+      });
+    });
+    if(added>0){
+      await saveMoodCards(existing);
+      console.log('[moodCards] added missing:',added,'cards');
+    }
+    return existing;
+  }catch(e){
+    console.warn('seedDefaultMoodCards failed:',e);
+    return [];
+  }
+}
+
+async function getRandomMoodCard(targetId){
+  if(targetId){
+    if(moodCardContactSettings[targetId]===false)return null;
+  }
+  if(Math.random()*100>70)return null;
+  var cards=await loadMoodCards();
+  if(!cards||cards.length===0){
+    cards=await seedDefaultMoodCards();
+    if(!cards||cards.length===0)return null;
+  }
+  var totalWeight=0;
+  _defaultMoodCards.forEach(function(g){totalWeight+=g.weight;});
+  var rand=Math.random()*totalWeight;
+  var cumulative=0;
+  var selectedGroup=null;
+  for(var i=0;i<_defaultMoodCards.length;i++){
+    cumulative+=_defaultMoodCards[i].weight;
+    if(rand<=cumulative){
+      selectedGroup=_defaultMoodCards[i].group;
+      break;
+    }
+  }
+  if(!selectedGroup)return null;
+  var groupCards=cards.filter(function(c){return c.group===selectedGroup});
+  if(groupCards.length===0)return null;
+  return groupCards[Math.floor(Math.random()*groupCards.length)];
+}
+
+async function openMoodCardsSettings(){
+  await seedDefaultMoodCards();
+  await loadMoodCardContactSettings();
+  showPg('pg-mood-cards-settings');
+  renderMoodCardsList();
+  renderMoodCardContactList();
+}
+
+var moodCardFoldedGroups={};
+
+var moodCardContactSettings={};
+
+async function loadMoodCardContactSettings(){
+  try{
+    var saved=await window.localforage.getItem('ml2_mood_card_contact_settings');
+    if(saved)moodCardContactSettings=JSON.parse(saved);
+  }catch(e){
+    moodCardContactSettings={};
+  }
+}
+
+async function saveMoodCardContactSettings(){
+  try{
+    await window.localforage.setItem('ml2_mood_card_contact_settings',JSON.stringify(moodCardContactSettings));
+  }catch(e){
+    console.warn('saveMoodCardContactSettings failed:',e);
+  }
+}
+
+async function toggleMoodCardForContact(contactId){
+  if(moodCardContactSettings[contactId]===undefined){
+    moodCardContactSettings[contactId]=true;
+  }else{
+    moodCardContactSettings[contactId]=!moodCardContactSettings[contactId];
+  }
+  try{
+    await saveMoodCardContactSettings();
+    var isEnabled=moodCardContactSettings[contactId];
+    toast(isEnabled?'已开启情绪字卡':'已关闭情绪字卡');
+  }catch(e){
+    toast('保存失败');
+    console.warn('toggleMoodCardForContact failed:',e);
+  }
+  renderMoodCardContactList();
+}
+
+function renderMoodCardContactList(){
+  var list=$('mood-card-contact-list');
+  if(!list)return;
+  
+  var html='';
+  contacts.forEach(function(c){
+    var isEnabled=moodCardContactSettings[c.id]===undefined||moodCardContactSettings[c.id]===true;
+    var toggleClass=isEnabled?'toggle-on':'toggle-off';
+    html+='<div style="display:flex;align-items:center;gap:6px;padding:6px 10px;background:var(--c1);border-radius:8px;border:1px solid var(--border);">';
+    html+='<span style="font-size:12px;color:var(--txt);max-width:80px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">'+c.name+'</span>';
+    html+='<button onclick="toggleMoodCardForContact(\''+c.id+'\')" class="toggle-btn '+toggleClass+'" style="width:36px;height:20px;border-radius:10px;border:none;cursor:pointer;position:relative;">';
+    html+='<span style="position:absolute;top:2px;width:16px;height:16px;border-radius:50%;background:white;box-shadow:0 1px 2px rgba(0,0,0,0.2);transition:left 0.2s;left:'+(isEnabled?'18px':'2px')+';"></span>';
+    html+='</button>';
+    html+='</div>';
+  });
+  
+  if(contacts.length===0){
+    html='<div style="text-align:center;color:var(--txt3);font-size:12px;padding:10px;">暂无联系人</div>';
+  }
+  
+  list.innerHTML=html;
+}
+
+var moodCardRenderTimeout=null;
+
+async function renderMoodCardsList(filterGroup){
+  if(moodCardRenderTimeout)clearTimeout(moodCardRenderTimeout);
+  moodCardRenderTimeout=setTimeout(function(){
+    _renderMoodCardsList(filterGroup);
+  },30);
+}
+
+async function _renderMoodCardsList(filterGroup){
+  var cards=await loadMoodCards();
+  var filterSel=$('mood-card-group-filter');
+  var list=$('mood-card-list');
+  var empty=$('mood-card-empty');
+  if(!list||!empty)return;
+  
+  var groups={};
+  cards.forEach(function(c){
+    if(!groups[c.group])groups[c.group]=[];
+    groups[c.group].push(c);
+  });
+  
+  _defaultMoodCards.forEach(function(g){
+    if(!groups[g.group])groups[g.group]=[];
+  });
+  
+  var groupNames=Object.keys(groups);
+  groupNames.sort(function(a,b){
+    var idxA=_defaultMoodCards.findIndex(function(g){return g.group===a});
+    var idxB=_defaultMoodCards.findIndex(function(g){return g.group===b});
+    return (idxA>=0?idxA:999)-(idxB>=0?idxB:999);
+  });
+  
+  if(filterSel){
+    var currentVal=filterSel.value;
+    var optHtml='<option value="all">全部分组</option>';
+    groupNames.forEach(function(name){
+      optHtml+='<option value="'+name.replace(/"/g,'&quot;')+'">'+name+'</option>';
+    });
+    filterSel.innerHTML=optHtml;
+    if(groupNames.indexOf(currentVal)>=0)filterSel.value=currentVal;
+  }
+  
+  if(cards.length===0){
+    list.innerHTML='';
+    empty.style.display='block';
+    return;
+  }
+  empty.style.display='none';
+  
+  var html='';
+  groupNames.forEach(function(groupName){
+    var groupCards=groups[groupName];
+    var currentFilter=filterSel?filterSel.value:'all';
+    if(currentFilter!=='all'&&currentFilter!==groupName)return;
+    if(groupCards.length===0)return;
+    
+    var isFolded=moodCardFoldedGroups[groupName]||false;
+    var foldIcon=isFolded?'▼':'▲';
+    
+    html+='<div class="card-group" id="mood-group-'+groupName.replace(/\s/g,'_')+'" onclick="toggleMoodCardGroup(\''+groupName+'\')">';
+    html+='<div class="card-group-header" style="touch-action:manipulation;">';
+    html+='<span class="card-group-name">'+groupName+'</span>';
+    html+='<span class="card-group-count">'+groupCards.length+'</span>';
+    html+='<span class="card-group-arrow">'+foldIcon+'</span>';
+    html+='</div>';
+    
+    if(!isFolded){
+      html+='<div class="card-group-content">';
+      groupCards.forEach(function(card,idx){
+        html+='<div class="card-item"><span class="card-content">'+(card.content||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')+'</span><button class="card-delete-btn" style="touch-action:manipulation" onclick="event.stopPropagation();deleteMoodCard(\''+groupName+'\','+idx+')">×</button></div>';
+      });
+      html+='</div>';
+    }else{
+      html+='<div class="card-group-content folded"></div>';
+    }
+    html+='</div>';
+  });
+  
+  list.innerHTML=html;
+}
+
+function toggleMoodCardGroup(groupName){
+  moodCardFoldedGroups[groupName]=!moodCardFoldedGroups[groupName];
+  renderMoodCardsList();
+}
+
+function toggleMoodCardGroups(forceFolded){
+  _defaultMoodCards.forEach(function(g){
+    moodCardFoldedGroups[g.group]=forceFolded;
+  });
+  renderMoodCardsList();
+}
+
+async function deleteMoodCard(groupName,idx){
+  var cards=await loadMoodCards();
+  var groupCards=cards.filter(function(c){return c.group===groupName});
+  if(idx<0||idx>=groupCards.length)return;
+  var toDelete=groupCards[idx];
+  cards=cards.filter(function(c){return !(c.content===toDelete.content&&c.group===toDelete.group)});
+  await saveMoodCards(cards);
+  toast('已删除字卡');
+  renderMoodCardsList();
+}
+
+async function importMoodCards(){
+  var input=$('mood-card-batch-input');
+  var text=input.value.trim();
+  if(!text){toast('请输入字卡内容');return;}
+  var cards=await loadMoodCards();
+  var lines=text.split(/[\r\n]+/);
+  var currentGroup='自定义';
+  var added=0;
+  lines.forEach(function(line){
+    line=line.trim();
+    if(!line)return;
+    if(line.startsWith('【')&&line.endsWith('】')){
+      currentGroup=line.substring(1,line.length-1);
+      return;
+    }
+    var exists=cards.some(function(c){return c.content===line&&c.group===currentGroup});
+    if(!exists){
+      cards.push({content:line,group:currentGroup});
+      added++;
+    }
+  });
+  await saveMoodCards(cards);
+  input.value='';
+  toast('已导入 '+added+' 张字卡');
+  renderMoodCardsList();
+}
+
+async function dedupMoodCards(){
+  var cards=await loadMoodCards();
+  var seen={};
+  var unique=[];
+  var removed=0;
+  cards.forEach(function(c){
+    var key=c.group+'||'+c.content;
+    if(seen[key]){removed++;return;}
+    seen[key]=true;
+    unique.push(c);
+  });
+  await saveMoodCards(unique);
+  toast('已清除 '+removed+' 条重复字卡');
+  renderMoodCardsList();
+}
+
+async function resetMoodCards(){
+  if(!confirm('确定要恢复默认字卡吗？当前字卡将被覆盖。'))return;
+  var newCards=[];
+  _defaultMoodCards.forEach(function(g){
+    g.cards.forEach(function(card){
+      newCards.push({content:card,group:g.group});
+    });
+  });
+  await saveMoodCards(newCards);
+  safeSetItem('ml2_mood_cards_version',_moodCardsVersion);
+  toast('已重置为默认字卡');
+  renderMoodCardsList();
+}
+
+if($('mood-cards-back'))$('mood-cards-back').addEventListener('click',function(){showPg('pg-my')});
+if($('mood-card-import-btn'))$('mood-card-import-btn').addEventListener('click',importMoodCards);
+if($('mood-card-dedup-btn'))$('mood-card-dedup-btn').addEventListener('click',dedupMoodCards);
+if($('mood-card-reset-btn'))$('mood-card-reset-btn').addEventListener('click',resetMoodCards);
+if($('mood-card-help-btn'))$('mood-card-help-btn').addEventListener('click',function(){
+  var modal=$('mood-card-help-modal');
+  if(modal)modal.style.display='flex';
+});
+
+function closeMoodCardHelp(){
+  var modal=$('mood-card-help-modal');
+  if(modal)modal.style.display='none';
+}
+
+if($('mood-card-group-filter'))$('mood-card-group-filter').addEventListener('change',function(){
+  renderMoodCardsList();
+});
+
+if($('mood-card-collapse-btn'))$('mood-card-collapse-btn').addEventListener('click',function(){
+  toggleMoodCardGroups(true);
+});
+
 async function seedDefaultNavCards(){
   try{
     var savedVersion=safeGetItem('ml2_nav_cards_version');
@@ -17992,11 +19628,7 @@ async function saveNavCards(cards,type,contactId){
   if(type==='private'&&contactId){
     key+='_'+contactId;
   }
-  var cardsStr=JSON.stringify(cards);
-  safeSetItem(key,cards);                // 直接键（无 ml2_lf_ 前缀），作为兜底
-  safeSetItem('ml2_lf_'+key,cards);
   ls(key,cards);
-  // 直接写入 IndexedDB（不依赖 isLFAvailable()，确保数据落盘）
   if(window.localforage){
     try{await window.localforage.setItem(key,cards);}catch(e){console.warn('[navCards] save to IndexedDB failed:',e);}
   }
@@ -18124,18 +19756,19 @@ function renderNavCardContactSelect(){
     tags.innerHTML=html;
     
     tags.querySelector('#add-nav-private-contact-btn').addEventListener('click',function(){
-      var name=prompt('请输入字卡联系人昵称：');
-      if(!name)return;
-      name=name.trim();
-      if(!name){toast('请输入昵称');return}
-      var newPc={id:'pc_'+Date.now(),name:name,bindContactId:null};
-      cardPrivateContacts.push(newPc);
-      saveCardPrivateContacts();
-      navCardCurrentContact=newPc.id;
-      renderNavCardContactSelect();
-      renderNavCardGroupTags();
-      renderNavCards();
-      toast('已添加字卡联系人「'+name+'」');
+      customPrompt('请输入字卡联系人昵称：','').then(function(name){
+        if(!name)return;
+        name=name.trim();
+        if(!name){toast('请输入昵称');return}
+        var newPc={id:'pc_'+Date.now(),name:name,bindContactId:null};
+        cardPrivateContacts.push(newPc);
+        saveCardPrivateContacts();
+        navCardCurrentContact=newPc.id;
+        renderNavCardContactSelect();
+        renderNavCardGroupTags();
+        renderNavCards();
+        toast('已添加字卡联系人「'+name+'」');
+      });
     });
     
     tags.querySelector('#manage-nav-private-contacts-btn').addEventListener('click',function(){
@@ -18778,6 +20411,12 @@ $('collapse-nav-cards-btn').addEventListener('click',function(){
     expandAllNavCardGroups();
     this.textContent='折叠全部';
   }
+});
+
+$('reset-nav-cards-btn').addEventListener('click',async function(){
+  await seedDefaultNavCards();
+  renderNavCards();
+  toast('已恢复默认字卡');
 });
 
 $('nav-card-dedup-btn').addEventListener('click',async function(){
@@ -19732,7 +21371,7 @@ async function doImportData(data){
       var pnv=data.navCardsPrivate[pnk];
       if(pnv&&Array.isArray(pnv)){
         var navPrivKey='ml2_nav_cards_private_'+pnk;
-        safeSetItem('ml2_lf_'+navPrivKey,pnv);
+        ls(navPrivKey,pnv);
         if(window.localforage){
           await localforage.setItem(navPrivKey,JSON.stringify(pnv)).catch(function(e){console.warn('doImportData: nav_private save failed',navPrivKey,e);});
         }
@@ -20020,7 +21659,7 @@ function maybeAutoSend(){
     
     var randomDelay=Math.random()*(maxInterval-minInterval);
     
-    setTimeout(function(){
+    setTimeout(async function(){
       var currentTime=Date.now();
       var elapsed=currentTime-lastTime;
       
@@ -20059,7 +21698,9 @@ function maybeAutoSend(){
         reply=rc.content;
       }
       
-      var m=msgs(targetId);m.push({id:'m_'+Date.now()+'_'+Math.random().toString(36).substr(2,9),s:OTHER,t:reply,img:imgSrc,ts:new Date(),pc:false,isAuto:true,isInitiative:true,read:(cid===targetId)});savemsgs(targetId,m);
+      var moodCard=await getRandomMoodCard(targetId);
+      
+      var m=msgs(targetId);m.push({id:'m_'+Date.now()+'_'+Math.random().toString(36).substr(2,9),s:OTHER,t:reply,img:imgSrc,ts:new Date(),pc:false,isAuto:true,isInitiative:true,read:(cid===targetId),moodCard:moodCard});savemsgs(targetId,m);
 
       if(cid===targetId){renderMsgs(m);playSound('recv',targetId)}renderChatList();
 
@@ -23727,11 +25368,12 @@ var chatbarItems=[
   {id:'letters',name:'信箱',icon:'✉️',fixed:false,category:'其他'},
   {id:'chat_list',name:'聊天列表',icon:'💬',category:'其他',fixed:true},
   {id:'moments',name:'朋友圈',icon:'📸',category:'其他',fixed:false},
+  {id:'period',name:'生理周期',icon:'🌸',category:'其他',fixed:false},
   {id:'pomodoro',name:'番茄钟',icon:'🍅',category:'其他',fixed:false},
   {id:'settings',name:'设置',icon:'⚙️',category:'其他',fixed:false}
 ];
 var chatbarCategoryOrder=['消息工具','数据统计','其他'];
-var customChatbarEnabled=['image','touch','cards','decision','group_decision','divine','call','survey','search','favorites','copy_msg','fav_msg','my_favs','card_stats','ta_highlights','long_screenshot','topbar_cards','letters','moments','pomodoro','settings'];
+var customChatbarEnabled=['image','touch','cards','decision','group_decision','divine','call','survey','search','favorites','copy_msg','fav_msg','my_favs','card_stats','ta_highlights','long_screenshot','topbar_cards','letters','moments','period','pomodoro','settings'];
 
 function renderChatMorePanel(){
   var list=$('chat-more-list');
@@ -23780,6 +25422,23 @@ function renderChatMorePanel(){
   });
 
   if(html){list.innerHTML=html;}
+}
+
+var _emojiClicked=false;
+
+function toggleChatEmoji(){
+  if(_emojiClicked)return;
+  _emojiClicked=true;
+  setTimeout(function(){_emojiClicked=false},300);
+  if($('ov-emoji').classList.contains('show')){
+    hideOv('ov-emoji');
+    var activeTab=document.querySelector('.emoji-tab.sel');
+    if(activeTab)ls('last_emoji_tab',activeTab.dataset.tab);
+  }else{
+    hideOv('ov-chat-more');
+    var lastTab=ls('last_emoji_tab')||'public';
+    renderEmojiPanel(lastTab);
+  }
 }
 
 function handleChatMoreAction(action){
@@ -23845,6 +25504,10 @@ function handleChatMoreAction(action){
       case 'moments':
         showPg('pg-moments');
         renderMoments();
+        break;
+      case 'period':
+        showPg('pg-period');
+        renderPeriod();
         break;
       case 'pomodoro':
         showPomodoro();
@@ -24600,6 +26263,7 @@ function openContactEdit(){
   $('hide-chat-avatars')&&($('hide-chat-avatars').checked=!!editingContact.hideChatAvatars);
   $('hide-topbar-avatar-status')&&($('hide-topbar-avatar-status').checked=!!editingContact.hideTopbarAvatarStatus);
   $('hide-send-btn')&&($('hide-send-btn').checked=!!editingContact.hideSendBtn);
+  $('enable-batch-send')&&($('enable-batch-send').checked=editingContact.batchSendEnabled!==false);
   var avatarShape=editingContact.avatarShape||'square';
   var avatarRadius=avatarShape==='circle'?'50%':'16px';
   if($('contact-avatar-preview'))$('contact-avatar-preview').style.borderRadius=avatarRadius;
@@ -24741,6 +26405,12 @@ function saveContactEdit(){
     editingContact.hideSendBtn=hideSendBtnCheckbox.checked;
     // 立即更新发送按钮显示/隐藏
     if($('btn-send'))$('btn-send').style.display=hideSendBtnCheckbox.checked?'none':'';
+  }
+  var enableBatchSendCheckbox=$('enable-batch-send');
+  if(enableBatchSendCheckbox){
+    editingContact.batchSendEnabled=enableBatchSendCheckbox.checked;
+    var batchBtn=$('batch-btn');
+    if(batchBtn)batchBtn.style.display=enableBatchSendCheckbox.checked?'':'none';
   }
   if($('avatar-shape-square')&&$('avatar-shape-square').checked)editingContact.avatarShape='square';
   if($('avatar-shape-circle')&&$('avatar-shape-circle').checked)editingContact.avatarShape='circle';
@@ -25646,7 +27316,6 @@ async function renderChatBgList(contact){
 }
 
 $('chat-bg-edit').addEventListener('click',function(){$('chat-bg-input').click()});
-$('chat-bg-edit').addEventListener('touchend',function(e){e.preventDefault();$('chat-bg-input').click()});
 $('chat-bg-input').addEventListener('change',function(e){
   var files=e.target.files;if(!files||files.length===0)return;
   var entity=groups.find(function(x){return x.id===cid})||contacts.find(function(x){return x.id===cid});
@@ -25655,13 +27324,19 @@ $('chat-bg-input').addEventListener('change',function(e){
   if(!entity.chatSettings.chatBgKeys)entity.chatSettings.chatBgKeys=[];
   var total=files.length;
   var done=0;
+  var added=0;
+  var processed={};
   for(var i=0;i<files.length;i++){
-    (function(file){
+    (function(file,idx){
+      if(processed[idx])return;
+      processed[idx]=true;
       compressImage(file,1920,0.95,async function(res){
         done++;
-        if(!res){checkDone();return;}
-        var timestamp=Date.now();
-        var bgKey='ml2_bg_'+entity.id+'_'+timestamp+'_'+done;
+        if(!res){
+          if(done>=total)finish();
+          return;
+        }
+        var bgKey='ml2_bg_'+entity.id+'_'+Date.now()+'_'+idx;
         try{
           if(window.localforage){
             await window.localforage.setItem(bgKey,res);
@@ -25669,28 +27344,23 @@ $('chat-bg-input').addEventListener('change',function(e){
             ls(bgKey,res);
           }
           entity.chatSettings.chatBgKeys.push(bgKey);
-          if(done===total){
-            entity.chatSettings.chatBgIndex=entity.chatSettings.chatBgKeys.length-1;
-            saveC();
-            if(groups.find(function(x){return x.id===cid}))ls('ml2_groups',groups);
-            await renderChatBgList(entity);
-            await applyChatSettings(entity);
-            toast('已添加 '+total+' 张背景图片');
-          }
+          added++;
         }catch(err){
           console.error('Failed to save chat background:',err);
-          checkDone();
         }
+        if(done>=total)finish();
       });
-    })(files[i]);
+    })(files[i],i);
   }
-  function checkDone(){
-    if(done>=total){
-      saveC();
-      if(groups.find(function(x){return x.id===cid}))ls('ml2_groups',groups);
-      renderChatBgList(entity);
-      applyChatSettings(entity);
+  function finish(){
+    if(added>0){
+      entity.chatSettings.chatBgIndex=entity.chatSettings.chatBgKeys.length-1;
     }
+    saveC();
+    if(groups.find(function(x){return x.id===cid}))ls('ml2_groups',groups);
+    renderChatBgList(entity);
+    applyChatSettings(entity);
+    if(added>0)toast('已添加 '+added+' 张背景图片');
   }
   e.target.value='';
 });
@@ -28939,9 +30609,9 @@ function d2HidePage(pageId) {
             { id: 26, name: '信',      file: '26.信.jpg' },
             { id: 27, name: '书',      file: '27.书.jpg' },
             { id: 28, name: '男人',    file: '28.男人.jpg' },
-            { id: 28, name: '男人②',  file: '28.男人 (2).jpg' },
+            { id: 28, name: '男人',    file: '28.男人 (2).jpg' },
             { id: 29, name: '女人',    file: '29.女人.jpg' },
-            { id: 29, name: '女人②',  file: '29.女人 (2).jpg' },
+            { id: 29, name: '女人',    file: '29.女人 (2).jpg' },
             { id: 30, name: '百合',    file: '30.百合.jpg' },
             { id: 31, name: '太阳',    file: '31.太阳.jpg' },
             { id: 32, name: '月亮',    file: '32.月亮.jpg' },
@@ -29540,7 +31210,7 @@ function d2HidePage(pageId) {
 
             if (navigator.clipboard) {
                 navigator.clipboard.writeText(text).then(() => {
-                    alert('已复制占卜结果到剪贴板');
+                    toast('已复制到剪贴板');
                 }).catch(() => {
                     d2FallbackCopy(text);
                 });
@@ -29553,7 +31223,7 @@ function d2HidePage(pageId) {
             const ta = document.createElement('textarea');
             ta.value = text; ta.style.position = 'fixed'; ta.style.left = '-9999px';
             document.body.appendChild(ta); ta.select();
-            try { document.execCommand('copy'); alert('已复制占卜结果到剪贴板'); } catch(e) { alert('复制失败，请手动复制'); }
+            try { document.execCommand('copy'); toast('已复制到剪贴板'); } catch(e) { toast('复制失败'); }
             document.body.removeChild(ta);
         }
 
@@ -29819,6 +31489,828 @@ function d2CloseDivination() {
     d2app.style.paddingBottom = '';
     d2app.style.overflowY = '';
   }
+}
+</script>
+
+<div id="mood-card-help-modal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);z-index:99999;align-items:center;justify-content:center;">
+  <div style="background:var(--bg);border-radius:16px;width:90%;max-width:360px;max-height:80vh;overflow:hidden;">
+    <div style="padding:16px;border-bottom:1px solid var(--c2);display:flex;justify-content:space-between;align-items:center;">
+      <div style="font-weight:600;font-size:16px;color:var(--txt);">☁️ 情绪分组权重</div>
+      <button id="mood-card-help-close" style="width:28px;height:28px;border:none;background:none;font-size:20px;color:var(--txt3);cursor:pointer;">&times;</button>
+    </div>
+    <div style="padding:16px;overflow-y:auto;max-height:calc(80vh - 60px);">
+      <div style="font-size:12px;color:var(--txt3);margin-bottom:12px;">聊天情绪字卡采用三层随机机制：<br>1. 70%概率发送情绪字卡<br>2. 按权重抽取情绪分组<br>3. 在分组内等概率抽取字卡</div>
+      <div style="display:flex;flex-direction:column;gap:8px;">
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:8px 12px;background:var(--c2);border-radius:8px;">
+          <span style="color:#52c41a;">喜悦与正向</span>
+          <span style="font-weight:600;color:var(--txt);">30%</span>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:8px 12px;background:var(--c2);border-radius:8px;">
+          <span style="color:#ff69b4;">亲近与爱意</span>
+          <span style="font-weight:600;color:var(--txt);">20%</span>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:8px 12px;background:var(--c2);border-radius:8px;">
+          <span style="color:#bfbfbf;">中性与日常</span>
+          <span style="font-weight:600;color:var(--txt);">15%</span>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:8px 12px;background:var(--c2);border-radius:8px;">
+          <span style="color:#1890ff;">思考与复杂情绪</span>
+          <span style="font-weight:600;color:var(--txt);">10%</span>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:8px 12px;background:var(--c2);border-radius:8px;">
+          <span style="color:#8c8c8c;">克制与隐藏</span>
+          <span style="font-weight:600;color:var(--txt);">8%</span>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:8px 12px;background:var(--c2);border-radius:8px;">
+          <span style="color:#eb2f96;">害羞与社交情绪</span>
+          <span style="font-weight:600;color:var(--txt);">6%</span>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:8px 12px;background:var(--c2);border-radius:8px;">
+          <span style="color:#722ed1;">悲伤与低落</span>
+          <span style="font-weight:600;color:var(--txt);">4%</span>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:8px 12px;background:var(--c2);border-radius:8px;">
+          <span style="color:#fa8c16;">不安与恐惧</span>
+          <span style="font-weight:600;color:var(--txt);">3%</span>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:8px 12px;background:var(--c2);border-radius:8px;">
+          <span style="color:#722ed1;">特殊表达情绪</span>
+          <span style="font-weight:600;color:var(--txt);">2%</span>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:8px 12px;background:var(--c2);border-radius:8px;">
+          <span style="color:#13c2c2;">自我情绪</span>
+          <span style="font-weight:600;color:var(--txt);">1%</span>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:8px 12px;background:var(--c2);border-radius:8px;">
+          <span style="color:#f5222d;">愤怒与不满</span>
+          <span style="font-weight:600;color:var(--txt);">1%</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// 情绪分组权重弹窗关闭按钮事件
+if($('mood-card-help-close'))$('mood-card-help-close').addEventListener('click',closeMoodCardHelp);
+if($('mood-card-help-modal'))$('mood-card-help-modal').addEventListener('click',function(e){
+  if(e.target===$('mood-card-help-modal'))closeMoodCardHelp();
+});
+
+// ===== 生理周期功能 =====
+(function() {
+  'use strict';
+
+  var PERIOD_STORAGE_KEY = 'period_records_v2';
+
+  function pGetRecords() {
+    try {
+      var raw = localStorage.getItem(PERIOD_STORAGE_KEY);
+      if (!raw) return [];
+      var arr = JSON.parse(raw);
+      if (!Array.isArray(arr)) return [];
+      return arr.filter(function(r) { return r && r.start; }).map(function(r) {
+        if (!r.details) r.details = {};
+        return r;
+      });
+    } catch (e) { return []; }
+  }
+
+  function pSaveRecords(records) {
+    try { localStorage.setItem(PERIOD_STORAGE_KEY, JSON.stringify(records)); return true; }
+    catch (e) { return false; }
+  }
+
+  function pFmtYMD(d) {
+    return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
+  }
+  function pFmtDisplay(d) {
+    return d.getFullYear() + '年' + (d.getMonth()+1) + '月' + d.getDate() + '日';
+  }
+  function pTodayStr() { return pFmtYMD(new Date()); }
+  function pTodayDate() { var d = new Date(); d.setHours(0,0,0,0); return d; }
+  function pDaysBetween(a, b) {
+    var da = new Date(a), db = new Date(b);
+    da.setHours(0,0,0,0); db.setHours(0,0,0,0);
+    return Math.round((da - db) / 86400000);
+  }
+  function pAddDays(d, n) { var nd = new Date(d); nd.setDate(nd.getDate()+n); return nd; }
+
+  function pGetDayDetail(dateStr, records) {
+    for (var i = 0; i < records.length; i++) {
+      var r = records[i];
+      if (dateStr >= r.start && dateStr <= (r.end || r.start)) {
+        return (r.details && r.details[dateStr]) ? r.details[dateStr] : { amount: '中', pain: '无' };
+      }
+    }
+    return null;
+  }
+
+  function pSetDayDetail(dateStr, amount, pain, records) {
+    for (var i = 0; i < records.length; i++) {
+      var r = records[i];
+      if (dateStr >= r.start && dateStr <= (r.end || r.start)) {
+        if (!r.details) r.details = {};
+        r.details[dateStr] = { amount: amount, pain: pain };
+        return pSaveRecords(records);
+      }
+    }
+    return false;
+  }
+
+  function pIsPeriodDay(dateStr, records) {
+    return records.some(function(r) { return dateStr >= r.start && dateStr <= (r.end || r.start); });
+  }
+
+  function pGetPeriodDaysForMonth(year, month, records) {
+    var s = new Set();
+    var first = new Date(year, month, 1);
+    var last = new Date(year, month+1, 0);
+    for (var i = 0; i < records.length; i++) {
+      var r = records[i];
+      var rs = new Date(r.start), re = new Date(r.end || r.start);
+      var cur = rs < first ? new Date(first) : new Date(rs);
+      var end = re > last ? new Date(last) : new Date(re);
+      while (cur <= end) { s.add(pFmtYMD(cur)); cur.setDate(cur.getDate()+1); }
+    }
+    return s;
+  }
+
+  function pGetDetailDaysForMonth(year, month, records) {
+    var s = new Set();
+    var first = new Date(year, month, 1);
+    var last = new Date(year, month+1, 0);
+    for (var i = 0; i < records.length; i++) {
+      var r = records[i];
+      if (!r.details) continue;
+      var keys = Object.keys(r.details);
+      for (var j = 0; j < keys.length; j++) {
+        var d = keys[j];
+        var dt = new Date(d);
+        if (dt >= first && dt <= last) s.add(d);
+      }
+    }
+    return s;
+  }
+
+  function pCalcCycles(records) {
+    var cycles = [];
+    for (var i = 1; i < records.length; i++) {
+      var d = pDaysBetween(records[i].start, records[i-1].start);
+      if (d > 0) cycles.push(d);
+    }
+    return cycles;
+  }
+
+  function pAvgCycle(records) {
+    var cycles = pCalcCycles(records);
+    if (!cycles.length) return null;
+    var recent = cycles.slice(-3);
+    return Math.round(recent.reduce(function(a,b){return a+b},0) / recent.length);
+  }
+
+  function pAvgDuration(records) {
+    if (!records.length) return null;
+    var durs = records.map(function(r) { return pDaysBetween(r.end || r.start, r.start) + 1; });
+    return Math.round(durs.reduce(function(a,b){return a+b},0) / durs.length);
+  }
+
+  function pAvgDetails(records) {
+    var am = { '少':1, '中':2, '多':3 };
+    var pm = { '无':0, '轻':1, '中':2, '重':3 };
+    var av = [], pv = [];
+    for (var i = 0; i < records.length; i++) {
+      var r = records[i];
+      if (!r.details) continue;
+      var keys = Object.keys(r.details);
+      for (var j = 0; j < keys.length; j++) {
+        var dt = r.details[keys[j]];
+        if (dt.amount) av.push(am[dt.amount]||2);
+        if (dt.pain) pv.push(pm[dt.pain]||0);
+      }
+    }
+    var ra = { 1:'少', 2:'中', 3:'多' };
+    var rp = { 0:'无', 1:'轻', 2:'中', 3:'重' };
+    return {
+      amount: av.length ? ra[Math.round(av.reduce(function(a,b){return a+b},0)/av.length)] : null,
+      pain: pv.length ? rp[Math.round(pv.reduce(function(a,b){return a+b},0)/pv.length)] : null
+    };
+  }
+
+  function pPredictNext(records) {
+    if (!records.length) return null;
+    var avg = pAvgCycle(records);
+    if (!avg) return null;
+    var next = new Date(records[records.length-1].start);
+    next.setDate(next.getDate() + avg);
+    return next;
+  }
+
+  var pToastTimer = null;
+  function pShowToast(msg) {
+    var el = document.getElementById('periodToast');
+    if (!el) return;
+    if (pToastTimer) { clearTimeout(pToastTimer); pToastTimer = null; }
+    el.textContent = msg;
+    el.className = 'period-toast';
+    void el.offsetWidth;
+    el.classList.add('show');
+    pToastTimer = setTimeout(function() { el.classList.remove('show'); pToastTimer = null; }, 2200);
+  }
+
+  var pCurrentYear = new Date().getFullYear();
+  var pCurrentMonth = new Date().getMonth();
+  var pModalTargetDate = null;
+
+  function pRenderAll() {
+    var records = pGetRecords();
+    pRenderCalendar(records);
+    pRenderHistory(records);
+    pRenderStats(records);
+    pRenderStatus(records);
+    pUpdateFormHint();
+  }
+
+  function pRenderCalendar(records) {
+    var grid = document.getElementById('periodCalendarGrid');
+    var label = document.getElementById('periodMonthLabel');
+    if (!grid || !label) return;
+    var first = new Date(pCurrentYear, pCurrentMonth, 1);
+    var daysInMonth = new Date(pCurrentYear, pCurrentMonth+1, 0).getDate();
+    var startWd = first.getDay();
+    var periodSet = pGetPeriodDaysForMonth(pCurrentYear, pCurrentMonth, records);
+    var detailSet = pGetDetailDaysForMonth(pCurrentYear, pCurrentMonth, records);
+    var today = pTodayStr();
+
+    var wds = ['日','一','二','三','四','五','六'];
+    var h = '';
+    for (var w = 0; w < wds.length; w++) h += '<div class="period-wd">'+wds[w]+'</div>';
+
+    for (var i = 0; i < startWd; i++) {
+      var d = new Date(pCurrentYear, pCurrentMonth, 1 - startWd + i);
+      h += '<div class="period-day other">'+d.getDate()+'</div>';
+    }
+
+    for (var d = 1; d <= daysInMonth; d++) {
+      var dateStr = pFmtYMD(new Date(pCurrentYear, pCurrentMonth, d));
+      var isToday = dateStr === today;
+      var isPeriod = periodSet.has(dateStr);
+      var hasDetail = detailSet.has(dateStr);
+
+      var cls = 'period-day';
+      if (isPeriod) cls += ' period';
+      if (isToday) cls += ' today';
+
+      h += '<button class="'+cls+'" data-date="'+dateStr+'">'+d+'<span class="period-detail-dot'+(hasDetail?' show':'')+'"></span></button>';
+    }
+
+    var total = startWd + daysInMonth;
+    var rem = (7 - (total % 7)) % 7;
+    for (var i = 1; i <= rem; i++) {
+      var d = new Date(pCurrentYear, pCurrentMonth+1, i);
+      h += '<div class="period-day other">'+d.getDate()+'</div>';
+    }
+
+    grid.innerHTML = h;
+    label.textContent = pCurrentYear + '年' + (pCurrentMonth+1) + '月';
+
+    var dayEls = grid.querySelectorAll('.period-day[data-date]');
+    for (var i = 0; i < dayEls.length; i++) {
+      dayEls[i].addEventListener('click', function() {
+        pOpenDetailModal(this.dataset.date);
+      });
+    }
+  }
+
+  function pRenderHistory(records) {
+    var badge = document.getElementById('periodHistoryBadge');
+    var list = document.getElementById('periodHistoryList');
+    if (!badge || !list) return;
+    badge.textContent = records.length + ' 条';
+    if (!records.length) {
+      list.innerHTML = '<div class="period-empty-state"><span class="period-icon">📭</span><div class="period-text">还没有记录</div><div class="period-sub">快开始记录你的经期吧</div></div>';
+      return;
+    }
+    var rev = [].concat(records).reverse();
+    var h = '';
+    for (var i = 0; i < rev.length; i++) {
+      var r = rev[i];
+      var idx = records.length - 1 - i;
+      var startDisp = pFmtDisplay(new Date(r.start));
+      var endDisp = r.end ? pFmtDisplay(new Date(r.end)) : '单日';
+      var cycleText = i < rev.length-1 ? pDaysBetween(r.start, rev[i+1].start)+'天' : '--';
+      var detailCount = r.details ? Object.keys(r.details).length : 0;
+      h += '<div class="period-history-item">'+
+        '<div class="period-info">'+
+          '<div class="period-dates">'+startDisp+' <span class="period-arrow">→</span> '+endDisp+'</div>'+
+          '<div class="period-meta"><span class="period-tag">周期 '+cycleText+'</span><span>📋 '+detailCount+' 天详情</span></div>'+
+        '</div>'+
+        '<div class="period-actions">'+
+          '<button class="edit" data-idx="'+idx+'">✏️</button>'+
+          '<button class="del" data-idx="'+idx+'">🗑</button>'+
+        '</div>'+
+      '</div>';
+    }
+    list.innerHTML = h;
+
+    var delBtns = list.querySelectorAll('.del');
+    for (var i = 0; i < delBtns.length; i++) {
+      delBtns[i].addEventListener('click', function(e) {
+        e.stopPropagation();
+        var idx = +this.dataset.idx;
+        if (isNaN(idx)) return;
+        if (!confirm('确定删除此记录吗？')) return;
+        var records = pGetRecords();
+        if (idx >= 0 && idx < records.length) {
+          records.splice(idx, 1);
+          pSaveRecords(records);
+          pShowToast('已删除');
+          pRenderAll();
+        }
+      });
+    }
+    var editBtns = list.querySelectorAll('.edit');
+    for (var i = 0; i < editBtns.length; i++) {
+      editBtns[i].addEventListener('click', function(e) {
+        e.stopPropagation();
+        var idx = +this.dataset.idx;
+        if (isNaN(idx)) return;
+        var records = pGetRecords();
+        if (idx >= 0 && idx < records.length) {
+          var r = records[idx];
+          var sd = document.getElementById('periodStartDate');
+          var ed = document.getElementById('periodEndDate');
+          var addSec = document.getElementById('periodAddSection');
+          if (sd) sd.value = r.start;
+          if (ed) ed.value = r.end || '';
+          records.splice(idx, 1);
+          pSaveRecords(records);
+          if (addSec) addSec.style.display = 'block';
+          pRenderAll();
+          pShowToast('已加载到表单，修改后保存');
+          if (sd) sd.focus();
+        }
+      });
+    }
+  }
+
+  function pRenderStats(records) {
+    var ac = pAvgCycle(records);
+    var ad = pAvgDuration(records);
+    var det = pAvgDetails(records);
+    var elCycle = document.getElementById('periodStatCycle');
+    var elDuration = document.getElementById('periodStatDuration');
+    var elAmount = document.getElementById('periodStatAmount');
+    var elPain = document.getElementById('periodStatPain');
+    if (elCycle) elCycle.innerHTML = ac !== null ? ac + ' <span class="period-unit">天</span>' : '-- <span class="period-unit">天</span>';
+    if (elDuration) elDuration.innerHTML = ad !== null ? ad + ' <span class="period-unit">天</span>' : '-- <span class="period-unit">天</span>';
+    if (elAmount) elAmount.textContent = det.amount || '--';
+    if (elPain) elPain.textContent = det.pain || '--';
+  }
+
+  function pRenderStatus(records) {
+    var today = pTodayStr();
+    var todayO = pTodayDate();
+    var inPeriod = pIsPeriodDay(today, records);
+    var elDate = document.getElementById('periodTodayDate');
+    var elLabel2 = document.getElementById('periodStatusLabel2');
+    var elNextDays = document.getElementById('periodNextDays');
+    var elNextInfo = document.getElementById('periodNextInfo');
+    var elPredDate = document.getElementById('periodPredDate');
+    var elDot = document.getElementById('periodStatusDot');
+    var elLabel = document.getElementById('periodStatusLabel');
+
+    if (elDate) elDate.textContent = pFmtDisplay(todayO);
+
+    if (inPeriod) {
+      var dayCount = 1;
+      var recs = pGetRecords();
+      for (var i = 0; i < recs.length; i++) {
+        var r = recs[i];
+        var s = new Date(r.start), e = new Date(r.end || r.start);
+        if (todayO >= s && todayO <= e) { dayCount = pDaysBetween(today, r.start) + 1; break; }
+      }
+      if (elLabel2) elLabel2.textContent = '经期第 ' + dayCount + ' 天';
+      if (elDot) elDot.className = 'period-dot on';
+      if (elLabel) elLabel.textContent = '经期中';
+      var next = pPredictNext(records);
+      if (next) {
+        var days = pDaysBetween(next, todayO);
+        if (elNextDays) elNextDays.textContent = days > 0 ? days : '0';
+        if (elPredDate) elPredDate.textContent = '预计 ' + pFmtDisplay(next);
+        if (elNextInfo) elNextInfo.style.display = 'block';
+      } else {
+        if (elNextDays) elNextDays.textContent = '--';
+        if (elPredDate) elPredDate.textContent = '';
+        if (elNextInfo) elNextInfo.style.display = 'block';
+      }
+    } else {
+      var next = pPredictNext(records);
+      if (next) {
+        var days = pDaysBetween(next, todayO);
+        if (days > 0) {
+          if (elLabel2) elLabel2.textContent = '距离下次经期';
+          if (elNextDays) elNextDays.textContent = days;
+          if (elPredDate) elPredDate.textContent = '预计 ' + pFmtDisplay(next);
+          if (elNextInfo) elNextInfo.style.display = 'block';
+          if (elDot) elDot.className = 'period-dot';
+          if (elLabel) elLabel.textContent = '正常';
+        } else if (days === 0) {
+          if (elLabel2) elLabel2.textContent = '预计今天开始';
+          if (elNextDays) elNextDays.textContent = '0';
+          if (elPredDate) elPredDate.textContent = '就是今天';
+          if (elNextInfo) elNextInfo.style.display = 'block';
+          if (elDot) elDot.className = 'period-dot on';
+          if (elLabel) elLabel.textContent = '预测';
+        } else {
+          if (elLabel2) elLabel2.textContent = '已延迟 ' + Math.abs(days) + ' 天';
+          if (elNextDays) elNextDays.textContent = Math.abs(days);
+          if (elPredDate) elPredDate.textContent = '原预计 ' + pFmtDisplay(next);
+          if (elNextInfo) elNextInfo.style.display = 'block';
+          if (elDot) elDot.className = 'period-dot';
+          if (elLabel) elLabel.textContent = '延迟';
+        }
+      } else {
+        if (elLabel2) elLabel2.textContent = '暂无预测';
+        if (elNextDays) elNextDays.textContent = '--';
+        if (elPredDate) elPredDate.textContent = '';
+        if (elNextInfo) elNextInfo.style.display = 'block';
+        if (elDot) elDot.className = 'period-dot';
+        if (elLabel) elLabel.textContent = '无记录';
+      }
+    }
+    if (!records.length) {
+      if (elLabel2) elLabel2.textContent = '添加第一条记录';
+      if (elNextDays) elNextDays.textContent = '--';
+      if (elPredDate) elPredDate.textContent = '';
+      if (elDot) elDot.className = 'period-dot';
+      if (elLabel) elLabel.textContent = '无记录';
+    }
+  }
+
+  function pUpdateFormHint() {
+    var sd = document.getElementById('periodStartDate');
+    var ed = document.getElementById('periodEndDate');
+    var hint = document.getElementById('periodFormHint');
+    var saveBtn = document.getElementById('periodSaveBtn');
+    if (!hint || !saveBtn || !sd) return;
+    var s = sd.value, e = ed ? ed.value : '';
+    if (s && e && e < s) {
+      hint.textContent = '结束日期不能早于开始日期';
+      hint.style.color = '#c06060';
+      saveBtn.disabled = true;
+    } else if (s) {
+      hint.textContent = e ? pFmtDisplay(new Date(s)) + ' → ' + pFmtDisplay(new Date(e)) : pFmtDisplay(new Date(s)) + ' (单日)';
+      hint.style.color = 'var(--period-text-mid)';
+      saveBtn.disabled = false;
+    } else {
+      hint.textContent = '结束日期留空则只记录单日';
+      hint.style.color = 'var(--period-text-sub)';
+      saveBtn.disabled = true;
+    }
+  }
+
+  function pOpenDetailModal(dateStr) {
+    var records = pGetRecords();
+    var detail = pGetDayDetail(dateStr, records);
+    if (!detail) {
+      var r = pAddRecord(dateStr, '');
+      if (!r.ok) { pShowToast(r.msg); return; }
+      pShowToast('已自动创建经期记录');
+      pRenderAll();
+      setTimeout(function() {
+        var newRecords = pGetRecords();
+        var newDetail = pGetDayDetail(dateStr, newRecords);
+        if (newDetail) {
+          pModalTargetDate = dateStr;
+          var sub = document.getElementById('periodModalSub');
+          var amt = document.getElementById('periodModalAmount');
+          var pain = document.getElementById('periodModalPain');
+          var overlay = document.getElementById('periodModalOverlay');
+          if (sub) sub.textContent = pFmtDisplay(new Date(dateStr));
+          if (amt) amt.value = newDetail.amount || '中';
+          if (pain) pain.value = newDetail.pain || '无';
+          if (overlay) overlay.classList.add('open');
+        }
+      }, 150);
+      return;
+    }
+    pModalTargetDate = dateStr;
+    var sub = document.getElementById('periodModalSub');
+    var amt = document.getElementById('periodModalAmount');
+    var pain = document.getElementById('periodModalPain');
+    var overlay = document.getElementById('periodModalOverlay');
+    if (sub) sub.textContent = pFmtDisplay(new Date(dateStr));
+    if (amt) amt.value = detail.amount || '中';
+    if (pain) pain.value = detail.pain || '无';
+    if (overlay) overlay.classList.add('open');
+  }
+
+  function pCloseModal() {
+    var overlay = document.getElementById('periodModalOverlay');
+    if (overlay) overlay.classList.remove('open');
+    pModalTargetDate = null;
+  }
+
+  function pSaveModalDetail() {
+    if (!pModalTargetDate) return;
+    var amt = document.getElementById('periodModalAmount');
+    var pain = document.getElementById('periodModalPain');
+    var amount = amt ? amt.value : '中';
+    var painVal = pain ? pain.value : '无';
+    var records = pGetRecords();
+    if (pSetDayDetail(pModalTargetDate, amount, painVal, records)) {
+      pShowToast('详情已保存');
+      pCloseModal();
+      pRenderAll();
+    } else {
+      pShowToast('保存失败');
+    }
+  }
+
+  function pAddRecord(start, end) {
+    if (!start) return { ok: false, msg: '请选择开始日期' };
+    if (end && end < start) return { ok: false, msg: '结束日期不能早于开始日期' };
+    var records = pGetRecords();
+    if (records.some(function(r) { return r.start === start && (r.end||r.start) === (end||start); })) {
+      return { ok: false, msg: '该记录已存在' };
+    }
+    records.push({ start: start, end: end||'', details: {} });
+    return pSaveRecords(records) ? { ok: true, msg: '记录保存成功' } : { ok: false, msg: '保存失败' };
+  }
+
+  function pHandleSave() {
+    var sd = document.getElementById('periodStartDate');
+    var ed = document.getElementById('periodEndDate');
+    if (!sd) return;
+    var s = sd.value, e = ed ? ed.value : '';
+    if (!s) { pShowToast('请选择开始日期'); return; }
+    if (e && e < s) { pShowToast('结束日期不能早于开始日期'); return; }
+    var r = pAddRecord(s, e);
+    if (r.ok) {
+      pShowToast(r.msg);
+      sd.value = pFmtYMD(pAddDays(new Date(s), 1));
+      if (ed) ed.value = '';
+      pRenderAll();
+    } else { pShowToast(r.msg); }
+  }
+
+  function pHandleQuickToday() {
+    var today = pTodayStr();
+    var records = pGetRecords();
+    var inRange = records.some(function(r) { return today >= r.start && today <= (r.end||r.start); });
+    if (!inRange) {
+      var r = pAddRecord(today, '');
+      if (!r.ok) { pShowToast(r.msg); return; }
+      pShowToast('已创建今日记录');
+      pRenderAll();
+      setTimeout(function() { pOpenDetailModal(today); }, 300);
+    } else {
+      pOpenDetailModal(today);
+    }
+  }
+
+  function pGoToToday() {
+    var now = new Date();
+    pCurrentYear = now.getFullYear();
+    pCurrentMonth = now.getMonth();
+    pRenderAll();
+  }
+
+  window.renderPeriod = function() {
+    pCurrentYear = new Date().getFullYear();
+    pCurrentMonth = new Date().getMonth();
+    var sd = document.getElementById('periodStartDate');
+    var ed = document.getElementById('periodEndDate');
+    if (sd) sd.value = pTodayStr();
+    if (ed) ed.value = '';
+    pRenderAll();
+  };
+
+  function pInit() {
+    var sd = document.getElementById('periodStartDate');
+    var ed = document.getElementById('periodEndDate');
+    if (sd) sd.value = pTodayStr();
+    if (ed) ed.value = '';
+
+    var prevBtn = document.getElementById('periodPrevBtn');
+    var nextBtn = document.getElementById('periodNextBtn');
+    var todayBtn = document.getElementById('periodTodayBtn');
+    var saveBtn = document.getElementById('periodSaveBtn');
+    var quickTodayBtn = document.getElementById('periodQuickTodayBtn');
+    var toggleAddBtn = document.getElementById('periodToggleAddBtn');
+    var addSection = document.getElementById('periodAddSection');
+    var modalCancel = document.getElementById('periodModalCancel');
+    var modalConfirm = document.getElementById('periodModalConfirm');
+    var modalOverlay = document.getElementById('periodModalOverlay');
+
+    if (prevBtn) prevBtn.addEventListener('click', function() {
+      pCurrentMonth--;
+      if (pCurrentMonth < 0) { pCurrentMonth = 11; pCurrentYear--; }
+      pRenderAll();
+    });
+    if (nextBtn) nextBtn.addEventListener('click', function() {
+      pCurrentMonth++;
+      if (pCurrentMonth > 11) { pCurrentMonth = 0; pCurrentYear++; }
+      pRenderAll();
+    });
+    if (todayBtn) todayBtn.addEventListener('click', pGoToToday);
+
+    if (sd) {
+      sd.addEventListener('change', pUpdateFormHint);
+      sd.addEventListener('input', pUpdateFormHint);
+    }
+    if (ed) {
+      ed.addEventListener('change', pUpdateFormHint);
+      ed.addEventListener('input', pUpdateFormHint);
+    }
+
+    if (saveBtn) saveBtn.addEventListener('click', pHandleSave);
+    if (quickTodayBtn) quickTodayBtn.addEventListener('click', pHandleQuickToday);
+
+    if (toggleAddBtn && addSection) {
+      toggleAddBtn.addEventListener('click', function() {
+        var visible = addSection.style.display === 'block';
+        addSection.style.display = visible ? 'none' : 'block';
+        toggleAddBtn.textContent = visible ? '＋ 添加区间' : '－ 收起';
+        if (!visible && sd) sd.focus();
+      });
+    }
+
+    if (modalCancel) modalCancel.addEventListener('click', pCloseModal);
+    if (modalConfirm) modalConfirm.addEventListener('click', pSaveModalDetail);
+    if (modalOverlay) {
+      modalOverlay.addEventListener('click', function(e) {
+        if (e.target === this) pCloseModal();
+      });
+    }
+
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') pCloseModal();
+      if (e.key === 'Enter' && (e.target === sd || e.target === ed)) pHandleSave();
+    });
+  }
+
+  pInit();
+})();
+
+function escapeHtml(text) {
+  if (!text) return '';
+  var div = document.createElement('div');
+  div.textContent = text;
+  return div.innerHTML;
+}
+
+/* ===== Update Notice System ===== */
+var UPDATE_NOTICES = [
+  {
+    version: '1.4',
+    date: '2026-07-22',
+    title: '星言 1.4',
+    summary: '顶部栏字卡优化、新增聊天情绪字卡库、占卜功能修复、新增生理周期记录、底部聊天栏批量发送模式',
+    content: '<h4>1. 顶部栏字卡优化</h4><p><strong>顶部栏「心情」</strong>用于表示梦角当前整体心情。</p><p>顶部栏五处字卡共同组成梦角当前状态，表达的是「TA现在如何与你交流」。</p><ul><li>💬 对方状态：TA如何回应你</li><li>☁️ 天气：世界是什么样</li><li>🕰 时间：现在是什么时候</li><li>🌙 心情状态：TA感觉怎么样</li><li>💤 空闲状态：TA正在做什么、有没有空</li></ul><p>默认分组新增了一批公用字卡（由 AI 辅助创作，并非复制其他老师分享的字卡内容）。</p><p>所有默认字卡均可根据个人使用习惯自由添加、修改或删除。</p><h4>2. 新增「聊天情绪字卡库」</h4><p>新增独立的聊天情绪字卡库。</p><p>聊天情绪字卡表示的是梦角发送这一句话时所流露出的情绪，并非梦角当前整体心情。</p><p>开启该功能后，梦角发送聊天消息时，将有概率随机附带一张聊天情绪字卡，用于补充当前消息的情绪与语气，让有限的字卡表达更加自然、丰富。</p><p>字卡库内置默认情绪字卡（由 AI 辅助创作，并非复制其他老师分享的字卡内容），也支持自由添加、修改和删除。</p><p>该功能可在字卡库中自由开启或关闭。</p><p style="font-size:12px;color:#999;">【灵感来源，其实好久以前刷的有老师提过情绪字卡类似的功能不过不知道是谁，只是有点印象，然后昨天晚上刷的了@心汋是颗彩虹多宝糖 老师的帖子的网站聊天也有情绪字卡，感觉很有意思，今天就搓了这个功能】</p><h4>3. 占卜功能修复</h4><p>占卜功能页面已修复，现在可以正常使用。</p><h4>4. Bug 修复</h4><p>修复了一些已知问题，优化了部分使用体验。</p><h4>5. 新增生理周期记录</h4><p>新增生理周期记录功能，可用于记录和查看个人生理周期信息。</p><h4>6. 新增了批量发送消息的功能</h4><p>该功能可在左上角三个点里自由开启或关闭。</p><p style="font-size:12px;color:#999;">【群友想要，参考milk字卡搓的，总之是感谢milk老师】</p>'
+  }
+];
+
+var CURRENT_VERSION = '1.4';
+
+function compareVersions(v1, v2) {
+  var parts1 = v1.split('.').map(Number);
+  var parts2 = v2.split('.').map(Number);
+  var len = Math.max(parts1.length, parts2.length);
+  for (var i = 0; i < len; i++) {
+    var p1 = parts1[i] || 0;
+    var p2 = parts2[i] || 0;
+    if (p1 > p2) return 1;
+    if (p1 < p2) return -1;
+  }
+  return 0;
+}
+
+function getLastReadVersion() {
+  try {
+    return localStorage.getItem('star_last_read_version') || '0.0';
+  } catch(e) {
+    return '0.0';
+  }
+}
+
+function setLastReadVersion(version) {
+  try {
+    localStorage.setItem('star_last_read_version', version);
+  } catch(e) {}
+}
+
+function showUpdateNotice(notice) {
+  var overlay = document.getElementById('update-notice-overlay');
+  if (!overlay) return;
+  
+  document.getElementById('update-notice-title').innerHTML = '✨ ' + notice.title;
+  document.getElementById('update-notice-version').textContent = '版本 ' + notice.version;
+  document.getElementById('update-notice-date').textContent = notice.date;
+  document.getElementById('update-notice-body').innerHTML = notice.content;
+  
+  overlay.classList.add('show');
+}
+
+function closeUpdateNotice() {
+  var overlay = document.getElementById('update-notice-overlay');
+  if (overlay) {
+    overlay.classList.remove('show');
+  }
+  setLastReadVersion(CURRENT_VERSION);
+}
+
+function checkUpdateNotice() {
+  var lastRead = getLastReadVersion();
+  var latestNotice = UPDATE_NOTICES[0];
+  
+  if (!latestNotice) return;
+  
+  if (compareVersions(latestNotice.version, lastRead) > 0) {
+    showUpdateNotice(latestNotice);
+  }
+}
+
+function renderUpdateHistory() {
+  var list = document.getElementById('update-history-list');
+  if (!list) return;
+  
+  var html = '';
+  UPDATE_NOTICES.forEach(function(notice, index) {
+    html += '<div class="update-history-item' + (index === 0 ? ' expanded' : '') + '" data-version="' + notice.version + '">' +
+      '<div class="update-history-header" onclick="toggleUpdateHistory(this)">' +
+        '<div class="update-history-info">' +
+          '<div class="update-history-title">' + (index === 0 ? '✨' : '') + ' ' + notice.title + '<span class="update-history-version">' + notice.version + '</span></div>' +
+          '<div class="update-history-date">' + notice.date + '</div>' +
+          '<div class="update-history-summary">' + notice.summary + '</div>' +
+        '</div>' +
+        '<div class="update-history-arrow">▼</div>' +
+      '</div>' +
+      '<div class="update-history-content">' +
+        '<div class="update-history-content-inner">' + notice.content + '</div>' +
+      '</div>' +
+    '</div>';
+  });
+  
+  list.innerHTML = html;
+}
+
+function toggleUpdateHistory(header) {
+  var item = header.parentElement;
+  item.classList.toggle('expanded');
+}
+
+function bindUpdateNoticeEvents() {
+  var btn = document.getElementById('update-history-btn');
+  if (btn) {
+    btn.addEventListener('click', function() {
+      showPg('pg-update-history');
+    });
+  }
+  
+  var overlay = document.getElementById('update-notice-overlay');
+  if (overlay) {
+    overlay.addEventListener('click', function(e) {
+      if (e.target === overlay) {
+        closeUpdateNotice();
+      }
+    });
+  }
+  
+  showPgCallbacks['pg-update-history'] = function() {
+    renderUpdateHistory();
+  };
+}
+
+function initUpdateNotice() {
+  bindUpdateNoticeEvents();
+  
+  setTimeout(function() {
+    var lastRead = getLastReadVersion();
+    console.log('Update Notice - Last read version:', lastRead);
+    console.log('Update Notice - Current version:', CURRENT_VERSION);
+    console.log('Update Notice - Should show:', compareVersions(CURRENT_VERSION, lastRead) > 0);
+    checkUpdateNotice();
+  }, 2000);
+}
+
+window.showUpdateNoticeManual = function() {
+  var latestNotice = UPDATE_NOTICES[0];
+  if (latestNotice) {
+    showUpdateNotice(latestNotice);
+  }
+};
+
+window.resetUpdateNoticeRead = function() {
+  setLastReadVersion('0.0');
+  toast('已重置阅读记录，刷新页面后将重新显示公告');
+};
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initUpdateNotice);
+} else {
+  initUpdateNotice();
 }
 </script>
 </body></html>
