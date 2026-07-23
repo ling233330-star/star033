@@ -2609,64 +2609,65 @@ canvas{-webkit-backface-visibility:hidden;backface-visibility:hidden;-webkit-tra
 .batch-send-btn:disabled { opacity: 0.35; cursor: not-allowed; }
 .batch-send-btn:active:not(:disabled) { transform: scale(0.96); }
 /* ===== 我的留言板 ===== */
-.board-header { text-align: center; padding: 8px 0 20px; }
+.board-header { text-align: center; padding: 12px 0 24px; }
 .board-header h1 { font-size: 22px; font-weight: 500; letter-spacing: 1.2px; color: var(--txt); display: flex; align-items: center; justify-content: center; gap: 6px; margin: 0; }
-.board-header p { color: var(--txt2); font-size: 13px; margin-top: 4px; letter-spacing: 0.3px; }
+.board-header p { color: var(--txt2); font-size: 13px; margin-top: 6px; letter-spacing: 0.3px; }
 .board-card { background: var(--c1); border-radius: var(--radius-lg); padding: 20px 18px; margin-bottom: 16px; box-shadow: 0 2px 12px rgba(0,0,0,0.04); border: 1px solid var(--border-light); }
-.board-card-title { font-size: 14px; font-weight: 500; color: var(--txt2); margin-bottom: 14px; letter-spacing: 0.5px; display: flex; align-items: center; gap: 6px; }
-.board-form-group { margin-bottom: 16px; }
-.board-form-label { display: block; font-size: 13px; font-weight: 500; color: var(--txt2); margin-bottom: 8px; letter-spacing: 0.3px; }
-.board-target-group { display: flex; flex-wrap: wrap; gap: 6px; }
-.board-target-btn { padding: 7px 14px; border: none; border-radius: 20px; background: var(--c2); color: var(--txt2); font-size: 13px; font-weight: 450; cursor: pointer; transition: all 0.2s; font-family: inherit; user-select: none; border: 1px solid transparent; touch-action: manipulation; min-height: 36px; display: inline-flex; align-items: center; justify-content: center; -webkit-tap-highlight-color: transparent; }
+.board-card-title { font-size: 15px; font-weight: 500; color: var(--txt2); margin-bottom: 16px; letter-spacing: 0.5px; display: flex; align-items: center; gap: 6px; }
+.board-form-group { margin-bottom: 18px; }
+.board-form-label { display: block; font-size: 13px; font-weight: 500; color: var(--txt2); margin-bottom: 10px; letter-spacing: 0.3px; }
+.board-target-group { display: flex; flex-wrap: wrap; gap: 8px; }
+.board-target-btn { padding: 10px 18px; border: none; border-radius: 22px; background: var(--c2); color: var(--txt2); font-size: 14px; font-weight: 450; cursor: pointer; transition: all 0.2s; font-family: inherit; user-select: none; border: 1px solid transparent; touch-action: manipulation; min-height: 44px; display: inline-flex; align-items: center; justify-content: center; -webkit-tap-highlight-color: transparent; }
 .board-target-btn:active { transform: scale(0.96); }
 .board-target-btn.active { background: var(--accent); color: #fff; box-shadow: 0 2px 8px rgba(0,0,0,0.15); }
 .board-target-btn.active-all { background: var(--txt3); color: #fff; }
-.board-textarea { width: 100%; padding: 12px 16px; border: 2px solid transparent; border-radius: var(--radius); font-size: 14px; font-family: inherit; color: var(--txt); background: var(--c2); transition: all 0.2s; outline: none; resize: vertical; min-height: 80px; line-height: 1.7; box-sizing: border-box; -webkit-appearance: none; }
+.board-textarea { width: 100%; padding: 14px 16px; border: 2px solid transparent; border-radius: var(--radius); font-size: 15px; font-family: inherit; color: var(--txt); background: var(--c2); transition: all 0.2s; outline: none; resize: vertical; min-height: 90px; line-height: 1.7; box-sizing: border-box; -webkit-appearance: none; }
 .board-textarea:focus { background: var(--c1); border-color: var(--accent); box-shadow: 0 0 0 3px rgba(0,0,0,0.06); }
-.board-textarea::placeholder { color: var(--txt3); font-size: 13px; }
-.board-btn-publish { display: inline-flex; align-items: center; justify-content: center; gap: 6px; padding: 12px 24px; background: var(--accent); color: #fff; border: none; border-radius: 20px; font-size: 14px; font-weight: 500; font-family: inherit; cursor: pointer; transition: all 0.2s; box-shadow: 0 2px 10px rgba(0,0,0,0.12); width: 100%; letter-spacing: 0.5px; touch-action: manipulation; min-height: 48px; -webkit-tap-highlight-color: transparent; }
+.board-textarea::placeholder { color: var(--txt3); font-size: 14px; }
+.board-btn-publish { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 14px 28px; background: var(--accent); color: #fff; border: none; border-radius: 24px; font-size: 15px; font-weight: 500; font-family: inherit; cursor: pointer; transition: all 0.2s; box-shadow: 0 2px 12px rgba(0,0,0,0.12); width: 100%; letter-spacing: 0.5px; touch-action: manipulation; min-height: 48px; -webkit-tap-highlight-color: transparent; }
 .board-btn-publish:active { transform: scale(0.97); opacity: 0.9; }
-.board-filter-bar { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; margin-bottom: 14px; padding-bottom: 12px; border-bottom: 1px solid var(--border-light); }
-.board-filter-label { font-size: 12px; color: var(--txt2); font-weight: 450; }
-.board-filter-group { display: flex; flex-wrap: wrap; gap: 5px; }
-.board-filter-btn { padding: 5px 14px; border: none; border-radius: 16px; background: transparent; color: var(--txt3); font-size: 12px; font-weight: 450; cursor: pointer; transition: all 0.2s; font-family: inherit; touch-action: manipulation; min-height: 32px; display: inline-flex; align-items: center; justify-content: center; -webkit-tap-highlight-color: transparent; }
+.board-filter-bar { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px; margin-bottom: 16px; padding-bottom: 14px; border-bottom: 1px solid var(--border-light); }
+.board-filter-label { font-size: 13px; color: var(--txt2); font-weight: 450; }
+.board-filter-group { display: flex; flex-wrap: wrap; gap: 8px; }
+.board-filter-btn { padding: 8px 16px; border: none; border-radius: 18px; background: transparent; color: var(--txt3); font-size: 13px; font-weight: 450; cursor: pointer; transition: all 0.2s; font-family: inherit; touch-action: manipulation; min-height: 44px; display: inline-flex; align-items: center; justify-content: center; -webkit-tap-highlight-color: transparent; }
 .board-filter-btn:active { transform: scale(0.95); }
 .board-filter-btn.active { background: var(--accent); color: #fff; }
-.board-filter-target-select { display: none; flex-wrap: wrap; gap: 5px; margin-left: 2px; }
+.board-filter-target-select { display: none; flex-wrap: wrap; gap: 8px; margin-left: 2px; }
 .board-filter-target-select.show { display: flex; }
-.board-filter-target-btn { padding: 5px 14px; border: none; border-radius: 16px; background: var(--c2); color: var(--txt2); font-size: 12px; font-weight: 450; cursor: pointer; transition: all 0.2s; font-family: inherit; touch-action: manipulation; min-height: 32px; display: inline-flex; align-items: center; justify-content: center; -webkit-tap-highlight-color: transparent; }
+.board-filter-target-btn { padding: 8px 16px; border: none; border-radius: 18px; background: var(--c2); color: var(--txt2); font-size: 13px; font-weight: 450; cursor: pointer; transition: all 0.2s; font-family: inherit; touch-action: manipulation; min-height: 44px; display: inline-flex; align-items: center; justify-content: center; -webkit-tap-highlight-color: transparent; }
 .board-filter-target-btn:active { transform: scale(0.95); }
 .board-filter-target-btn.active { background: var(--accent); color: #fff; }
-.board-message-list { display: flex; flex-direction: column; gap: 10px; }
-.board-message-item { background: var(--c2); border-radius: var(--radius); padding: 14px 16px; transition: all 0.2s; border: 1px solid transparent; animation: boardFadeUp 0.35s ease; }
+.board-message-list { display: flex; flex-direction: column; gap: 12px; }
+.board-message-item { background: var(--c2); border-radius: var(--radius); padding: 16px 18px; transition: all 0.2s; border: 1px solid transparent; animation: boardFadeUp 0.35s ease; }
 @keyframes boardFadeUp { 0% { opacity: 0; transform: translateY(10px); } 100% { opacity: 1; transform: translateY(0); } }
-.board-message-header { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 10px; margin-bottom: 6px; }
-.board-message-tag { display: inline-block; padding: 2px 12px; border-radius: 14px; font-size: 11px; font-weight: 500; background: var(--c3); color: var(--txt2); letter-spacing: 0.2px; white-space: nowrap; }
+.board-message-header { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 12px; margin-bottom: 8px; }
+.board-message-tag { display: inline-block; padding: 4px 14px; border-radius: 14px; font-size: 12px; font-weight: 500; background: var(--c3); color: var(--txt2); letter-spacing: 0.2px; white-space: nowrap; }
 .board-message-tag.tag-all { background: var(--accent-light); color: var(--txt2); }
-.board-message-time { font-size: 11px; color: var(--txt3); margin-left: auto; white-space: nowrap; }
-.board-message-content { font-size: 14px; line-height: 1.7; color: var(--txt); word-break: break-word; }
+.board-message-time { font-size: 12px; color: var(--txt3); margin-left: auto; white-space: nowrap; }
+.board-message-content { font-size: 15px; line-height: 1.8; color: var(--txt); word-break: break-word; }
 .board-message-content::before { content: '「'; color: var(--txt3); font-size: 16px; margin-right: 2px; opacity: 0.5; }
 .board-message-content::after { content: '」'; color: var(--txt3); font-size: 16px; margin-left: 2px; opacity: 0.5; }
-.board-message-delete { background: transparent; border: none; width: 28px; height: 28px; border-radius: 50%; font-size: 14px; color: var(--txt3); cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: 0.15s; -webkit-tap-highlight-color: transparent; padding: 0; }
+.board-message-delete { background: transparent; border: none; width: 44px; height: 44px; border-radius: 50%; font-size: 16px; color: var(--txt3); cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: 0.15s; -webkit-tap-highlight-color: transparent; padding: 0; }
 .board-message-delete:active { background: #fce4e4; color: #c06060; }
-.board-empty-state { text-align: center; padding: 36px 16px 24px; color: var(--txt3); }
-.board-empty-state .empty-icon { font-size: 36px; display: block; margin-bottom: 10px; opacity: 0.5; }
-.board-empty-state p { font-size: 13px; line-height: 1.5; margin: 0; }
+.board-empty-state { text-align: center; padding: 40px 16px 28px; color: var(--txt3); }
+.board-empty-state .empty-icon { font-size: 40px; display: block; margin-bottom: 12px; opacity: 0.5; }
+.board-empty-state p { font-size: 14px; line-height: 1.6; margin: 0; }
 @media (max-width: 480px) {
-  .board-card { padding: 16px 12px; border-radius: 12px; margin-bottom: 12px; }
+  .board-card { padding: 18px 14px; border-radius: 14px; margin-bottom: 14px; }
   .board-header h1 { font-size: 20px; }
   .board-header p { font-size: 12px; }
-  .board-card-title { font-size: 13px; margin-bottom: 12px; }
-  .board-target-btn { padding: 6px 12px; font-size: 12px; min-height: 32px; }
-  .board-textarea { padding: 10px 12px; font-size: 13px; min-height: 70px; }
-  .board-btn-publish { padding: 10px 18px; font-size: 13px; min-height: 44px; }
-  .board-filter-bar { gap: 6px 10px; margin-bottom: 12px; padding-bottom: 10px; }
-  .board-filter-btn { padding: 4px 10px; font-size: 11px; min-height: 28px; }
-  .board-filter-target-btn { padding: 4px 10px; font-size: 11px; min-height: 28px; }
-  .board-message-item { padding: 12px 12px; }
-  .board-message-tag { font-size: 10px; padding: 2px 10px; }
-  .board-message-time { font-size: 10px; }
-  .board-message-content { font-size: 13px; }
+  .board-card-title { font-size: 14px; margin-bottom: 14px; }
+  .board-target-btn { padding: 10px 16px; font-size: 13px; min-height: 44px; }
+  .board-textarea { padding: 12px 14px; font-size: 14px; min-height: 80px; }
+  .board-btn-publish { padding: 14px 24px; font-size: 15px; min-height: 48px; }
+  .board-filter-bar { gap: 8px 12px; margin-bottom: 14px; padding-bottom: 12px; }
+  .board-filter-btn { padding: 8px 14px; font-size: 12px; min-height: 44px; }
+  .board-filter-target-btn { padding: 8px 14px; font-size: 12px; min-height: 44px; }
+  .board-message-item { padding: 14px 14px; }
+  .board-message-tag { font-size: 11px; padding: 4px 12px; }
+  .board-message-time { font-size: 11px; }
+  .board-message-content { font-size: 14px; }
+  .board-message-delete { width: 44px; height: 44px; }
 }
 /* ===== 音乐库 ===== */
 .music-page { background: var(--c2); }
@@ -6846,7 +6847,7 @@ var DEF_SET={pe:true,pp:.5,pmin:2,pmax:5,dmin:3,dmax:7};
 var divineTargets=[];
 var nonInstantMode=false;
 
-function compressImage(file,maxSize,quality,callback){var img=new Image();img.onload=function(){try{var canvas=document.createElement('canvas');var ctx=canvas.getContext('2d',{alpha:false});if(!ctx){callback('');URL.revokeObjectURL(img.src);return}var ratio=Math.min(maxSize/img.width,maxSize/img.height,1);canvas.width=Math.round(img.width*ratio);canvas.height=Math.round(img.height*ratio);ctx.imageSmoothingEnabled=true;ctx.imageSmoothingQuality='high';ctx.drawImage(img,0,0,canvas.width,canvas.height);var mimeType=(file.type&&file.type.indexOf('png')>-1)?'image/png':(file.type&&file.type.indexOf('gif')>-1?'image/gif':'image/jpeg');try{var dataUrl=canvas.toDataURL(mimeType,quality);callback(dataUrl)}catch(e){console.warn('compressImage toDataURL failed:',e);callback('')}URL.revokeObjectURL(img.src);canvas.width=0;canvas.height=0;canvas=null;ctx=null}catch(e){console.warn('compressImage failed:',e);callback('');URL.revokeObjectURL(img.src)}};img.onerror=function(){callback('');URL.revokeObjectURL(img.src)};img.src=URL.createObjectURL(file)}
+function compressImage(file,maxSize,quality,callback){var img=new Image();img.onload=function(){try{var canvas=document.createElement('canvas');var ctx=canvas.getContext('2d',{alpha:true});if(!ctx){callback('');URL.revokeObjectURL(img.src);return}var ratio=Math.min(maxSize/img.width,maxSize/img.height,1);canvas.width=Math.round(img.width*ratio);canvas.height=Math.round(img.height*ratio);ctx.imageSmoothingEnabled=true;ctx.imageSmoothingQuality='high';ctx.drawImage(img,0,0,canvas.width,canvas.height);var mimeType=(file.type&&file.type.indexOf('png')>-1)?'image/png':(file.type&&file.type.indexOf('gif')>-1?'image/gif':'image/jpeg');try{var dataUrl=canvas.toDataURL(mimeType,quality);callback(dataUrl)}catch(e){console.warn('compressImage toDataURL failed:',e);callback('')}URL.revokeObjectURL(img.src);canvas.width=0;canvas.height=0;canvas=null;ctx=null}catch(e){console.warn('compressImage failed:',e);callback('');URL.revokeObjectURL(img.src)}};img.onerror=function(){callback('');URL.revokeObjectURL(img.src)};img.src=URL.createObjectURL(file)}
 
 var lazyLoadObserver=null;
 function initLazyLoad(){if('IntersectionObserver' in window){lazyLoadObserver=new IntersectionObserver(function(entries){entries.forEach(function(entry){if(entry.isIntersecting){var img=entry.target;img.src=img.dataset.src;img.removeAttribute('data-src');lazyLoadObserver.unobserve(img)}})},{rootMargin:'100px',threshold:0.01})}var lazyImages=document.querySelectorAll('img[data-src]');lazyImages.forEach(function(img){if(lazyLoadObserver){lazyLoadObserver.observe(img)}else{img.src=img.dataset.src;img.removeAttribute('data-src')}})}
@@ -6950,7 +6951,9 @@ var Storage = (function(){
            key.startsWith('ml2_period') ||
            key.startsWith('ml2_custom') ||
            key.startsWith('ml2_avatar_lib_') ||
-           key.startsWith('ml2_avh_');
+           key.startsWith('ml2_avh_') ||
+           key.startsWith('ml2_hide_bottom_nav') ||
+           key.startsWith('ml2_input_bar_hidden');
   }
   
   function cleanupStorage(){
@@ -9085,7 +9088,7 @@ function renderContactCallHistory(contactId){
           '<span style="font-size:13px;font-weight:600;color:'+(direction==='incoming'?'#2e7d32':'#e65100')+';">'+directionText+'</span>'+
           '<span style="font-size:12px;'+statusColor+'">'+statusText+'</span>'+
         '</div>'+
-        '<div style="font-size:11px;color:var(--txt3);">'+time+(status==='connected'||status==='disconnected'?' · '+duration:'')+'</div>'+
+        '<div style="font-size:11px;color:var(--txt3);">'+time+(status==='connected'||status==='disconnected'||status==='ended_by_user'||status==='hangup_by_contact'?' · '+duration:'')+'</div>'+
       '</div>'+
     '</div>';
     list.appendChild(el);
@@ -11299,6 +11302,8 @@ function renderCallHistory(){
     else if(status==='rejected'){statusText='已拒绝';statusColor='color:#ff4d4f';}
     else if(status==='missed'){statusText='未接来电';statusColor='color:#ff4d4f';}
     else if(status==='disconnected'){statusText='通话中断';statusColor='color:#fa8c16';}
+    else if(status==='hangup_by_contact'){statusText='对方挂断';statusColor='color:#fa8c16';}
+    else if(status==='ended_by_user'){statusText='已挂断';statusColor='color:#fa8c16';}
     else{statusText='未接通';statusColor='color:var(--txt3)';}
     
     var duration='';
@@ -11318,7 +11323,7 @@ function renderCallHistory(){
           '<span style="font-size:12px;font-weight:500;color:var(--txt);">'+(record.contactName||'对方')+'</span>'+
           '<span style="font-size:12px;'+statusColor+'">'+statusText+'</span>'+
         '</div>'+
-        '<div style="font-size:12px;color:var(--txt3);margin-top:2px;">'+time+(status==='connected'||status==='disconnected'?' · '+duration:'')+'</div>'+
+        '<div style="font-size:12px;color:var(--txt3);margin-top:2px;">'+time+(status==='connected'||status==='disconnected'||status==='ended_by_user'||status==='hangup_by_contact'?' · '+duration:'')+'</div>'+
       '</div>'+
     '</div>';
   }).join('');
@@ -11718,6 +11723,15 @@ function checkIncomingCall(){
     showOv('ov-calling');
     startCallDuration();
     
+    // 在聊天中插入来电消息
+    var callMsgId='call_'+Date.now();
+    var inMsgs=msgs(contact.id);
+    inMsgs.push({id:callMsgId,s:OTHER,t:'',ts:new Date(),pc:false,isAuto:true,isInitiative:false,isCall:true,callStatus:'ringing',callDuration:0,callMessage:'📞 '+contact.name+' 来电',senderName:'系统',read:false});
+    savemsgs(contact.id,inMsgs);
+    if(cid===contact.id){renderMsgs(inMsgs)}
+    renderChatList();
+    currentCall.callMsgId=callMsgId;
+    
     // Show incoming call buttons
     if($('calling-incoming-btns'))$('calling-incoming-btns').style.display='flex';
     if($('calling-end-btn-wrap'))$('calling-end-btn-wrap').style.display='none';
@@ -11805,16 +11819,25 @@ function checkIncomingCallForContact(contactId){
     showOv('ov-calling');
     startCallDuration();
     
+    // 在聊天中插入来电消息
+    var callMsgId2='call_'+Date.now();
+    var inMsgs2=msgs(contact.id);
+    inMsgs2.push({id:callMsgId2,s:OTHER,t:'',ts:new Date(),pc:false,isAuto:true,isInitiative:false,isCall:true,callStatus:'ringing',callDuration:0,callMessage:'📞 '+contact.name+' 来电',senderName:'系统',read:false});
+    savemsgs(contact.id,inMsgs2);
+    if(cid===contact.id){renderMsgs(inMsgs2)}
+    renderChatList();
+    currentCall.callMsgId=callMsgId2;
+    
     // Show incoming call buttons
     if($('calling-incoming-btns'))$('calling-incoming-btns').style.display='flex';
     if($('calling-end-btn-wrap'))$('calling-end-btn-wrap').style.display='none';
     
     // Play ringtone
-    var ringtone=(contact.soundSettings&&contact.soundSettings.ringtone)||contact.ringtone;
-    if(ringtone){
+    var ringtone2=(contact.soundSettings&&contact.soundSettings.ringtone)||contact.ringtone;
+    if(ringtone2){
       try{
         if(incomingRingtoneAudio){incomingRingtoneAudio.pause();incomingRingtoneAudio=null}
-        incomingRingtoneAudio=new Audio(ringtone);
+        incomingRingtoneAudio=new Audio(ringtone2);
         incomingRingtoneAudio.loop=true;
         incomingRingtoneAudio.volume=0.8;
         incomingRingtoneAudio.play().catch(function(e){});
@@ -11828,20 +11851,20 @@ function checkIncomingCallForContact(contactId){
     
     // 来电最多响铃30秒，超时未接则记为「未接电话」
     if($('calling-countdown'))$('calling-countdown').style.display='block';
-    var _inCount=30;
-    if($('calling-countdown'))$('calling-countdown').textContent=_inCount+'秒后未接听';
+    var _inCount2=30;
+    if($('calling-countdown'))$('calling-countdown').textContent=_inCount2+'秒后未接听';
     if(incomingCallTimer){clearInterval(incomingCallTimer);incomingCallTimer=null;}
     incomingCallTimer=setInterval(function(){
       if(!currentCall||currentCall.direction!=='incoming'||currentCall.status!=='ringing'){
         clearInterval(incomingCallTimer);incomingCallTimer=null;return;
       }
-      _inCount--;
-      if(_inCount<=0){
+      _inCount2--;
+      if(_inCount2<=0){
         clearInterval(incomingCallTimer);incomingCallTimer=null;
         if($('calling-countdown'))$('calling-countdown').style.display='none';
         endCall('missed',0);
       }else if($('calling-countdown')){
-        $('calling-countdown').textContent=_inCount+'秒后未接听';
+        $('calling-countdown').textContent=_inCount2+'秒后未接听';
       }
     },1000);
   }
@@ -13584,6 +13607,10 @@ $('call-answer-btn')&&($('call-answer-btn').addEventListener('click',function(){
   // 更新connected时刻，确保3秒保护期生效(接听时才计算)
   callConnectedTime=Date.now();
   toast('已接听');
+  // 更新聊天中的来电消息为已接通
+  if(currentCall.callMsgId){
+    updateCallMessage(currentCall.contactId,currentCall.callMsgId,'connected',0);
+  }
   // Auto-minimize to mini bar after answering
   setTimeout(function(){minimizeCall()},800);
 }),$('call-answer-btn').addEventListener('touchend',function(e){
@@ -13598,6 +13625,10 @@ $('call-answer-btn')&&($('call-answer-btn').addEventListener('click',function(){
   $('calling-status').textContent='正在通话...';
   callConnectedTime=Date.now();
   toast('已接听');
+  // 更新聊天中的来电消息为已接通
+  if(currentCall.callMsgId){
+    updateCallMessage(currentCall.contactId,currentCall.callMsgId,'connected',0);
+  }
   setTimeout(function(){minimizeCall()},800);
 }));
 $('call-reject-btn')&&($('call-reject-btn').addEventListener('click',function(){
@@ -20052,7 +20083,22 @@ function maybeGenLetter(){
   var minDelay=getSpeed('ld-write-min',sender.id)*60000;
   var maxDelay=getSpeed('ld-write-max',sender.id)*60000;
   var delay=minDelay+Math.random()*(maxDelay-minDelay);
-  setTimeout(function(){var ll=ls(LL)||[];var l={id:'l_'+Date.now(),fid:sender.id,senderName:sender.name,tt:tts[Math.floor(Math.random()*tts.length)],ct:ct,tm:Date.now(),r:false,replied:false,type:'received',myReply:null,partnerReply:null};ll.unshift(l);ls(LL,ll);if(window.localforage){try{window.localforage.setItem(LL,ll)}catch(e){}}updateBadges();renderLetters()},delay);
+  setTimeout(function(){var ll=ls(LL)||[];var l={id:'l_'+Date.now(),fid:sender.id,senderName:sender.name,tt:tts[Math.floor(Math.random()*tts.length)],ct:ct,tm:Date.now(),r:false,replied:false,type:'received',myReply:null,partnerReply:null};ll.unshift(l);ls(LL,ll);if(window.localforage){try{window.localforage.setItem(LL,ll)}catch(e){}}updateBadges();renderLetters();
+    
+    // 在聊天中插入系统消息
+    var contactMsgs=msgs(sender.id);
+    contactMsgs.push({
+      id:'m_'+Date.now()+'_'+Math.random().toString(36).substr(2,9),
+      s:OTHER,
+      t:(sender.name||sender.nickname||'联系人')+'给你写了一封信',
+      ts:new Date(),
+      read:(sender.id===window.currentCid),
+      isSystem:true
+    });
+    savemsgs(sender.id,contactMsgs);
+    if(sender.id===window.currentCid){renderMsgs();}
+    renderChatList();
+    },delay);
 }
 function showReplyInput(){
   $('reply-section').style.display='flex';
@@ -20093,6 +20139,41 @@ function sendReply(){
   
   ls(LL,ll);
   if(window.localforage){try{window.localforage.setItem(LL,ll)}catch(e){}}
+  
+  // 联系人根据信箱设置回信
+  if(c){
+    var replyProb=getSpeed('ld-reply-prob',c.id);
+    if(Math.random()*100<replyProb){
+      var replyMin=getSpeed('ld-reply-min',c.id)*60000;
+      var replyMax=getSpeed('ld-reply-max',c.id)*60000;
+      var replyDelay=replyMin+Math.random()*(replyMax-replyMin);
+      var letterId=currentLetter.id;
+      setTimeout(function(){
+      var ll2=ls(LL)||[];
+      var lidx=ll2.findIndex(function(x){return x.id===letterId});
+      if(lidx>-1){
+        var replyMessages=['收到你的回信了，很开心','谢谢你的回信','你的信我看了，很感动','看到你的回信了，真好','你的心意我收到了'];
+        ll2[lidx].partnerReply={content:replyMessages[Math.floor(Math.random()*replyMessages.length)],tm:Date.now()};
+        ls(LL,ll2);
+        if(window.localforage){try{window.localforage.setItem(LL,ll2)}catch(e){}}
+        
+        // 在聊天中插入系统消息
+        var contactMsgs2=msgs(c.id);
+        contactMsgs2.push({
+          id:'m_'+Date.now()+'_'+Math.random().toString(36).substr(2,9),
+          s:OTHER,
+          t:(c.name||c.nickname||'联系人')+'回复了你的信',
+          ts:new Date(),
+          read:(c.id===window.currentCid),
+          isSystem:true
+        });
+        savemsgs(c.id,contactMsgs2);
+        if(c.id===window.currentCid){renderMsgs();}
+        renderChatList();
+      }
+    },replyDelay);
+    }
+  }
   
   if(currentProfileContactId){
     renderContactLetterHistory(currentProfileContactId);
@@ -27985,7 +28066,7 @@ async function addAvatarLibImages(files){
     if(!file||!file.type||!file.type.match(/image\//))continue;
     try{
       await new Promise(function(resolve,reject){
-        compressImage(file,512,0.95,function(dataUrl){
+        compressImage(file,1024,0.95,function(dataUrl){
           if(!dataUrl){reject(new Error('compressImage returned empty'));return;}
           var key='ml2_avatar_lib_'+editingContact.id+'_'+Date.now()+'_'+Math.random().toString(36).slice(2,6);
           lib.avatarKeys.push(key);
@@ -32278,7 +32359,7 @@ function d2HidePage(pageId) {
             }, 1600);
             setTimeout(() => {
                 if (onDone) onDone();
-            }, 3200);
+            }, 2000);
         }
 
         // ================================================================
@@ -33723,7 +33804,7 @@ function closeUsageNoticePopup() {
     overlay.style.display = 'none';
   }
   try {
-    localStorage.setItem('star_usage_notice_version', CURRENT_VERSION);
+    safeSetItem('star_usage_notice_version', CURRENT_VERSION);
   } catch(e) {}
 }
 
