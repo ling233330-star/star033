@@ -957,6 +957,7 @@ canvas{-webkit-backface-visibility:hidden;backface-visibility:hidden;-webkit-tra
 /* Update Notice */
 #update-notice-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.5);z-index:300;display:none;align-items:center;justify-content:center;backdrop-filter:blur(4px)}
 #update-notice-overlay.show{display:flex;animation:fadeIn .2s ease}
+#usage-notice-popup-overlay.show{display:flex;animation:fadeIn .2s ease}
 #update-notice-modal{background:var(--c1);border-radius:var(--radius-lg);max-width:90vw;width:340px;max-height:80vh;display:flex;flex-direction:column;overflow:hidden;box-shadow:var(--shadow-modal);animation:scaleIn .2s ease}
 #update-notice-header{padding:20px 20px 12px;text-align:center;border-bottom:1px solid var(--border)}
 #update-notice-title{font-size:18px;font-weight:600;color:var(--txt);display:flex;align-items:center;justify-content:center;gap:8px}
@@ -981,8 +982,8 @@ canvas{-webkit-backface-visibility:hidden;backface-visibility:hidden;-webkit-tra
 .update-history-version{font-size:11px;font-weight:500;background:var(--accent);color:#fff;padding:2px 8px;border-radius:10px;flex-shrink:0;}
 .update-history-item:not(.expanded) .update-history-version{background:var(--c3);color:var(--txt2);}
 .update-history-date{font-size:12px;color:var(--txt3);margin-top:4px;}
-.update-history-summary{font-size:13px;color:var(--txt2);margin-top:6px;line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
-.update-history-item.expanded .update-history-summary{-webkit-line-clamp:unset;display:block;}
+.update-history-summary{font-size:13px;color:var(--txt2);margin-top:6px;line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+.update-history-item.expanded .update-history-summary{-webkit-line-clamp:unset;line-clamp:unset;display:block;}
 .update-history-arrow{font-size:12px;color:var(--txt3);transition:transform .25s;flex-shrink:0;margin-top:6px;}
 .update-history-item.expanded .update-history-arrow{transform:rotate(180deg)}
 .update-history-content{padding:0 16px;max-height:0;overflow:hidden;transition:max-height .35s ease, padding .35s ease;}
@@ -1172,7 +1173,7 @@ canvas{-webkit-backface-visibility:hidden;backface-visibility:hidden;-webkit-tra
 .contact-avatar-preview img{width:100%;height:100%;object-fit:cover}
 .contact-avatar-btn{padding:8px 16px;background:var(--accent);color:#fff;border:none;border-radius:6px;font-size:13px;cursor:pointer;transition:all .2s}
 .contact-avatar-btn:active{transform:scale(.95)}
-.toast{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:rgba(0,0,0,.78);color:#fff;padding:10px 20px;border-radius:20px;font-size:13px;z-index:300;pointer-events:none;animation:tst 1.8s ease forwards}
+.toast{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:rgba(0,0,0,.78);color:#fff;padding:10px 20px;border-radius:20px;font-size:13px;z-index:99999;pointer-events:none;animation:tst 1.8s ease forwards}
 @keyframes tst{0%{opacity:0}15%{opacity:1}70%{opacity:1}100%{opacity:0}}
 ::-webkit-scrollbar{width:0!important;height:0!important;display:none!important}
 ::-webkit-scrollbar-track{background:transparent!important}
@@ -2607,6 +2608,66 @@ canvas{-webkit-backface-visibility:hidden;backface-visibility:hidden;-webkit-tra
 .batch-send-btn { background: var(--accent, #333); color: #fff; }
 .batch-send-btn:disabled { opacity: 0.35; cursor: not-allowed; }
 .batch-send-btn:active:not(:disabled) { transform: scale(0.96); }
+/* ===== 我的留言板 ===== */
+.board-header { text-align: center; padding: 8px 0 20px; }
+.board-header h1 { font-size: 22px; font-weight: 500; letter-spacing: 1.2px; color: var(--txt); display: flex; align-items: center; justify-content: center; gap: 6px; margin: 0; }
+.board-header p { color: var(--txt2); font-size: 13px; margin-top: 4px; letter-spacing: 0.3px; }
+.board-card { background: var(--c1); border-radius: var(--radius-lg); padding: 20px 18px; margin-bottom: 16px; box-shadow: 0 2px 12px rgba(0,0,0,0.04); border: 1px solid var(--border-light); }
+.board-card-title { font-size: 14px; font-weight: 500; color: var(--txt2); margin-bottom: 14px; letter-spacing: 0.5px; display: flex; align-items: center; gap: 6px; }
+.board-form-group { margin-bottom: 16px; }
+.board-form-label { display: block; font-size: 13px; font-weight: 500; color: var(--txt2); margin-bottom: 8px; letter-spacing: 0.3px; }
+.board-target-group { display: flex; flex-wrap: wrap; gap: 6px; }
+.board-target-btn { padding: 7px 14px; border: none; border-radius: 20px; background: var(--c2); color: var(--txt2); font-size: 13px; font-weight: 450; cursor: pointer; transition: all 0.2s; font-family: inherit; user-select: none; border: 1px solid transparent; touch-action: manipulation; min-height: 36px; display: inline-flex; align-items: center; justify-content: center; -webkit-tap-highlight-color: transparent; }
+.board-target-btn:active { transform: scale(0.96); }
+.board-target-btn.active { background: var(--accent); color: #fff; box-shadow: 0 2px 8px rgba(0,0,0,0.15); }
+.board-target-btn.active-all { background: var(--txt3); color: #fff; }
+.board-textarea { width: 100%; padding: 12px 16px; border: 2px solid transparent; border-radius: var(--radius); font-size: 14px; font-family: inherit; color: var(--txt); background: var(--c2); transition: all 0.2s; outline: none; resize: vertical; min-height: 80px; line-height: 1.7; box-sizing: border-box; -webkit-appearance: none; }
+.board-textarea:focus { background: var(--c1); border-color: var(--accent); box-shadow: 0 0 0 3px rgba(0,0,0,0.06); }
+.board-textarea::placeholder { color: var(--txt3); font-size: 13px; }
+.board-btn-publish { display: inline-flex; align-items: center; justify-content: center; gap: 6px; padding: 12px 24px; background: var(--accent); color: #fff; border: none; border-radius: 20px; font-size: 14px; font-weight: 500; font-family: inherit; cursor: pointer; transition: all 0.2s; box-shadow: 0 2px 10px rgba(0,0,0,0.12); width: 100%; letter-spacing: 0.5px; touch-action: manipulation; min-height: 48px; -webkit-tap-highlight-color: transparent; }
+.board-btn-publish:active { transform: scale(0.97); opacity: 0.9; }
+.board-filter-bar { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; margin-bottom: 14px; padding-bottom: 12px; border-bottom: 1px solid var(--border-light); }
+.board-filter-label { font-size: 12px; color: var(--txt2); font-weight: 450; }
+.board-filter-group { display: flex; flex-wrap: wrap; gap: 5px; }
+.board-filter-btn { padding: 5px 14px; border: none; border-radius: 16px; background: transparent; color: var(--txt3); font-size: 12px; font-weight: 450; cursor: pointer; transition: all 0.2s; font-family: inherit; touch-action: manipulation; min-height: 32px; display: inline-flex; align-items: center; justify-content: center; -webkit-tap-highlight-color: transparent; }
+.board-filter-btn:active { transform: scale(0.95); }
+.board-filter-btn.active { background: var(--accent); color: #fff; }
+.board-filter-target-select { display: none; flex-wrap: wrap; gap: 5px; margin-left: 2px; }
+.board-filter-target-select.show { display: flex; }
+.board-filter-target-btn { padding: 5px 14px; border: none; border-radius: 16px; background: var(--c2); color: var(--txt2); font-size: 12px; font-weight: 450; cursor: pointer; transition: all 0.2s; font-family: inherit; touch-action: manipulation; min-height: 32px; display: inline-flex; align-items: center; justify-content: center; -webkit-tap-highlight-color: transparent; }
+.board-filter-target-btn:active { transform: scale(0.95); }
+.board-filter-target-btn.active { background: var(--accent); color: #fff; }
+.board-message-list { display: flex; flex-direction: column; gap: 10px; }
+.board-message-item { background: var(--c2); border-radius: var(--radius); padding: 14px 16px; transition: all 0.2s; border: 1px solid transparent; animation: boardFadeUp 0.35s ease; }
+@keyframes boardFadeUp { 0% { opacity: 0; transform: translateY(10px); } 100% { opacity: 1; transform: translateY(0); } }
+.board-message-header { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 10px; margin-bottom: 6px; }
+.board-message-tag { display: inline-block; padding: 2px 12px; border-radius: 14px; font-size: 11px; font-weight: 500; background: var(--c3); color: var(--txt2); letter-spacing: 0.2px; white-space: nowrap; }
+.board-message-tag.tag-all { background: var(--accent-light); color: var(--txt2); }
+.board-message-time { font-size: 11px; color: var(--txt3); margin-left: auto; white-space: nowrap; }
+.board-message-content { font-size: 14px; line-height: 1.7; color: var(--txt); word-break: break-word; }
+.board-message-content::before { content: '「'; color: var(--txt3); font-size: 16px; margin-right: 2px; opacity: 0.5; }
+.board-message-content::after { content: '」'; color: var(--txt3); font-size: 16px; margin-left: 2px; opacity: 0.5; }
+.board-message-delete { background: transparent; border: none; width: 28px; height: 28px; border-radius: 50%; font-size: 14px; color: var(--txt3); cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: 0.15s; -webkit-tap-highlight-color: transparent; padding: 0; }
+.board-message-delete:active { background: #fce4e4; color: #c06060; }
+.board-empty-state { text-align: center; padding: 36px 16px 24px; color: var(--txt3); }
+.board-empty-state .empty-icon { font-size: 36px; display: block; margin-bottom: 10px; opacity: 0.5; }
+.board-empty-state p { font-size: 13px; line-height: 1.5; margin: 0; }
+@media (max-width: 480px) {
+  .board-card { padding: 16px 12px; border-radius: 12px; margin-bottom: 12px; }
+  .board-header h1 { font-size: 20px; }
+  .board-header p { font-size: 12px; }
+  .board-card-title { font-size: 13px; margin-bottom: 12px; }
+  .board-target-btn { padding: 6px 12px; font-size: 12px; min-height: 32px; }
+  .board-textarea { padding: 10px 12px; font-size: 13px; min-height: 70px; }
+  .board-btn-publish { padding: 10px 18px; font-size: 13px; min-height: 44px; }
+  .board-filter-bar { gap: 6px 10px; margin-bottom: 12px; padding-bottom: 10px; }
+  .board-filter-btn { padding: 4px 10px; font-size: 11px; min-height: 28px; }
+  .board-filter-target-btn { padding: 4px 10px; font-size: 11px; min-height: 28px; }
+  .board-message-item { padding: 12px 12px; }
+  .board-message-tag { font-size: 10px; padding: 2px 10px; }
+  .board-message-time { font-size: 10px; }
+  .board-message-content { font-size: 13px; }
+}
 </style>
 <link rel="manifest" href="manifest.json">
 <meta name="apple-mobile-web-app-title" content="星言">
@@ -2852,14 +2913,14 @@ const LENORMAND_IMAGES = {
       </div>
     </div>
     
-    <div style="padding-bottom:30px;">
+    <div style="padding-bottom:30px;flex-shrink:0;">
       <div id="announcement-dots" style="display:flex;justify-content:center;gap:8px;margin-bottom:16px;">
         <span class="ann-dot ann-dot-active" onclick="switchAnnouncementPage(0)"></span>
         <span class="ann-dot" onclick="switchAnnouncementPage(1)"></span>
         <span class="ann-dot" onclick="switchAnnouncementPage(2)"></span>
       </div>
       
-      <button id="announcement-next" style="width:100%;padding:14px;border:none;border-radius:8px;background:#334155;color:#ffffff;font-size:14px;font-weight:500;cursor:pointer;transition:all 0.2s ease;letter-spacing:2px;position:relative;z-index:10;touch-action:manipulation;-webkit-tap-highlight-color:transparent;">下一页</button>
+      <button id="announcement-next" onclick="nextAnnouncementPage()" style="width:100%;padding:14px;border:none;border-radius:8px;background:#334155;color:#ffffff;font-size:14px;font-weight:500;cursor:pointer;transition:all 0.2s ease;letter-spacing:2px;position:relative;z-index:100;touch-action:manipulation;-webkit-tap-highlight-color:transparent;pointer-events:auto;">下一页</button>
     </div>
   </div>
 </div>
@@ -2868,13 +2929,70 @@ const LENORMAND_IMAGES = {
 <div id="update-notice-overlay">
   <div id="update-notice-modal">
     <div id="update-notice-header">
-      <div id="update-notice-title">✨ 星言 1.4</div>
+      <div id="update-notice-title">✨ 星言字卡</div>
       <div id="update-notice-version"></div>
       <div id="update-notice-date"></div>
     </div>
     <div id="update-notice-body"></div>
     <div id="update-notice-footer">
       <button id="update-notice-btn" onclick="closeUpdateNotice()">我知道了</button>
+    </div>
+  </div>
+</div>
+
+<!-- Usage Notice Popup -->
+<div id="usage-notice-popup-overlay" style="position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);z-index:99999;display:none;align-items:center;justify-content:center;backdrop-filter:blur(4px);">
+  <div style="background:var(--c1);border-radius:16px;max-width:90vw;width:360px;max-height:80vh;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 8px 40px rgba(0,0,0,0.2);">
+    <div style="padding:20px 20px 12px;text-align:center;border-bottom:1px solid var(--border);">
+      <div style="font-size:18px;font-weight:600;color:var(--txt);">📋 使用须知</div>
+    </div>
+    <div style="flex:1;overflow-y:auto;padding:16px;line-height:1.8;font-size:13px;color:var(--txt);-webkit-overflow-scrolling:touch;">
+      <p>目前星言字卡仍处于测试阶段，功能和界面可能会根据实际使用情况进行调整或修改。</p>
+      <div style="height:1px;background:var(--border);margin:16px 0;"></div>
+      <h4 style="font-size:14px;font-weight:600;color:var(--accent);margin:12px 0 6px;padding-left:8px;border-left:3px solid var(--accent);">关于 Bug</h4>
+      <p>星言目前主要根据我的设备和使用环境进行测试。</p>
+      <p>不同手机型号、浏览器、系统环境可能会导致不同的问题出现。</p>
+      <p>部分问题如果无法在我的设备上复现，就无法准确判断原因，也无法进行定位和修复。</p>
+      <p>如果使用过程中遇到 Bug，欢迎反馈。为了方便定位问题，建议提供以下信息：</p>
+      <ul style="padding-left:18px;margin:6px 0;">
+        <li>手机型号</li>
+        <li>浏览器名称</li>
+        <li>出现问题的页面或功能</li>
+        <li>具体操作步骤（进行了什么操作后出现问题）</li>
+        <li>问题截图或录屏（如果方便）</li>
+      </ul>
+      <p>这些信息可以帮助我复现问题并进行修复。</p>
+      <div style="height:1px;background:var(--border);margin:16px 0;"></div>
+      <h4 style="font-size:14px;font-weight:600;color:var(--accent);margin:12px 0 6px;padding-left:8px;border-left:3px solid var(--accent);">关于网站</h4>
+      <p>星言目前完全免费。</p>
+      <p>最初是制作给自己使用的工具，后续功能逐渐增加，也开放给其他人体验使用。</p>
+      <p>如果有想要的新功能，欢迎提出建议。</p>
+      <div style="height:1px;background:var(--border);margin:16px 0;"></div>
+      <h4 style="font-size:14px;font-weight:600;color:var(--accent);margin:12px 0 6px;padding-left:8px;border-left:3px solid var(--accent);">关于使用</h4>
+      <p>目前网站暂未制作完整的功能教程。</p>
+      <p>由于部分功能仍在调整中，后续可能会修改入口、界面或使用方式。</p>
+      <p>如果有不清楚的功能，可以直接询问。</p>
+      <div style="height:1px;background:var(--border);margin:16px 0;"></div>
+      <h4 style="font-size:14px;font-weight:600;color:var(--accent);margin:12px 0 6px;padding-left:8px;border-left:3px solid var(--accent);">关于版本</h4>
+      <p>目前星言提供：</p>
+      <p><strong>网站版</strong></p>
+      <ul style="padding-left:18px;margin:6px 0;">
+        <li>更新速度较快。</li>
+        <li>修复 Bug 后会重新部署。</li>
+        <li>测试期间可能会出现短暂无法访问或部分功能异常。</li>
+        <li>极少数情况下，重新部署可能会影响临时数据。</li>
+      </ul>
+      <p><strong>文件版</strong></p>
+      <ul style="padding-left:18px;margin:6px 0;">
+        <li>会在小红书群内继续公开。</li>
+        <li>更新速度会比网站版慢一些。</li>
+        <li>通常会在网站版本调整后同步更新。</li>
+      </ul>
+      <div style="height:1px;background:var(--border);margin:16px 0;"></div>
+      <p style="text-align:center;color:var(--txt3);font-size:12px;margin-top:16px;">星言仍在持续完善中。<br>如果遇到问题或有功能建议，欢迎反馈。</p>
+    </div>
+    <div style="padding:16px 20px;border-top:1px solid var(--border);">
+      <button onclick="closeUsageNoticePopup()" style="width:100%;padding:14px;border:none;border-radius:12px;background:var(--accent);color:#fff;font-size:16px;font-weight:600;cursor:pointer;min-height:48px;">我知道了</button>
     </div>
   </div>
 </div>
@@ -3433,7 +3551,7 @@ const LENORMAND_IMAGES = {
       </div>
       <div class="my-row" id="more-board-btn" style="display:flex;align-items:center;gap:14px;padding:16px 18px;background:var(--c2);border-radius:var(--radius);margin-bottom:12px;cursor:pointer">
         <div style="width:52px;height:52px;border-radius:12px;background:#e8e8e8;display:flex;align-items:center;justify-content:center;font-size:30px">📋</div>
-        <div style="flex:1"><div style="font-weight:500;font-size:16px">留言板（现在是阉割版不要使用，待更新）</div><div style="font-size:13px;color:var(--txt2);margin-top:2px">保存消息给所有联系人看</div></div>
+        <div style="flex:1"><div style="font-weight:500;font-size:16px">我的留言板</div><div style="font-size:13px;color:var(--txt2);margin-top:2px">保存消息给所有联系人看</div></div>
         
       </div>
       <div class="my-row" id="more-schedule-btn" style="display:flex;align-items:center;gap:14px;padding:16px 18px;background:var(--c2);border-radius:var(--radius);margin-bottom:12px;cursor:pointer">
@@ -3818,26 +3936,41 @@ const LENORMAND_IMAGES = {
 <div class="page" id="pg-board">
   <div class="nav">
     <div class="nl"><button class="btn-nav" onclick="showPg('pg-more')">←</button></div>
-    <span class="tt">📋 留言板（现在是阉割版不要使用，待更新）</span>
-    <div class="nr"><button class="btn-nav" onclick="showBoardInput()">+</button></div>
+    <span class="tt">📝 我的留言板</span>
+    <div class="nr"></div>
   </div>
-  <div id="board-scroll" style="flex:1;overflow-y:auto;padding:16px;"></div>
+  <div id="board-scroll" style="flex:1;overflow-y:auto;padding:16px;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;transform:translateZ(0);">
+    <div class="board-header">
+      <h1>📝 留给TA的话</h1>
+      <p>把想对梦角说的话留在这里，每一份心意都值得被记录</p>
+    </div>
+    <div class="board-card">
+      <div class="board-card-title">✍️ 写下你的心意</div>
+      <div class="board-form-group">
+        <span class="board-form-label">对谁说</span>
+        <div class="board-target-group" id="board-target-group"></div>
+      </div>
+      <div class="board-form-group">
+        <label class="board-form-label" for="board-input">留言内容</label>
+        <textarea class="board-textarea" id="board-input" placeholder="想对 TA 说什么…" maxlength="500"></textarea>
+      </div>
+      <button class="board-btn-publish" id="board-publish-btn">📨 发布留言</button>
+    </div>
+    <div class="board-card">
+      <div class="board-card-title" style="margin-bottom:0;">📖 留言簿 <span id="board-count-label" style="font-weight:400;font-size:13px;color:var(--txt3);margin-left:auto;">共 0 条</span></div>
+      <div class="board-filter-bar">
+        <span class="board-filter-label">筛选：</span>
+        <div class="board-filter-group" id="board-filter-group">
+          <button class="board-filter-btn active" data-filter="all">全部留言</button>
+          <button class="board-filter-btn" data-filter="allTarget">📌 给全部联系人</button>
+          <button class="board-filter-btn" data-filter="target">🎯 指定联系人</button>
+        </div>
+        <div class="board-filter-target-select" id="board-filter-target-select"></div>
+      </div>
+      <div class="board-message-list" id="board-message-list"></div>
+    </div>
+  </div>
   <div class="tabs"></div>
-</div>
-
-<!-- Board Input Overlay -->
-<div class="overlay" id="ov-board-input">
-  <div style="width:100%;max-width:420px;background:var(--c1);border-radius:24px 24px 0 0;max-height:80vh;display:flex;flex-direction:column;overflow:hidden;margin:0 auto;">
-    <div style="padding:12px 16px;border-bottom:1px solid var(--bg3);display:flex;justify-content:space-between;align-items:center;">
-      <span style="font-weight:600;font-size:15px">写留言</span>
-      <button class="modal-btn-icon" onclick="hideOv('ov-board-input')">✕</button>
-    </div>
-    <textarea id="board-input" rows="4" placeholder="写下你想对所有联系人说的话..." style="flex:1;padding:16px;border:none;background:transparent;color:var(--txt);font-size:14px;line-height:1.6;resize:none;outline:none;"></textarea>
-    <div style="padding:12px 16px;border-top:1px solid var(--bg3);display:flex;justify-content:flex-end;gap:12px;">
-      <button class="btn-secondary" onclick="hideOv('ov-board-input')" style="padding:8px 20px;border-radius:20px;">取消</button>
-      <button class="btn-primary" onclick="postBoardMessage()" style="padding:8px 24px;border-radius:20px;">发布</button>
-    </div>
-  </div>
 </div>
 
 <!-- Card Stats Full Page -->
@@ -3977,6 +4110,61 @@ const LENORMAND_IMAGES = {
   <div class="tabs"></div>
 </div>
 
+<!-- Usage Notice Page -->
+<div class="page" id="pg-usage-notice">
+  <div class="nav">
+    <div class="nl"><button class="btn-nav" onclick="showPg('pg-my')">←</button></div>
+    <span class="tt">使用须知</span>
+    <div class="nr"></div>
+  </div>
+  <div id="usage-notice-scroll" style="flex:1;overflow-y:auto;padding:16px;line-height:1.8;font-size:14px;color:var(--txt);-webkit-overflow-scrolling:touch;">
+    <p>目前星言字卡仍处于测试阶段，功能和界面可能会根据实际使用情况进行调整或修改。</p>
+    <div style="height:1px;background:var(--border);margin:20px 0;"></div>
+    <h4 style="font-size:15px;font-weight:600;color:var(--accent);margin:16px 0 8px;padding-left:8px;border-left:3px solid var(--accent);">关于 Bug</h4>
+    <p>星言目前主要根据我的设备和使用环境进行测试。</p>
+    <p>不同手机型号、浏览器、系统环境可能会导致不同的问题出现。</p>
+    <p>部分问题如果无法在我的设备上复现，就无法准确判断原因，也无法进行定位和修复。</p>
+    <p>如果使用过程中遇到 Bug，欢迎反馈。为了方便定位问题，建议提供以下信息：</p>
+    <ul style="padding-left:20px;margin:8px 0;">
+      <li>手机型号</li>
+      <li>浏览器名称</li>
+      <li>出现问题的页面或功能</li>
+      <li>具体操作步骤（进行了什么操作后出现问题）</li>
+      <li>问题截图或录屏（如果方便）</li>
+    </ul>
+    <p>这些信息可以帮助我复现问题并进行修复。</p>
+    <div style="height:1px;background:var(--border);margin:20px 0;"></div>
+    <h4 style="font-size:15px;font-weight:600;color:var(--accent);margin:16px 0 8px;padding-left:8px;border-left:3px solid var(--accent);">关于网站</h4>
+    <p>星言目前完全免费。</p>
+    <p>最初是制作给自己使用的工具，后续功能逐渐增加，也开放给其他人体验使用。</p>
+    <p>如果有想要的新功能，欢迎提出建议。</p>
+    <div style="height:1px;background:var(--border);margin:20px 0;"></div>
+    <h4 style="font-size:15px;font-weight:600;color:var(--accent);margin:16px 0 8px;padding-left:8px;border-left:3px solid var(--accent);">关于使用</h4>
+    <p>目前网站暂未制作完整的功能教程。</p>
+    <p>由于部分功能仍在调整中，后续可能会修改入口、界面或使用方式。</p>
+    <p>如果有不清楚的功能，可以直接询问。</p>
+    <div style="height:1px;background:var(--border);margin:20px 0;"></div>
+    <h4 style="font-size:15px;font-weight:600;color:var(--accent);margin:16px 0 8px;padding-left:8px;border-left:3px solid var(--accent);">关于版本</h4>
+    <p>目前星言提供：</p>
+    <p><strong>网站版</strong></p>
+    <ul style="padding-left:20px;margin:8px 0;">
+      <li>更新速度较快。</li>
+      <li>修复 Bug 后会重新部署。</li>
+      <li>测试期间可能会出现短暂无法访问或部分功能异常。</li>
+      <li>极少数情况下，重新部署可能会影响临时数据。</li>
+    </ul>
+    <p><strong>文件版</strong></p>
+    <ul style="padding-left:20px;margin:8px 0;">
+      <li>会在小红书群内继续公开。</li>
+      <li>更新速度会比网站版慢一些。</li>
+      <li>通常会在网站版本调整后同步更新。</li>
+    </ul>
+    <div style="height:1px;background:var(--border);margin:20px 0;"></div>
+    <p style="text-align:center;color:var(--txt3);font-size:13px;margin-top:20px;">星言仍在持续完善中。<br>如果遇到问题或有功能建议，欢迎反馈。</p>
+  </div>
+  <div class="tabs"></div>
+</div>
+
 <!-- My -->
 <div class="page" id="pg-my">
   <div class="nav"><span class="tt">设置</span></div>
@@ -3984,6 +4172,7 @@ const LENORMAND_IMAGES = {
     <div class="my-section">
       
       <div class="my-row" id="update-history-btn"><span class="my-ico">📜</span><span class="my-label">更新公告</span></div>
+      <div class="my-row" id="usage-notice-btn" style="cursor:pointer;-webkit-tap-highlight-color:transparent;"><span class="my-ico">📋</span><span class="my-label">使用须知</span></div>
       <div class="my-row" id="topbar-settings-btn"><span class="my-ico">📌</span><span class="my-label">联系人顶部栏字卡库</span></div>
       <div class="my-row" id="mood-cards-settings-btn"><span class="my-ico">💭</span><span class="my-label">聊天情绪字卡库</span></div>
       <div class="my-row" id="settings-btn"><span class="my-ico">📖</span><span class="my-label">聊天字卡库</span></div>
@@ -6403,12 +6592,14 @@ document.addEventListener('touchend',function(e){
   var dy=e.changedTouches[0].clientY-_tsY;
   _tsM=(Math.abs(dx)>15||Math.abs(dy)>15);
 },{passive:true});
-// 滑动后阻止后续click事件（仅标记状态，由具体元素自行判断）
+// 滑动后阻止后续click事件（捕获阶段阻止，避免滑动误触打开功能）
 document.addEventListener('click',function(e){
   if(isSwipe()){
     _tsM=false;
+    e.stopPropagation();
+    e.preventDefault();
   }
-},{passive:true});
+},true);
 
 function setupKeyboardFix(){
   if(/iPhone|iPad|iPod/i.test(navigator.userAgent)){
@@ -6564,6 +6755,7 @@ var Storage = (function(){
            key.startsWith('ml2_accounting') ||
            key.startsWith('ml2_todo') ||
            key.startsWith('ml2_dream') ||
+           key.startsWith('ml2_period') ||
            key.startsWith('ml2_custom') ||
            key.startsWith('ml2_avatar_lib_') ||
            key.startsWith('ml2_avh_');
@@ -8681,6 +8873,8 @@ function renderContactCallHistory(contactId){
     else if(status==='rejected'){statusText='已拒绝';statusColor='color:#ff4d4f';}
     else if(status==='missed'){statusText='未接来电';statusColor='color:#ff4d4f';}
     else if(status==='disconnected'){statusText='通话中断';statusColor='color:#fa8c16';}
+    else if(status==='hangup_by_contact'){statusText='对方挂断';statusColor='color:#fa8c16';}
+    else if(status==='ended_by_user'){statusText='已挂断';statusColor='color:#fa8c16';}
     else{statusText='未接通';statusColor='color:var(--txt3)';}
     
     var duration='';
@@ -9654,23 +9848,23 @@ async function checkNavDisplay(){
       };
     }
     var state=navDisplayStates[c.id];
-    if(state.lastStatusChange===undefined){
+    if(state.lastStatusChange===undefined||state.lastStatusChange===null||state.lastStatusChange>Date.now()){
       state.lastStatusChange=0;
       state.nextStatusChange=0;
     }
-    if(state.lastWeatherChange===undefined){
+    if(state.lastWeatherChange===undefined||state.lastWeatherChange===null||state.lastWeatherChange>Date.now()){
       state.lastWeatherChange=0;
       state.nextWeatherChange=0;
     }
-    if(state.lastTimeChange===undefined){
+    if(state.lastTimeChange===undefined||state.lastTimeChange===null||state.lastTimeChange>Date.now()){
       state.lastTimeChange=0;
       state.nextTimeChange=0;
     }
-    if(state.lastIdleChange===undefined){
+    if(state.lastIdleChange===undefined||state.lastIdleChange===null||state.lastIdleChange>Date.now()){
       state.lastIdleChange=0;
       state.nextIdleChange=0;
     }
-    if(state.lastMoodChange===undefined){
+    if(state.lastMoodChange===undefined||state.lastMoodChange===null||state.lastMoodChange>Date.now()){
       state.lastMoodChange=0;
       state.nextMoodChange=0;
     }
@@ -10262,7 +10456,7 @@ async function genReply(targetId){
     if(!card)return false;
     if(!card.content)return false;
     if(card.category!=='stickers'&&card.category!=='voices'&&(!card.content.trim()))return false;
-    if(card.category==='touch'||card.category==='kaomoji')return false;
+    if(card.category==='touch')return false;
     if(card.groupId){
       var group=cardGroups.find(function(g){return g.id===card.groupId});
       if(group&&group.disabled)return false;
@@ -11176,6 +11370,14 @@ function endCall(status,duration){
     
     if(lastCallMsg&&lastCallMsg.callMessage==='📞 通话已接通'&&status==='connected'){
       updateCallMessage(contactId,lastCallMsg.id,status,duration);
+    }else if(lastCallMsg&&lastCallMsg.callStatus&&lastCallMsg.callStatus!=='calling'){
+      // 消息已被updateCallMessage更新过，原地更新避免重复
+      lastCallMsg.callMessage=callMsg;
+      lastCallMsg.callStatus=status;
+      lastCallMsg.callDuration=duration;
+      savemsgs(contactId,m);
+      if(cid===contactId){renderMsgs(m)}
+      renderChatList();
     }else{
       m.push({id:'m_'+Date.now()+'_'+Math.random().toString(36).substr(2,9),s:OTHER,t:'',ts:new Date(),pc:false,isAuto:true,isInitiative:false,isCall:true,callStatus:status,callDuration:duration,callMessage:callMsg,senderName:'系统',read:false});
       savemsgs(contactId,m);
@@ -13225,8 +13427,29 @@ function performTouch(targetId,action){
   renderChatList();
   scheduleTouchReply(sendTargetId);
 }
-function scheduleTouchReply(targetId){if(!targetId)return;var rnProb=getSpeed('rn-prob');if(Math.random()*100<rnProb){markMessageReadIgnored(targetId,true);return}var rsMin=getSpeed('rs-min'),rsMax=getSpeed('rs-max');typingStates[targetId]=true;if(cid===window.currentCid)$('typing').style.display='flex';var delay=(rsMin+Math.random()*(rsMax-rsMin))*1000;if(rtimers[targetId])clearTimeout(rtimers[targetId]);rtimers[targetId]=setTimeout(async function(){typingStates[targetId]=false;if(targetId===window.currentCid)$('typing').style.display='none';await genReply(targetId)},delay)}
-function scheduleReply(){var targetId=cid;if(!targetId)return;var rnProb=getSpeed('rn-prob');if(Math.random()*100<rnProb){markMessageReadIgnored(targetId,true);return}var rsMin=getSpeed('rs-min'),rsMax=getSpeed('rs-max');typingStates[targetId]=true;if(cid===window.currentCid)$('typing').style.display='flex';var delay=(rsMin+Math.random()*(rsMax-rsMin))*1000;if(rtimers[targetId])clearTimeout(rtimers[targetId]);rtimers[targetId]=setTimeout(async function(){typingStates[targetId]=false;if(targetId===window.currentCid)$('typing').style.display='none';await genReply(targetId)},delay)}
+function scheduleTouchReply(targetId){
+  if(!targetId)return;
+  var rnProb=getSpeed('rn-prob',targetId);
+  if(Math.random()*100<rnProb){
+    markMessageReadIgnored(targetId,true);
+    return;
+  }
+  var touchProb=getSpeed('touch-prob',targetId);
+  if(touchProb>0&&Math.random()*100<touchProb){
+    contactPerformTouch(targetId);
+    return;
+  }
+  var rsMin=getSpeed('rs-min',targetId),rsMax=getSpeed('rs-max',targetId);
+  typingStates[targetId]=true;
+  if(cid===window.currentCid)$('typing').style.display='flex';
+  var delay=(rsMin+Math.random()*(rsMax-rsMin))*1000;
+  if(rtimers[targetId])clearTimeout(rtimers[targetId]);
+  rtimers[targetId]=setTimeout(async function(){
+    typingStates[targetId]=false;
+    if(targetId===window.currentCid)$('typing').style.display='none';
+    await genReply(targetId);
+  },delay);
+}
 function showTouchAnimation(action,targetName,isOther){var el=document.createElement('div');el.style.position='fixed';el.style.top='50%';el.style.left='50%';el.style.transform='translate(-50%,-50%)';el.style.background='rgba(0,0,0,.7)';el.style.color='#fff';el.style.padding='12px 24px';el.style.borderRadius='20px';el.style.fontSize='14px';el.style.zIndex='300';el.style.animation='touchAnim .8s ease-out forwards';el.textContent=isOther?(targetName||'对方')+' '+action:action.replace('你',targetName||'你');document.body.appendChild(el);setTimeout(function(){if(el.parentNode)el.remove()},800)}
 function contactPerformTouch(contactId){
   var cards=[];
@@ -13251,6 +13474,12 @@ function contactPerformTouch(contactId){
   });
   cards=cards.concat(publicTouchCards.map(function(c){return c.content}));
   cards=cards.concat(privateTouchCards.map(function(c){return c.content}));
+  
+  // 同时从独立的拍一拍字卡存储中获取
+  var storedPublicTouchCards=getTouchCardsPublic();
+  cards=cards.concat(storedPublicTouchCards);
+  var storedPrivateTouchCards=getTouchCardsPrivate(contactId);
+  cards=cards.concat(storedPrivateTouchCards);
   
   if(cards.length===0)cards=TOUCH_ACTIONS;
   var action=cards[Math.floor(Math.random()*cards.length)];
@@ -18080,51 +18309,210 @@ $('moments-toggle-comments-btn').addEventListener('click',function(){toggleAllMo
 // ---------- Message Board ----------
 
 var boardMessages=[];
+var boardSelectedTarget='__ALL__';
+var boardFilterMode='all';
+var boardFilterTarget='';
 function loadBoardData(){
   var saved=ls('ml2_board_messages');
   if(saved&&Array.isArray(saved))boardMessages=saved;
 }
 function saveBoardData(){ls('ml2_board_messages',boardMessages)}
-function renderBoard(){
-  var el=$('board-scroll');if(!el)return;
-  if(!boardMessages.length){
-    el.innerHTML='<div style="text-align:center;padding:40px;color:var(--txt3);font-size:14px;"><div style="font-size:48px;margin-bottom:12px;">📋</div><div>暂无留言</div><div style="font-size:12px;margin-top:4px;">点击右上角 + 发布留言</div></div>';
+
+function getBoardTargets(){
+  var targets=[{id:'__ALL__',name:'全部联系人'}];
+  contacts.forEach(function(c){
+    targets.push({id:c.id,name:c.name});
+  });
+  return targets;
+}
+
+function renderBoardTargets(){
+  var el=$('board-target-group');if(!el)return;
+  var targets=getBoardTargets();
+  el.innerHTML='';
+  targets.forEach(function(t){
+    var btn=document.createElement('button');
+    btn.className='board-target-btn';
+    btn.textContent=t.name;
+    btn.dataset.target=t.id;
+    if(t.id===boardSelectedTarget){
+      btn.classList.add(t.id==='__ALL__'?'active-all':'active');
+    }
+    btn.addEventListener('click',function(){
+      var isCapture=!!(window._touchMoved||0);
+      if(isCapture){window._touchMoved=0;return;}
+      boardSelectedTarget=t.id;
+      renderBoardTargets();
+    });
+    btn.addEventListener('touchend',function(e){
+      if(window._touchMoved){window._touchMoved=0;return;}
+      e.preventDefault();
+      boardSelectedTarget=t.id;
+      renderBoardTargets();
+    });
+    el.appendChild(btn);
+  });
+}
+
+function renderBoardFilterTargets(){
+  var el=$('board-filter-target-select');if(!el)return;
+  el.innerHTML='';
+  contacts.forEach(function(c){
+    var btn=document.createElement('button');
+    btn.className='board-filter-target-btn';
+    btn.textContent=c.name;
+    btn.dataset.target=c.id;
+    if(c.id===boardFilterTarget)btn.classList.add('active');
+    btn.addEventListener('click',function(){
+      boardFilterTarget=c.id;
+      renderBoardFilterTargets();
+      renderBoardMessages();
+    });
+    btn.addEventListener('touchend',function(e){
+      e.preventDefault();
+      boardFilterTarget=c.id;
+      renderBoardFilterTargets();
+      renderBoardMessages();
+    });
+    el.appendChild(btn);
+  });
+  if(boardFilterMode==='target'){
+    el.classList.add('show');
+  }else{
+    el.classList.remove('show');
+  }
+}
+
+function getFilteredBoardMessages(){
+  if(boardFilterMode==='all')return boardMessages;
+  if(boardFilterMode==='allTarget')return boardMessages.filter(function(m){return !m.target||m.target==='__ALL__'});
+  if(boardFilterMode==='target')return boardMessages.filter(function(m){return m.target===boardFilterTarget});
+  return boardMessages;
+}
+
+function renderBoardMessages(){
+  var el=$('board-message-list');if(!el)return;
+  var countEl=$('board-count-label');
+  var filtered=getFilteredBoardMessages();
+  if(countEl)countEl.textContent='共 '+filtered.length+' 条';
+  if(!filtered.length){
+    el.innerHTML='<div class="board-empty-state"><span class="empty-icon">🕊️</span><p>还没有留言，写下第一份心意吧～</p></div>';
     return;
   }
-  el.innerHTML=boardMessages.sort(function(a,b){return b.timestamp-a.timestamp}).map(function(msg){
+  var sorted=filtered.slice().sort(function(a,b){return b.timestamp-a.timestamp});
+  el.innerHTML='';
+  sorted.forEach(function(msg){
+    var isAll=!msg.target||msg.target==='__ALL__';
+    var targetName='全部联系人';
+    if(!isAll){
+      var ct=contacts.find(function(c){return c.id===msg.target});
+      targetName=ct?ct.name:(msg.target||'未知');
+    }
     var d=new Date(msg.timestamp);
-    var timeStr=(d.getMonth()+1)+'/'+d.getDate()+' '+('0'+d.getHours()).slice(-2)+':'+('0'+d.getMinutes()).slice(-2);
-    return'<div style="background:#fff;border-radius:12px;padding:14px;margin-bottom:12px;box-shadow:0 1px 3px rgba(0,0,0,0.05);"><div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;"><span style="font-weight:500;color:var(--txt);">我</span><span style="font-size:12px;color:var(--txt3);">'+timeStr+'</span></div><div style="font-size:14px;color:var(--txt);line-height:1.6;">'+msg.content.replace(/\n/g,'<br>')+'</div><div style="display:flex;justify-content:flex-end;margin-top:10px;"><button style="padding:4px 12px;border:none;border-radius:12px;background:var(--bg2);color:var(--txt3);font-size:12px;cursor:pointer;" onclick="deleteBoardMessage(\''+msg.id+'\')">删除</button></div></div>';
-  }).join('');
+    var pad=function(n){return String(n).padStart(2,'0')};
+    var timeStr=d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate())+' '+pad(d.getHours())+':'+pad(d.getMinutes());
+    var div=document.createElement('div');
+    div.className='board-message-item';
+    var tagClass=isAll?'board-message-tag tag-all':'board-message-tag';
+    var tagText=isAll?'📌 全部联系人':'🎯 '+targetName;
+    div.innerHTML='<div class="board-message-header"><span class="'+tagClass+'">'+tagText+'</span><span class="board-message-time">'+timeStr+'</span></div><div class="board-message-content">'+escapeHtml(msg.content)+'</div><div style="display:flex;justify-content:flex-end;margin-top:8px;"><button class="board-message-delete" onclick="deleteBoardMessage(\''+msg.id+'\')" title="删除">✕</button></div>';
+    el.appendChild(div);
+  });
 }
-function showBoardInput(){
-  showOv('ov-board-input');
-  $('board-input').value='';
-  $('board-input').focus();
+
+function renderBoard(){
+  renderBoardTargets();
+  renderBoardFilterTargets();
+  renderBoardMessages();
 }
+
 function postBoardMessage(){
   var input=$('board-input');
   var content=input.value.trim();
   if(!content){
-    toast('请输入内容');
+    toast('请写下你想说的话');
+    input.focus();
+    return;
+  }
+  if(content.length>500){
+    toast('内容不能超过500个字');
     return;
   }
   boardMessages.unshift({
     id:'b_'+Date.now()+'_'+Math.random().toString(36).slice(2,6),
+    target:boardSelectedTarget,
     content:content,
     timestamp:Date.now()
   });
   saveBoardData();
+  input.value='';
   renderBoard();
-  hideOv('ov-board-input');
-  toast('发布成功');
+  toast('留言已发布');
 }
+
 function deleteBoardMessage(id){
   boardMessages=boardMessages.filter(function(m){return m.id!==id});
   saveBoardData();
   renderBoard();
   toast('已删除');
 }
+
+// Board filter & publish event bindings
+(function initBoardEvents(){
+  var filterGroup=$('board-filter-group');
+  if(filterGroup){
+    filterGroup.addEventListener('click',function(e){
+      var btn=e.target.closest('.board-filter-btn');
+      if(!btn)return;
+      var mode=btn.dataset.filter;
+      if(mode===boardFilterMode)return;
+      boardFilterMode=mode;
+      if(mode==='target'&&!boardFilterTarget){
+        boardFilterTarget=contacts.length?contacts[0].id:'';
+      }
+      var btns=filterGroup.querySelectorAll('.board-filter-btn');
+      btns.forEach(function(b){b.classList.toggle('active',b.dataset.filter===boardFilterMode)});
+      renderBoardFilterTargets();
+      renderBoardMessages();
+    });
+    filterGroup.addEventListener('touchend',function(e){
+      var btn=e.target.closest('.board-filter-btn');
+      if(!btn)return;
+      e.preventDefault();
+      var mode=btn.dataset.filter;
+      if(mode===boardFilterMode)return;
+      boardFilterMode=mode;
+      if(mode==='target'&&!boardFilterTarget){
+        boardFilterTarget=contacts.length?contacts[0].id:'';
+      }
+      var btns=filterGroup.querySelectorAll('.board-filter-btn');
+      btns.forEach(function(b){b.classList.toggle('active',b.dataset.filter===boardFilterMode)});
+      renderBoardFilterTargets();
+      renderBoardMessages();
+    });
+  }
+  var publishBtn=$('board-publish-btn');
+  if(publishBtn){
+    publishBtn.addEventListener('click',function(){
+      if(window._touchMoved){window._touchMoved=0;return;}
+      postBoardMessage();
+    });
+    publishBtn.addEventListener('touchend',function(e){
+      if(window._touchMoved){window._touchMoved=0;return;}
+      e.preventDefault();
+      postBoardMessage();
+    });
+  }
+  var boardInputEl=$('board-input');
+  if(boardInputEl){
+    boardInputEl.addEventListener('keydown',function(e){
+      if((e.ctrlKey||e.metaKey)&&e.key==='Enter'){
+        e.preventDefault();
+        postBoardMessage();
+      }
+    });
+  }
+})();
 
 // ---------- Schedule ----------
 
@@ -20704,6 +21092,7 @@ async function exportData(){
     todoGroups:ls('ml2_todo_groups')||[],
     accountingData:ls('ml2_accounting')||[],
     dreamEntries:ls('ml2_dream')||[],
+    periodRecords:ls('ml2_period_records')||[],
     customChatbar:ls('ml2_custom_chatbar')||[],
     customContactOrder:ls('ml2_custom_contact_order')||[],
     taFavorites:ls('ml2_ta_favorites')||{},
@@ -21459,6 +21848,7 @@ async function doImportData(data){
   if(data.todoGroups)ls('ml2_todo_groups',data.todoGroups);
   if(data.accountingData)ls('ml2_accounting',data.accountingData);
   if(data.dreamEntries)ls('ml2_dream',data.dreamEntries);
+  if(data.periodRecords)ls('ml2_period_records',data.periodRecords);
   if(data.customChatbar)ls('ml2_custom_chatbar',data.customChatbar);
   if(data.customContactOrder)ls('ml2_custom_contact_order',data.customContactOrder);
   if(data.taFavorites)ls('ml2_ta_favorites',data.taFavorites);
@@ -21539,6 +21929,7 @@ async function doImportData(data){
     if(data.todoGroups)savePromises.push(localforage.setItem('ml2_todo_groups',data.todoGroups));
     if(data.accountingData)savePromises.push(localforage.setItem('ml2_accounting',data.accountingData));
     if(data.dreamEntries)savePromises.push(localforage.setItem('ml2_dream',data.dreamEntries));
+    if(data.periodRecords)savePromises.push(localforage.setItem('ml2_period_records',data.periodRecords));
     if(data.customChatbar)savePromises.push(localforage.setItem('ml2_custom_chatbar',data.customChatbar));
     if(data.customContactOrder)savePromises.push(localforage.setItem('ml2_custom_contact_order',data.customContactOrder));
     if(data.taFavorites)savePromises.push(localforage.setItem('ml2_ta_favorites',data.taFavorites));
@@ -21655,6 +22046,13 @@ function maybeAutoSend(){
       
       lastAutoSendTime[targetId]=currentTime;
 
+      // Check touch probability first
+      var touchProb=getSpeed('touch-prob',targetId);
+      if(touchProb>0&&Math.random()*100<touchProb){
+        contactPerformTouch(targetId);
+        return;
+      }
+
       var availableCards=globalCards.filter(function(card){
         if(!card)return false;
         if(card.groupId){
@@ -21671,14 +22069,22 @@ function maybeAutoSend(){
       
       var textCards=availableCards.filter(function(c){return c.category!=='stickers'&&c.category!=='voices'});
       var stickerCards=availableCards.filter(function(c){return c.category==='stickers'});
+      var voiceCards=availableCards.filter(function(c){return c.category==='voices'});
       
       var stickerProb=getSpeed('sticker-prob',targetId);
       var isStickerReply=stickerCards.length>0&&Math.random()*100<stickerProb;
       
-      var reply='',imgSrc='';
+      var voiceProb=getSpeed('voice-prob',targetId)||10;
+      var isVoiceReply=!isStickerReply&&voiceCards.length>0&&Math.random()*100<voiceProb;
+      
+      var reply='',imgSrc='',voiceSrc='',voiceText='';
       if(isStickerReply){
         var rc=stickerCards[Math.floor(Math.random()*stickerCards.length)];
         imgSrc=rc.content;
+      }else if(isVoiceReply){
+        var vrc=voiceCards[Math.floor(Math.random()*voiceCards.length)];
+        voiceSrc=vrc.content;
+        voiceText=vrc.voiceText||'';
       }else{
         var rc=textCards.length>0?textCards[Math.floor(Math.random()*textCards.length)]:availableCards[Math.floor(Math.random()*availableCards.length)];
         reply=rc.content;
@@ -21686,7 +22092,17 @@ function maybeAutoSend(){
       
       var moodCard=await getRandomMoodCard(targetId);
       
-      var m=msgs(targetId);m.push({id:'m_'+Date.now()+'_'+Math.random().toString(36).substr(2,9),s:OTHER,t:reply,img:imgSrc,ts:new Date(),pc:false,isAuto:true,isInitiative:true,read:(cid===targetId),moodCard:moodCard});savemsgs(targetId,m);
+      var quoteMsgId=null;
+      var quoteProb=getSpeed('quote-prob',targetId)/100;
+      if(quoteProb>0&&Math.random()<quoteProb){
+        var messages=msgs(targetId);
+        var selfMsgs=messages.filter(function(m){return m.s===SELF});
+        if(selfMsgs.length>0){
+          quoteMsgId=selfMsgs[selfMsgs.length-1].id;
+        }
+      }
+      
+      var m=msgs(targetId);m.push({id:'m_'+Date.now()+'_'+Math.random().toString(36).substr(2,9),s:OTHER,t:reply,img:imgSrc,voice:voiceSrc,voiceText:voiceText,ts:new Date(),pc:false,isAuto:true,isInitiative:true,read:(cid===targetId),moodCard:moodCard,quote:quoteMsgId,isSticker:imgSrc?true:false,isVoice:voiceSrc?true:false});savemsgs(targetId,m);
 
       if(cid===targetId){renderMsgs(m);playSound('recv',targetId)}renderChatList();
 
@@ -21694,11 +22110,12 @@ function maybeAutoSend(){
         var msgText='';
         if(reply){msgText=reply;}
         else if(imgSrc){msgText='[图片]';}
+        else if(voiceSrc){msgText='[语音]';}
         else{msgText='[表情]';}
         showPushNotification(contact.name,msgText,(contact&&contact.avatar)?contact.avatar:'',targetId);
       }
       var rcProb=getSpeed('rc-prob',targetId);if(Math.random()*100<rcProb){
-        setTimeout(function(){var all=msgs(targetId);if(all.length>0){var lastMsg=all[all.length-1];lastMsg.retracted=true;lastMsg.originalContent=lastMsg.t||'';lastMsg.originalImg=lastMsg.img||'';lastMsg.t='';lastMsg.img='';}savemsgs(targetId,all);
+        setTimeout(function(){var all=msgs(targetId);if(all.length>0){var lastMsg=all[all.length-1];lastMsg.retracted=true;lastMsg.originalContent=lastMsg.t||'';lastMsg.originalImg=lastMsg.img||'';lastMsg.originalVoice=lastMsg.voice||'';lastMsg.t='';lastMsg.img='';lastMsg.voice='';}savemsgs(targetId,all);
           if(cid===targetId)renderMsgs(all);renderChatList();},(1+Math.random()*3)*1000);
       }
     },randomDelay);
@@ -23031,7 +23448,7 @@ function renderDreamList(){
   container.innerHTML=dreamEntries.map(function(entry){
     var moodHtml=entry.mood?'<span style="font-size:14px;margin-right:4px;">'+entry.mood+'</span>':'';
     var weatherHtml=entry.weather?'<span style="font-size:12px;color:var(--txt3);">'+entry.weather+'</span>':'';
-    return '<div style="padding:16px;background:var(--c2);border-radius:12px;margin-bottom:12px;cursor:pointer;" onclick="viewDreamEntry('+entry.id+')"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;"><div style="font-size:16px;font-weight:600;color:var(--txt);display:flex;align-items:center;">'+moodHtml+entry.title+'</div><div style="font-size:12px;color:var(--txt2);display:flex;align-items:center;gap:6px;">'+weatherHtml+'<span>'+entry.date+'</span></div></div><div style="font-size:14px;color:var(--txt);line-height:1.6;white-space:pre-wrap;overflow:hidden;text-overflow:ellipsis;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;">'+entry.content+'</div><div style="margin-top:12px;text-align:right;"><button onclick="event.stopPropagation();deleteDream('+entry.id+')" style="padding:6px 12px;border:none;background:none;color:var(--txt2);font-size:12px;cursor:pointer;">删除</button></div></div>';
+    return '<div style="padding:16px;background:var(--c2);border-radius:12px;margin-bottom:12px;cursor:pointer;" onclick="viewDreamEntry('+entry.id+')"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;"><div style="font-size:16px;font-weight:600;color:var(--txt);display:flex;align-items:center;">'+moodHtml+entry.title+'</div><div style="font-size:12px;color:var(--txt2);display:flex;align-items:center;gap:6px;">'+weatherHtml+'<span>'+entry.date+'</span></div></div><div style="font-size:14px;color:var(--txt);line-height:1.6;white-space:pre-wrap;overflow:hidden;text-overflow:ellipsis;display:-webkit-box;-webkit-line-clamp:3;line-clamp:3;-webkit-box-orient:vertical;">'+entry.content+'</div><div style="margin-top:12px;text-align:right;"><button onclick="event.stopPropagation();deleteDream('+entry.id+')" style="padding:6px 12px;border:none;background:none;color:var(--txt2);font-size:12px;cursor:pointer;">删除</button></div></div>';
   }).join('');
 }
 
@@ -24439,9 +24856,9 @@ function getPomodoroCards() {
   var availableCards = globalCards.filter(function(card) {
     if (!card) return false;
     if (!card.content) return false;
-    // 排除贴纸/语音/拍一拍/颜文字
+    // 排除贴纸/语音/拍一拍
     if (card.category === 'stickers' || card.category === 'voices') return false;
-    if (card.category === 'touch' || card.category === 'kaomoji') return false;
+    if (card.category === 'touch') return false;
     // 检查分组是否禁用
     if (card.groupId) {
       var group = cardGroups.find(function(g) { return g.id === card.groupId; });
@@ -25352,6 +25769,7 @@ var chatbarItems=[
   {id:'long_screenshot',name:'长截图',icon:'📸',fixed:false,category:'消息工具'},
   {id:'topbar_cards',name:'顶部栏字卡库',icon:'📌',fixed:false,category:'其他'},
   {id:'letters',name:'信箱',icon:'✉️',fixed:false,category:'其他'},
+  {id:'contact-profile',name:'梦角主页',icon:'🏠',category:'其他',fixed:false},
   {id:'chat_list',name:'聊天列表',icon:'💬',category:'其他',fixed:true},
   {id:'moments',name:'朋友圈',icon:'📸',category:'其他',fixed:false},
   {id:'period',name:'生理周期',icon:'🌸',category:'其他',fixed:false},
@@ -25359,7 +25777,7 @@ var chatbarItems=[
   {id:'settings',name:'设置',icon:'⚙️',category:'其他',fixed:false}
 ];
 var chatbarCategoryOrder=['消息工具','数据统计','其他'];
-var customChatbarEnabled=['image','touch','cards','decision','group_decision','divine','call','survey','search','favorites','copy_msg','fav_msg','my_favs','card_stats','ta_highlights','long_screenshot','topbar_cards','letters','moments','period','pomodoro','settings'];
+var customChatbarEnabled=['image','touch','cards','decision','group_decision','divine','call','survey','search','favorites','copy_msg','fav_msg','my_favs','card_stats','ta_highlights','long_screenshot','topbar_cards','letters','contact-profile','moments','period','pomodoro','settings'];
 
 function renderChatMorePanel(){
   var list=$('chat-more-list');
@@ -25509,6 +25927,9 @@ function handleChatMoreAction(action){
             showChatTouchMenu(cid);
           }
         }
+        break;
+      case 'contact-profile':
+        if(cid)showContactProfile(cid);
         break;
     }
   }catch(e){
@@ -26703,6 +27124,7 @@ if($('avatar-lib-input')){
 // 刷新机制与顶部栏字卡一致：每个联系人独立，聊天/信箱/朋友圈头像独立，更换间隔1-8小时
 async function checkAvatarLibRefresh(){
   if(!contacts||!contacts.length)return;
+  var now=Date.now();
   for(var i=0;i<contacts.length;i++){
     var c=contacts[i];
     if(!c.avatarLib||!c.avatarLib.enabled)continue;
@@ -26714,11 +27136,20 @@ async function checkAvatarLibRefresh(){
     if(!c.avatarLibLastChange){c.avatarLibLastChange={chat:0,mail:0,moment:0};}
     if(!c.avatarLibNextChange){c.avatarLibNextChange={chat:0,mail:0,moment:0};}
     
+    // 检查并修复异常的时间戳（未来时间戳或无效值）
+    ['chat','mail','moment'].forEach(function(type){
+      var lastChange=c.avatarLibLastChange[type]||0;
+      if(lastChange>now||lastChange<0||isNaN(lastChange)){
+        c.avatarLibLastChange[type]=0;
+        c.avatarLibNextChange[type]=0;
+      }
+    });
+    
     var changed=false;
     
     // 聊天头像（独立判断）
     if(c.avatarLib.avatarChat!==false){
-      if((Date.now()-(c.avatarLibLastChange.chat||0))/36e5>=c.avatarLibNextChange.chat){
+      if((now-(c.avatarLibLastChange.chat||0))/36e5>=c.avatarLibNextChange.chat){
         var newIdxChat=Math.floor(Math.random()*keys.length);
         var newKeyChat=keys[newIdxChat];
         if(window.localforage){
@@ -26730,7 +27161,7 @@ async function checkAvatarLibRefresh(){
               changed=true;
               await recordAvatarChange(c.id,'chat',imgData);
               insertAvatarChangeMsg(c,'chat');
-              c.avatarLibLastChange.chat=Date.now();
+              c.avatarLibLastChange.chat=now;
               c.avatarLibNextChange.chat=1+Math.random()*7;
             }
           }catch(e){console.warn('[avatarLib] chat load failed:',e);}
@@ -26740,7 +27171,7 @@ async function checkAvatarLibRefresh(){
     
     // 信箱头像（独立判断）
     if(c.avatarLib.avatarMail!==false){
-      if((Date.now()-(c.avatarLibLastChange.mail||0))/36e5>=c.avatarLibNextChange.mail){
+      if((now-(c.avatarLibLastChange.mail||0))/36e5>=c.avatarLibNextChange.mail){
         var newIdxMail=Math.floor(Math.random()*keys.length);
         var newKeyMail=keys[newIdxMail];
         if(window.localforage){
@@ -26752,7 +27183,7 @@ async function checkAvatarLibRefresh(){
               changed=true;
               await recordAvatarChange(c.id,'mail',imgData);
               insertAvatarChangeMsg(c,'mail');
-              c.avatarLibLastChange.mail=Date.now();
+              c.avatarLibLastChange.mail=now;
               c.avatarLibNextChange.mail=1+Math.random()*7;
             }
           }catch(e){console.warn('[avatarLib] mail load failed:',e);}
@@ -26762,7 +27193,7 @@ async function checkAvatarLibRefresh(){
     
     // 朋友圈头像（独立判断）
     if(c.avatarLib.avatarMoment!==false){
-      if((Date.now()-(c.avatarLibLastChange.moment||0))/36e5>=c.avatarLibNextChange.moment){
+      if((now-(c.avatarLibLastChange.moment||0))/36e5>=c.avatarLibNextChange.moment){
         var newIdxMoment=Math.floor(Math.random()*keys.length);
         var newKeyMoment=keys[newIdxMoment];
         if(window.localforage){
@@ -26778,7 +27209,7 @@ async function checkAvatarLibRefresh(){
                 var boundMember=momentsMembers.find(function(m){return m.contactId===c.id});
                 if(boundMember){boundMember.avatar=imgData;saveMomentsData();}
               }
-              c.avatarLibLastChange.moment=Date.now();
+              c.avatarLibLastChange.moment=now;
               c.avatarLibNextChange.moment=1+Math.random()*7;
             }
           }catch(e){console.warn('[avatarLib] moment load failed:',e);}
@@ -31547,15 +31978,14 @@ if($('mood-card-help-modal'))$('mood-card-help-modal').addEventListener('click',
 (function() {
   'use strict';
 
-  var PERIOD_STORAGE_KEY = 'period_records_v2';
+  var PERIOD_STORAGE_KEY = 'ml2_period_records';
 
   function pGetRecords() {
     try {
-      var raw = localStorage.getItem(PERIOD_STORAGE_KEY);
+      var raw = ls(PERIOD_STORAGE_KEY);
       if (!raw) return [];
-      var arr = JSON.parse(raw);
-      if (!Array.isArray(arr)) return [];
-      return arr.filter(function(r) { return r && r.start; }).map(function(r) {
+      if (!Array.isArray(raw)) return [];
+      return raw.filter(function(r) { return r && r.start; }).map(function(r) {
         if (!r.details) r.details = {};
         return r;
       });
@@ -31563,7 +31993,7 @@ if($('mood-card-help-modal'))$('mood-card-help-modal').addEventListener('click',
   }
 
   function pSaveRecords(records) {
-    try { localStorage.setItem(PERIOD_STORAGE_KEY, JSON.stringify(records)); return true; }
+    try { ls(PERIOD_STORAGE_KEY, records); return true; }
     catch (e) { return false; }
   }
 
@@ -32152,9 +32582,44 @@ var UPDATE_NOTICES = [
   {
     version: '1.4',
     date: '2026-07-22',
-    title: '星言 1.4',
+    title: '星言字卡',
     summary: '顶部栏字卡优化、新增聊天情绪字卡库、占卜功能修复、新增生理周期记录、底部聊天栏批量发送模式',
     content: '<h4>1. 顶部栏字卡优化</h4><p><strong>顶部栏「心情」</strong>用于表示梦角当前整体心情。</p><p>顶部栏五处字卡共同组成梦角当前状态，表达的是「TA现在如何与你交流」。</p><ul><li>💬 对方状态：TA如何回应你</li><li>☁️ 天气：世界是什么样</li><li>🕰 时间：现在是什么时候</li><li>🌙 心情状态：TA感觉怎么样</li><li>💤 空闲状态：TA正在做什么、有没有空</li></ul><p>默认分组新增了一批公用字卡（由 AI 辅助创作，并非复制其他老师分享的字卡内容）。</p><p>所有默认字卡均可根据个人使用习惯自由添加、修改或删除。</p><h4>2. 新增「聊天情绪字卡库」</h4><p>新增独立的聊天情绪字卡库。</p><p>聊天情绪字卡表示的是梦角发送这一句话时所流露出的情绪，并非梦角当前整体心情。</p><p>开启该功能后，梦角发送聊天消息时，将有概率随机附带一张聊天情绪字卡，用于补充当前消息的情绪与语气，让有限的字卡表达更加自然、丰富。</p><p>字卡库内置默认情绪字卡（由 AI 辅助创作，并非复制其他老师分享的字卡内容），也支持自由添加、修改和删除。</p><p>该功能可在字卡库中自由开启或关闭。</p><p style="font-size:12px;color:#999;">【灵感来源，其实好久以前刷的有老师提过情绪字卡类似的功能不过不知道是谁，只是有点印象，然后昨天晚上刷的了@心汋是颗彩虹多宝糖 老师的帖子的网站聊天也有情绪字卡，感觉很有意思，今天就搓了这个功能】</p><h4>3. 占卜功能修复</h4><p>占卜功能页面已修复，现在可以正常使用。</p><h4>4. Bug 修复</h4><p>修复了一些已知问题，优化了部分使用体验。</p><h4>5. 新增生理周期记录</h4><p>新增生理周期记录功能，可用于记录和查看个人生理周期信息。</p><h4>6. 新增了批量发送消息的功能</h4><p>该功能可在左上角三个点里自由开启或关闭。</p><p style="font-size:12px;color:#999;">【群友想要，参考milk字卡搓的，总之是感谢milk老师】</p>'
+  },
+  {
+    version: '1.35',
+    date: '2026-07-21',
+    title: '星言字卡',
+    summary: '联系人头像库更新、用户头像功能更新、梦角主页功能更新、占卜功能页面优化',
+    content: '<h4>1. 联系人头像库更新</h4><p>顶部栏左上角「三个点」菜单新增<strong>【联系人头像库】</strong>。</p><p>开启后，梦角可主动随机更新头像。</p><p>非梦角主动更换头像使用时，也可以直接在头像库中选择并保存头像进行更新。</p><h4>2. 用户头像功能更新</h4><p>顶部栏左上角「三个点」菜单新增<strong>头像管理</strong>。</p><p>支持上传多个个人头像，并可自由切换使用。</p><h4>3. 梦角主页功能</h4><p>点击顶部栏联系人头像，可打开<strong>【梦角主页】</strong>窗口。</p><p><strong>【梦角主页】新增：</strong></p><ul><li>梦角主动更换头像历史记录查看</li><li>底部聊天栏左侧「更多功能」中新增<strong>【梦角主页】</strong>快捷入口</li></ul><h4>4. 占卜功能页面更新</h4><p>底部聊天栏左侧「更多功能」中的占卜功能已优化：</p><ul><li>页面调整为全屏显示</li><li>抽牌方式优化，支持从牌堆中抽取卡牌</li><li>抽取后的牌面展示优化，替换原有 emoji，改为塔罗牌和雷诺曼牌面图片显示</li></ul>'
+  },
+  {
+    version: '1.3',
+    date: '2026-07-20',
+    title: '星言字卡',
+    summary: '聊天功能新增快捷入口、通话页面优化、新增简约模式、Bug修复',
+    content: '<h4>1. 聊天功能新增快捷入口</h4><p>聊天输入栏左侧「更多功能」中新增：</p><ul><li>🍅 番茄钟快捷按钮</li><li>👋 拍一拍快捷按钮</li></ul><h4>2. 通话页面优化</h4><p>通话半框页面右上角新增<strong>【上传背景图片】</strong>按钮。</p><p>可自定义通话背景，提升页面个性化体验。</p><h4>3. 新增简约模式</h4><p>左上角「三个点」菜单中新增<strong>【简约模式】</strong>。</p><p>开启后可隐藏头像，界面风格类似番茄钟陪伴模式页面。</p><h4>4. Bug 修复</h4><p>修复了使用过程中发现的部分问题，提升稳定性。</p><h4>🍅 番茄钟陪伴模式说明</h4><p>番茄钟陪伴模式支持：</p><ul><li>上传背景图片，自定义陪伴页面外观</li><li>在设置中选择联系人回复方式：使用聊天字卡库回复 / 使用番茄钟独立字卡库回复</li></ul><p>两种模式可以自由调整，根据自己的需求设置即可。</p><p>陪伴模式右上角的 ☁️ 按钮：点击后可切换已有联系人的陪伴窗口。</p>'
+  },
+  {
+    version: '1.2',
+    date: '2026-07-19',
+    title: '星言字卡',
+    summary: '修复Bug、拍一拍功能、联系人个人面板、快速切换联系人、隐藏底部栏、字卡库等',
+    content: '<h4>更新内容</h4><h4>1. 修复问题</h4><p>修复了一些使用过程中发现的 Bug。优化部分功能体验。</p><h4>2. 拍一拍功能</h4><p>在聊天界面点击联系人头像，即可使用<strong>【拍一拍】</strong>功能。</p><h4>3. 联系人个人面板</h4><p>点击聊天顶部栏的联系人头像，即可进入<strong>【联系人个人面板】</strong>。</p><p>目前仍在设计中，后续可能会增加更多内容和功能。</p><h4>4. 快速切换联系人</h4><p>顶部栏的「< >」按钮可用于快速切换联系人。</p><p>切换顺序可在左上角「三个点」菜单中的相关设置进行调整。</p><h4>5. 隐藏底部栏</h4><p>支持隐藏底部导航栏。可在左上角「三个点」菜单中的相关设置进行调整。</p><h4>6. 字卡库</h4><p>聊天、信箱、朋友圈、调查问卷使用的字卡均在此管理。包含：公用字卡、专享字卡。</p><h4>7. 顶部栏字卡设置</h4><p>可更换联系人顶部栏显示的 5 项字卡。</p><p>显示位置：联系人昵称下方：对方状态、第二排：天气｜心情状态、第三排：时间｜空闲状态。</p><h4>8. 更多功能入口</h4><p>底部聊天栏表情包左侧的「三个点」中包含其他小功能。</p><h4>9. 回复时间设置</h4><p>梦角聊天、信箱、朋友圈的回复时长相关设置位于：设置 → 回复设置。已显示不同回复时间概率，可根据个人使用习惯进行调整。</p>'
+  },
+  {
+    version: '1.1',
+    date: '2026-07-18',
+    title: '星言字卡',
+    summary: '新增更多隐藏功能、Bug修复',
+    content: '<h4>1. 新增更多隐藏功能</h4><p>左上角「三个点」菜单中新增<strong>【更多隐藏功能】</strong>。</p><p>现在可以自由控制界面显示内容：</p><ul><li>聊天顶部栏昵称隐藏/显示</li><li>拍一拍双方昵称隐藏/显示</li><li>底部导航栏隐藏/显示</li><li>其他界面元素隐藏设置</li></ul><p>开启后可查看全部隐藏选项，根据个人喜好调整界面。</p><h4>2. Bug 修复</h4><p>修复了一些使用过程中发现的问题。优化部分功能稳定性。</p><h4>3. 当前测试情况</h4><p>目前已在电脑浏览器测试，基础功能运行正常。后续会继续通过自己的手机使用体验进行测试和修复。如果使用过程中发现任何问题，欢迎反馈。</p>'
+  },
+  {
+    version: '1.0',
+    date: '2026-07-17',
+    title: '星言字卡',
+    summary: '测试发布，包含拍一拍、联系人面板、快捷切换、底部栏隐藏、字卡库等基础功能',
+    content: '<h4>当前功能介绍</h4><p>目前开始均为测试版本，功能可能会根据后续使用体验进行调整或修改。</p><h4>1. 拍一拍功能</h4><p>在聊天页面点击联系人头像，即可对联系人使用<strong>【拍一拍】</strong>功能。</p><h4>2. 联系人个人面板</h4><p>点击聊天顶部栏的联系人头像，可打开联系人个人面板。</p><h4>3. 快捷切换联系人</h4><p>顶部栏的「<>」按钮用于快捷切换联系人。切换顺序可在顶部栏左上角「三个点」菜单中进行设置。</p><h4>4. 底部导航栏隐藏</h4><p>支持隐藏底部导航栏。可在顶部栏左上角「三个点」菜单中进行设置。</p><h4>5. 字卡库</h4><p>字卡库入口位于设置中。包含：公用字卡库、专享字卡库。后续会继续根据实际使用体验进行优化和调整。</p>'
   }
 ];
 
@@ -32227,7 +32692,7 @@ function renderUpdateHistory() {
     html += '<div class="update-history-item' + (index === 0 ? ' expanded' : '') + '" data-version="' + notice.version + '">' +
       '<div class="update-history-header" onclick="toggleUpdateHistory(this)">' +
         '<div class="update-history-info">' +
-          '<div class="update-history-title">' + (index === 0 ? '✨' : '') + ' ' + notice.title + '<span class="update-history-version">' + notice.version + '</span></div>' +
+          '<div class="update-history-title">✨ ' + notice.title + '<span class="update-history-version">' + notice.version + '</span></div>' +
           '<div class="update-history-date">' + notice.date + '</div>' +
           '<div class="update-history-summary">' + notice.summary + '</div>' +
         '</div>' +
@@ -32255,11 +32720,27 @@ function bindUpdateNoticeEvents() {
     });
   }
   
+  var usageBtn = document.getElementById('usage-notice-btn');
+  if (usageBtn) {
+    usageBtn.addEventListener('click', function() {
+      showPg('pg-usage-notice');
+    });
+  }
+  
   var overlay = document.getElementById('update-notice-overlay');
   if (overlay) {
     overlay.addEventListener('click', function(e) {
       if (e.target === overlay) {
         closeUpdateNotice();
+      }
+    });
+  }
+  
+  var usageOverlay = document.getElementById('usage-notice-popup-overlay');
+  if (usageOverlay) {
+    usageOverlay.addEventListener('click', function(e) {
+      if (e.target === usageOverlay) {
+        closeUsageNoticePopup();
       }
     });
   }
@@ -32274,11 +32755,35 @@ function initUpdateNotice() {
   
   setTimeout(function() {
     var lastRead = getLastReadVersion();
-    console.log('Update Notice - Last read version:', lastRead);
-    console.log('Update Notice - Current version:', CURRENT_VERSION);
-    console.log('Update Notice - Should show:', compareVersions(CURRENT_VERSION, lastRead) > 0);
     checkUpdateNotice();
+    checkUsageNotice();
   }, 2000);
+}
+
+// 使用须知弹窗（首次访问 + 每个版本弹一次）
+function checkUsageNotice() {
+  try {
+    var hasSeen = localStorage.getItem('star_usage_notice_seen_22');
+    if (hasSeen === '1') return;
+  } catch(e) {}
+  showUsageNoticePopup();
+}
+
+function showUsageNoticePopup() {
+  var overlay = document.getElementById('usage-notice-popup-overlay');
+  if (overlay) {
+    overlay.style.display = 'flex';
+  }
+}
+
+function closeUsageNoticePopup() {
+  var overlay = document.getElementById('usage-notice-popup-overlay');
+  if (overlay) {
+    overlay.style.display = 'none';
+  }
+  try {
+    localStorage.setItem('star_usage_notice_seen_22', '1');
+  } catch(e) {}
 }
 
 window.showUpdateNoticeManual = function() {
