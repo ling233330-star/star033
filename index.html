@@ -2671,55 +2671,46 @@ canvas{-webkit-backface-visibility:hidden;backface-visibility:hidden;-webkit-tra
 /* ===== 音乐库 ===== */
 .music-page { background: var(--c2); }
 /* 顶部操作栏 */
-.music-top-bar { display: flex; align-items: center; gap: 10px; padding: 12px 16px; background: var(--c1); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 10; flex-wrap: wrap; }
-.music-top-bar .music-search { flex: 1; min-width: 120px; padding: 9px 14px; border: 1px solid var(--border); border-radius: 22px; font-size: 13px; background: var(--c2); color: var(--txt); outline: none; font-family: inherit; transition: border-color 0.2s; }
-.music-top-bar .music-search:focus { border-color: var(--accent); }
-.music-btn-upload { padding: 9px 16px; border: none; border-radius: 22px; background: var(--accent); color: #fff; font-size: 13px; font-weight: 500; cursor: pointer; white-space: nowrap; font-family: inherit; transition: all 0.2s; display: flex; align-items: center; gap: 4px; -webkit-tap-highlight-color: transparent; }
-.music-btn-upload:active { opacity: 0.85; transform: scale(0.96); }
-.music-btn-outline { padding: 9px 14px; border: 1px solid var(--border); border-radius: 22px; background: var(--c1); color: var(--txt2); font-size: 13px; cursor: pointer; white-space: nowrap; font-family: inherit; transition: all 0.2s; -webkit-tap-highlight-color: transparent; }
-.music-btn-outline:active { background: var(--c2); border-color: var(--accent); }
+.music-top-bar { display: flex; align-items: center; gap: 8px; padding: 10px 14px; background: var(--c1); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 10; }
+.music-top-bar .music-search { flex: 1; min-width: 100px; padding: 8px 12px; border: none; border-radius: 20px; font-size: 13px; background: var(--c2); color: var(--txt); outline: none; font-family: inherit; transition: background 0.2s; }
+.music-top-bar .music-search:focus { background: var(--c3); }
+.music-btn-icon { width: 38px; height: 38px; border: none; border-radius: 50%; background: var(--c2); color: var(--txt2); font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s; font-family: inherit; -webkit-tap-highlight-color: transparent; min-width: 38px; }
+.music-btn-icon:active { background: var(--c3); transform: scale(0.92); }
 /* 歌单标签栏 */
-.music-playlist-tabs { display: flex; gap: 8px; padding: 12px 16px; overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none; background: var(--c2); }
+.music-playlist-tabs { display: flex; gap: 6px; padding: 10px 14px; overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none; background: var(--c2); }
 .music-playlist-tabs::-webkit-scrollbar { display: none; }
-.music-playlist-tab { padding: 7px 15px; border: 1px solid var(--border); border-radius: 20px; background: var(--c1); color: var(--txt2); font-size: 13px; cursor: pointer; white-space: nowrap; transition: all 0.2s; font-family: inherit; -webkit-tap-highlight-color: transparent; }
-.music-playlist-tab.active { background: var(--accent); color: #fff; border-color: var(--accent); }
-.music-playlist-tab:active { transform: scale(0.95); }
-.music-playlist-add { padding: 7px 12px; border: 1px dashed var(--border); border-radius: 20px; background: transparent; color: var(--txt3); font-size: 13px; cursor: pointer; white-space: nowrap; transition: all 0.2s; font-family: inherit; -webkit-tap-highlight-color: transparent; min-width: 44px; min-height: 44px; display: flex; align-items: center; }
+.music-playlist-tab { padding: 6px 14px; border: none; border-radius: 16px; background: var(--c1); color: var(--txt2); font-size: 12px; cursor: pointer; white-space: nowrap; transition: all 0.2s; font-family: inherit; -webkit-tap-highlight-color: transparent; }
+.music-playlist-tab.active { background: var(--accent); color: #fff; }
+.music-playlist-tab:active { transform: scale(0.94); }
+.music-playlist-add { padding: 6px 12px; border: 1px dashed var(--border); border-radius: 16px; background: transparent; color: var(--txt4); font-size: 12px; cursor: pointer; white-space: nowrap; transition: all 0.2s; font-family: inherit; -webkit-tap-highlight-color: transparent; min-width: 44px; min-height: 44px; display: flex; align-items: center; }
 .music-playlist-add:active { border-color: var(--accent); color: var(--accent); }
-/* 音乐头部 */
-.music-header-section { text-align: center; padding: 20px 16px 8px; }
-.music-header-section h1 { font-size: 22px; font-weight: 600; color: var(--txt); margin: 0 0 4px; display: flex; align-items: center; justify-content: center; gap: 8px; }
-.music-header-section p { font-size: 12px; color: var(--txt3); margin: 0; }
-/* 统计栏 */
-.music-stats-bar { display: flex; justify-content: center; gap: 24px; padding: 8px 16px 16px; }
-.music-stat { text-align: center; }
-.music-stat-num { font-size: 20px; font-weight: 600; color: var(--accent); }
-.music-stat-label { font-size: 11px; color: var(--txt3); margin-top: 2px; }
 /* 音乐列表 */
-.music-list-section { padding: 0 16px; }
-.music-list-title { font-size: 13px; font-weight: 600; color: var(--txt2); margin-bottom: 10px; display: flex; align-items: center; gap: 6px; text-transform: uppercase; letter-spacing: 0.5px; }
-.music-list-title .count { font-weight: 400; font-size: 12px; color: var(--txt3); margin-left: auto; }
+.music-list-section { padding: 0 14px; }
+.music-list-header { display: flex; align-items: center; justify-content: space-between; padding: 6px 0 10px; }
+.music-list-title { font-size: 12px; font-weight: 600; color: var(--txt3); text-transform: uppercase; letter-spacing: 0.5px; }
+.music-count { font-size: 11px; color: var(--txt4); }
 /* 音乐列表项 */
-.music-item { display: flex; align-items: center; gap: 12px; padding: 10px 12px; background: var(--c1); border-radius: 12px; margin-bottom: 6px; box-shadow: 0 1px 3px rgba(0,0,0,0.03); transition: all 0.2s; cursor: pointer; -webkit-tap-highlight-color: transparent; border: 1px solid transparent; }
-.music-item:active { background: var(--c2); transform: scale(0.985); }
-.music-item.playing { background: var(--accent-bg); border-color: var(--accent); }
-.music-item.playing .music-item-name { color: var(--accent); }
-.music-item-cover { width: 50px; height: 50px; border-radius: 10px; background: linear-gradient(135deg, #e8d5f5 0%, #d5e8f5 100%); display: flex; align-items: center; justify-content: center; flex-shrink: 0; overflow: hidden; font-size: 22px; color: #9b7ec4; }
+.music-item { display: flex; align-items: center; gap: 10px; padding: 8px 10px; background: var(--c1); border-radius: 10px; margin-bottom: 4px; transition: background 0.15s; cursor: pointer; -webkit-tap-highlight-color: transparent; position: relative; }
+.music-item:active { background: var(--c2); }
+.music-item.playing { background: var(--accent-bg); }
+.music-item.playing .music-item-name { color: var(--accent); font-weight: 600; }
+.music-item-cover { width: 44px; height: 44px; border-radius: 8px; background: var(--c3); display: flex; align-items: center; justify-content: center; flex-shrink: 0; overflow: hidden; font-size: 20px; color: var(--txt4); }
 .music-item-cover img { width: 100%; height: 100%; object-fit: cover; }
-.music-item-info { flex: 1; min-width: 0; }
+.music-item-info { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
 .music-item-name { font-size: 14px; font-weight: 500; color: var(--txt); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.music-item-meta { font-size: 11px; color: var(--txt3); margin-top: 3px; display: flex; align-items: center; gap: 8px; }
-.music-item-playlist-tag { font-size: 10px; padding: 2px 8px; border-radius: 10px; background: var(--c3); color: var(--txt3); }
-.music-item-actions { display: flex; gap: 2px; flex-shrink: 0; }
-.music-item-btn { width: 34px; height: 34px; border: none; border-radius: 50%; background: transparent; color: var(--txt2); font-size: 15px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.15s; -webkit-tap-highlight-color: transparent; }
-.music-item-btn:active { background: var(--c3); transform: scale(0.9); }
-.music-item-btn.del:active { background: #fce4e4; color: #e06060; }
-.music-item-btn.play-btn { background: var(--accent); color: #fff; width: 36px; height: 36px; font-size: 13px; }
-.music-item-btn.play-btn:active { opacity: 0.8; }
-.music-empty { text-align: center; padding: 50px 16px; color: var(--txt3); }
-.music-empty .empty-icon { font-size: 48px; display: block; margin-bottom: 12px; opacity: 0.4; }
-.music-empty p { font-size: 13px; margin: 0 0 4px; }
-.music-empty .empty-sub { font-size: 11px; color: var(--txt4); }
+.music-item-meta { font-size: 11px; color: var(--txt4); display: flex; align-items: center; gap: 6px; }
+.music-item-playlist-tag { font-size: 10px; padding: 1px 6px; border-radius: 8px; background: var(--c2); color: var(--txt4); }
+/* 编辑/删除按钮 - 默认隐藏，hover/长按显示 */
+.music-item-actions { display: flex; gap: 2px; flex-shrink: 0; opacity: 0; transition: opacity 0.2s; }
+.music-item:hover .music-item-actions,
+.music-item:active .music-item-actions { opacity: 1; }
+.music-item-btn { width: 30px; height: 30px; border: none; border-radius: 50%; background: transparent; color: var(--txt4); font-size: 12px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.15s; -webkit-tap-highlight-color: transparent; }
+.music-item-btn:active { background: var(--c3); }
+.music-item-btn.play-btn { width: 34px; height: 34px; background: var(--c2); color: var(--txt2); font-size: 13px; opacity: 1; }
+.music-item.playing .music-item-btn.play-btn { background: var(--accent); color: #fff; }
+.music-empty { text-align: center; padding: 60px 16px; color: var(--txt4); }
+.music-empty .empty-icon { font-size: 40px; display: block; margin-bottom: 10px; opacity: 0.3; }
+.music-empty p { font-size: 13px; margin: 0; }
 /* 拖拽上传区域 */
 .music-drop-zone { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 99999; align-items: center; justify-content: center; }
 .music-drop-zone.active { display: flex; }
@@ -2736,7 +2727,7 @@ canvas{-webkit-backface-visibility:hidden;backface-visibility:hidden;-webkit-tra
 .music-edit-field label { display: block; font-size: 13px; font-weight: 500; color: var(--txt2); margin-bottom: 6px; }
 .music-edit-field input, .music-edit-field select { width: 100%; padding: 10px 14px; border: 1px solid var(--border); border-radius: var(--radius); font-size: 14px; font-family: inherit; color: var(--txt); background: var(--c2); outline: none; box-sizing: border-box; }
 .music-edit-field input:focus, .music-edit-field select:focus { border-color: var(--accent); }
-.music-edit-cover-preview { width: 60px; height: 60px; border-radius: 10px; background: linear-gradient(135deg, #e8d5f5 0%, #d5e8f5 100%); display: flex; align-items: center; justify-content: center; overflow: hidden; margin-bottom: 6px; font-size: 28px; color: #9b7ec4; }
+.music-edit-cover-preview { width: 60px; height: 60px; border-radius: 10px; background: var(--c3); display: flex; align-items: center; justify-content: center; overflow: hidden; margin-bottom: 6px; font-size: 28px; color: var(--txt4); }
 .music-edit-cover-preview img { width: 100%; height: 100%; object-fit: cover; }
 .music-edit-btns { display: flex; gap: 10px; margin-top: 18px; }
 .music-edit-btns button { flex: 1; padding: 12px; border: none; border-radius: var(--radius); font-size: 14px; font-weight: 500; font-family: inherit; cursor: pointer; transition: all 0.2s; }
@@ -2758,7 +2749,7 @@ canvas{-webkit-backface-visibility:hidden;backface-visibility:hidden;-webkit-tra
 /* 全局迷你播放器 */
 .music-mini-player { position: fixed; bottom: 60px; left: 0; right: 0; z-index: 999; background: var(--c1); border-top: 1px solid var(--border); padding: 8px 14px; display: none; align-items: center; gap: 10px; box-shadow: 0 -2px 10px rgba(0,0,0,0.06); padding-bottom: calc(8px + env(safe-area-inset-bottom)); }
 .music-mini-player.show { display: flex; }
-.music-mini-cover { width: 40px; height: 40px; border-radius: 8px; background: linear-gradient(135deg, #e8d5f5 0%, #d5e8f5 100%); flex-shrink: 0; overflow: hidden; display: flex; align-items: center; justify-content: center; font-size: 18px; color: #9b7ec4; }
+.music-mini-cover { width: 40px; height: 40px; border-radius: 8px; background: var(--c3); flex-shrink: 0; overflow: hidden; display: flex; align-items: center; justify-content: center; font-size: 18px; color: var(--txt4); }
 .music-mini-cover img { width: 100%; height: 100%; object-fit: cover; }
 .music-mini-info { flex: 1; min-width: 0; }
 .music-mini-name { font-size: 13px; font-weight: 500; color: var(--txt); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
@@ -2769,19 +2760,15 @@ canvas{-webkit-backface-visibility:hidden;backface-visibility:hidden;-webkit-tra
 .music-mini-btn:active { background: var(--c4); transform: scale(0.9); }
 .music-mini-btn.play { background: var(--accent); color: #fff; font-size: 13px; }
 @media (max-width: 480px) {
-  .music-header-section h1 { font-size: 18px; }
-  .music-header-section { padding: 14px 12px 6px; }
-  .music-stats-bar { gap: 18px; padding: 6px 12px 12px; }
-  .music-playlist-tabs { padding: 10px 12px; gap: 6px; }
+  .music-playlist-tabs { padding: 8px 10px; gap: 4px; }
   .music-list-section { padding: 0 10px; }
-  .music-item { padding: 8px 10px; gap: 10px; }
-  .music-item-cover { width: 44px; height: 44px; }
+  .music-item { padding: 6px 8px; gap: 8px; }
+  .music-item-cover { width: 40px; height: 40px; }
   .music-item-name { font-size: 13px; }
   .music-mini-player { padding: 6px 10px; }
   .music-mini-name { font-size: 12px; }
-  .music-top-bar { padding: 10px 12px; gap: 6px; }
-  .music-btn-upload { padding: 8px 12px; font-size: 12px; }
-  .music-btn-outline { padding: 8px 12px; font-size: 12px; }
+  .music-top-bar { padding: 8px 10px; gap: 6px; }
+  .music-item-actions { opacity: 1; }
 }
 </style>
 <link rel="manifest" href="manifest.json">
@@ -3669,11 +3656,6 @@ const LENORMAND_IMAGES = {
         <div style="flex:1"><div style="font-weight:500;font-size:16px">我的留言板</div><div style="font-size:13px;color:var(--txt2);margin-top:2px">保存消息给所有联系人看</div></div>
         
       </div>
-      <div class="my-row" id="more-music-btn" style="display:flex;align-items:center;gap:14px;padding:16px 18px;background:var(--c2);border-radius:var(--radius);margin-bottom:12px;cursor:pointer">
-        <div style="width:52px;height:52px;border-radius:12px;background:#e8e8e8;display:flex;align-items:center;justify-content:center;font-size:30px">🎵</div>
-        <div style="flex:1"><div style="font-weight:500;font-size:16px">音乐库</div><div style="font-size:13px;color:var(--txt2);margin-top:2px">上传管理本地音乐，随时随地聆听</div></div>
-        
-      </div>
       <div class="my-row" id="more-schedule-btn" style="display:flex;align-items:center;gap:14px;padding:16px 18px;background:var(--c2);border-radius:var(--radius);margin-bottom:12px;cursor:pointer">
         <div style="width:52px;height:52px;border-radius:12px;background:#e8e8e8;display:flex;align-items:center;justify-content:center;font-size:30px">📅</div>
         <div style="flex:1"><div style="font-weight:500;font-size:16px">日程（现在是阉割版不要使用，待更新）</div><div style="font-size:13px;color:var(--txt2);margin-top:2px">记录我的行程安排</div></div>
@@ -4096,33 +4078,28 @@ const LENORMAND_IMAGES = {
 <!-- Music Library Page -->
 <div class="page music-page" id="pg-music">
   <div class="nav">
-    <div class="nl"><button class="btn-nav" onclick="showPg('pg-conv')">←</button></div>
+    <div class="nl"><button class="btn-nav" onclick="showPg('pg-list')">←</button></div>
     <span class="tt">🎵 音乐库</span>
     <div class="nr"></div>
   </div>
   <!-- 顶部操作栏 -->
   <div class="music-top-bar">
-    <input class="music-search" id="music-search" placeholder="🔍 搜索音乐..." oninput="renderMusicLibrary()">
-    <button class="music-btn-upload" id="music-btn-upload" onclick="triggerMusicUpload()">📤 上传</button>
-    <button class="music-btn-outline" id="music-btn-batch" onclick="triggerMusicBatchUpload()">📁 批量</button>
+    <input class="music-search" id="music-search" placeholder="搜索音乐..." oninput="renderMusicLibrary()">
+    <button class="music-btn-icon" id="music-btn-upload" onclick="triggerMusicUpload()" title="上传">📤</button>
+    <button class="music-btn-icon" id="music-btn-batch" onclick="triggerMusicBatchUpload()" title="批量上传">📁</button>
   </div>
   <!-- 歌单标签 -->
   <div class="music-playlist-tabs" id="music-playlist-tabs">
-    <button class="music-playlist-tab active" data-playlist="all" onclick="switchMusicPlaylist('all')">🎶 全部</button>
-    <button class="music-playlist-tab" data-playlist="default" onclick="switchMusicPlaylist('default')">📋 默认</button>
-    <button class="music-playlist-add" id="music-playlist-add-btn" onclick="showCreatePlaylist()">＋ 新建歌单</button>
+    <button class="music-playlist-tab active" data-playlist="all" onclick="switchMusicPlaylist('all')">全部</button>
+    <button class="music-playlist-tab" data-playlist="default" onclick="switchMusicPlaylist('default')">默认</button>
+    <button class="music-playlist-add" id="music-playlist-add-btn" onclick="showCreatePlaylist()">＋ 新建</button>
   </div>
   <div id="music-scroll" style="flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;transform:translateZ(0);">
-    <div class="music-header-section">
-      <h1>🎵 我的音乐库</h1>
-      <p>上传本地音乐，随时随地聆听</p>
-    </div>
-    <div class="music-stats-bar" id="music-stats-bar">
-      <div class="music-stat"><div class="music-stat-num" id="music-stat-total">0</div><div class="music-stat-label">总曲目</div></div>
-      <div class="music-stat"><div class="music-stat-num" id="music-stat-playlists">0</div><div class="music-stat-label">歌单数</div></div>
-    </div>
     <div class="music-list-section">
-      <div class="music-list-title">🎶 音乐列表 <span class="count" id="music-count">共 0 首</span></div>
+      <div class="music-list-header">
+        <span class="music-list-title">音乐列表</span>
+        <span class="music-count" id="music-count">共 0 首</span>
+      </div>
       <div id="music-list"></div>
     </div>
   </div>
@@ -4668,6 +4645,7 @@ const LENORMAND_IMAGES = {
     <button class="ibar-btn" id="btn-ibar-emoji">😄</button>
     <textarea id="msg-inp" rows="1" placeholder="输入消息..."></textarea>
     <button class="ibar-btn batch-btn" id="batch-btn" title="批量发送模式">☰</button>
+    <button class="ibar-btn" id="btn-ibar-continue" title="让对方继续说">…</button>
     <button class="send-btn" id="btn-send">➤</button>
     <input type="file" id="chat-image-input" accept="image/*" multiple style="display:none;">
   </div>
@@ -4757,8 +4735,8 @@ const LENORMAND_IMAGES = {
       <div style="margin-bottom:20px;">
         <div style="font-size:14px;font-weight:500;color:var(--txt);margin-bottom:8px;">即时收藏概率</div>
         <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px;">
-          <input type="range" id="ta-fav-instant-slider" min="0" max="100" value="2" style="flex:1;">
-          <span id="ta-fav-instant-value" style="font-size:14px;font-weight:600;color:var(--accent);width:40px;text-align:right;">2%</span>
+          <input type="range" id="ta-fav-instant-slider" min="0" max="100" value="30" style="flex:1;">
+          <span id="ta-fav-instant-value" style="font-size:14px;font-weight:600;color:var(--accent);width:40px;text-align:right;">30%</span>
         </div>
         <div style="font-size:12px;color:var(--txt2);line-height:1.4;">消息发送后，对方很快就收藏的概率（1-300秒内）</div>
       </div>
@@ -4766,8 +4744,8 @@ const LENORMAND_IMAGES = {
       <div style="margin-bottom:20px;">
         <div style="font-size:14px;font-weight:500;color:var(--txt);margin-bottom:8px;">延迟收藏概率</div>
         <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px;">
-          <input type="range" id="ta-fav-delay-slider" min="0" max="100" value="5" style="flex:1;">
-          <span id="ta-fav-delay-value" style="font-size:14px;font-weight:600;color:var(--accent);width:40px;text-align:right;">5%</span>
+          <input type="range" id="ta-fav-delay-slider" min="0" max="100" value="20" style="flex:1;">
+          <span id="ta-fav-delay-value" style="font-size:14px;font-weight:600;color:var(--accent);width:40px;text-align:right;">20%</span>
         </div>
         <div style="font-size:12px;color:var(--txt2);line-height:1.4;">消息发送后，对方随机时间回看聊天记录时收藏的概率（1-180分钟内）</div>
       </div>
@@ -6481,19 +6459,27 @@ const LENORMAND_IMAGES = {
           <input type="checkbox" id="hide-topbar-avatar-status" style="width:18px;height:18px;cursor:pointer;accent-color:var(--accent);">
         </label>
         <label style="display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-top:1px solid var(--border-light);cursor:pointer;">
-          <span style="font-size:13px;color:var(--txt);">隐藏底部输入栏的发送按钮</span>
-          <div style="display:flex;flex-direction:column;align-items:flex-end;gap:1px;">
-            <input type="checkbox" id="hide-send-btn" style="width:18px;height:18px;cursor:pointer;accent-color:var(--accent);">
-            <span style="font-size:10px;color:var(--txt3);">回车键可发送消息</span>
-          </div>
+          <span style="font-size:13px;color:var(--txt);">聊天输入栏收纳功能</span>
+          <span style="font-size:10px;color:var(--txt3);">未勾选的按钮将收纳到【更多功能】</span>
         </label>
-        <label style="display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-top:1px solid var(--border-light);cursor:pointer;">
-          <span style="font-size:13px;color:var(--txt);">开启批量发送模式</span>
-          <div style="display:flex;flex-direction:column;align-items:flex-end;gap:1px;">
-            <input type="checkbox" id="enable-batch-send" style="width:18px;height:18px;cursor:pointer;accent-color:var(--accent);">
-            <span style="font-size:10px;color:var(--txt3);">发送按钮左侧显示批量按钮</span>
-          </div>
-        </label>
+        <div style="padding:4px 0 8px;border-top:1px solid var(--border-light);">
+          <label style="display:flex;align-items:center;justify-content:space-between;padding:6px 12px;cursor:pointer;">
+            <span style="font-size:13px;color:var(--txt);">😄 表情包</span>
+            <input type="checkbox" id="show-ibar-emoji" style="width:18px;height:18px;cursor:pointer;accent-color:var(--accent);" checked>
+          </label>
+          <label style="display:flex;align-items:center;justify-content:space-between;padding:6px 12px;cursor:pointer;">
+            <span style="font-size:13px;color:var(--txt);">☰ 批量发送</span>
+            <input type="checkbox" id="show-ibar-batch" style="width:18px;height:18px;cursor:pointer;accent-color:var(--accent);" checked>
+          </label>
+          <label style="display:flex;align-items:center;justify-content:space-between;padding:6px 12px;cursor:pointer;">
+            <span style="font-size:13px;color:var(--txt);">… 让对方继续说</span>
+            <input type="checkbox" id="show-ibar-continue" style="width:18px;height:18px;cursor:pointer;accent-color:var(--accent);" checked>
+          </label>
+          <label style="display:flex;align-items:center;justify-content:space-between;padding:6px 12px;cursor:pointer;">
+            <span style="font-size:13px;color:var(--txt);">➤ 发送消息按钮</span>
+            <input type="checkbox" id="show-ibar-send" style="width:18px;height:18px;cursor:pointer;accent-color:var(--accent);" checked>
+          </label>
+        </div>
       </div>
 
 
@@ -6788,13 +6774,16 @@ var SELF='user',OTHER='partner',LC='ml2_c',LP='ml2_p',LM='ml2_m_',LD='ml2_d_',LL
 var _tsX=0,_tsY=0,_tsM=false;
 document.addEventListener('touchstart',function(e){_tsX=e.touches[0].clientX;_tsY=e.touches[0].clientY;_tsM=false},{passive:true,capture:true});
 function isSwipe(){return _tsM;}
-// 全局防滑动误触：只标记滑动状态，不阻止默认行为（避免阻止页面滚动）
+// 全局防滑动误触：标记滑动状态并阻止touchend冒泡到按钮
 // 捕获阶段：确保在按钮touchend之前计算_tsM
 document.addEventListener('touchend',function(e){
   var dx=e.changedTouches[0].clientX-_tsX;
   var dy=e.changedTouches[0].clientY-_tsY;
   _tsM=(Math.abs(dx)>10||Math.abs(dy)>10);
-},{passive:true,capture:true});
+  if(_tsM){
+    e.stopPropagation();
+  }
+},{passive:false,capture:true});
 // 滑动后阻止后续click事件（捕获阶段阻止，避免滑动误触打开功能）
 document.addEventListener('click',function(e){
   if(isSwipe()){
@@ -7001,10 +6990,6 @@ var Storage = (function(){
     cache[k] = v;
     writeQueue[k] = v;
     scheduleFlush();
-    // 直接写入 IndexedDB（不依赖 isLFAvailable()，确保数据落盘）
-    if(window.localforage){
-      window.localforage.setItem(k, v).catch(function(e){});
-    }
     var isLargeDataKey=k.startsWith('ml2_card_img_')||k.startsWith('ml2_msg_img_')||k.startsWith('ml2_avh_')||k.startsWith('ml2_avatar_lib_')||k==='ml2_c'||k==='ml2_groups';
     if(!isLargeDataKey){
       safeSetItem('ml2_lf_'+k, v);
@@ -8033,6 +8018,7 @@ function initTabs(){
     el.querySelectorAll('.tab').forEach(function(tb){
       tb.addEventListener('click',handleTabClick);
       tb.addEventListener('touchend',function(e){
+        if(window._tsM){window._tsM=false;return;}
         e.preventDefault();
         handleTabClick.call(this);
       });
@@ -8056,8 +8042,7 @@ loadContactOrder();
 loadContactOrderAsync();
 
 function updateBottomNavVisibility(){
-  var contact=contacts.find(function(x){return x.id===cid});
-  var hideBottomNav=contact&&contact.hideBottomNav;
+  var hideBottomNav=ls('ml2_hide_bottom_nav')||false;
   var isConvPage=currentPage==='pg-conv';
   document.querySelectorAll('.tabs').forEach(function(el){
     el.style.display=(isConvPage&&hideBottomNav)?'none':'flex';
@@ -8409,13 +8394,7 @@ function openConv(id,type){
   if($('nav-mood'))$('nav-mood').style.display=isGroup?'none':'';
   if($('nav-idle'))$('nav-idle').style.display=isGroup?'none':'';
   
-  var hideSendBtn=!!(c&&c.hideSendBtn);
-  if($('btn-send'))$('btn-send').style.display=hideSendBtn?'none':'';
-  var batchBtn=$('batch-btn');
-  if(batchBtn){
-    var showBatch=c&&c.batchSendEnabled!==false;
-    batchBtn.style.display=showBatch?'':'none';
-  }
+  applyInputBarVisibility(c);
   
   var hideAvatars=!!(c&&c.hideChatAvatars);
   document.querySelectorAll('.ibar').forEach(function(el){
@@ -9620,7 +9599,7 @@ function renderMsgs(messages){
         if(quoteMsg.retracted){
           quoteContent='对方撤回了一条消息';
         }else if(quoteMsg.isTouch){
-          quoteContent='[拍一拍]';
+          quoteContent=quoteMsg.touchAction || '[拍一拍]';
         }else if(quoteMsg.isCall){
           quoteContent='[通话]';
         }else if(quoteMsg.isVoice||quoteMsg.voice){
@@ -10825,6 +10804,31 @@ if($('btn-send')){
   $('btn-send').addEventListener('click',sendMsg);
   $('btn-send').addEventListener('touchend',function(e){e.preventDefault();sendMsg()});
 }
+// 「让对方继续说」按钮
+if($('btn-ibar-continue')){
+  $('btn-ibar-continue').addEventListener('click',function(){
+    if(isSwipe()){_tsM=false;return;}
+    simulateReply();
+  });
+  $('btn-ibar-continue').addEventListener('touchend',function(e){
+    if(isSwipe()){_tsM=false;return;}
+    e.preventDefault();
+    simulateReply();
+  });
+}
+async function simulateReply(){
+  if(!cid||cid==='fh')return;
+  if(!contacts.length)return;
+  typingStates[cid]=true;
+  if($('typing'))$('typing').style.display='flex';
+  try{
+    await genReply(cid);
+  }catch(e){
+    console.warn('simulateReply error:',e);
+  }
+  typingStates[cid]=false;
+  if($('typing'))$('typing').style.display='none';
+}
 // 批量发送事件委托
 if($('batch-preview')){
   $('batch-preview').addEventListener('click', function(e) {
@@ -11075,7 +11079,10 @@ $('chat-image-input').addEventListener('change',function(e){
 function bindMoreBtn(id, handler){
   var btn=$(id);
   if(!btn)return;
-  btn.addEventListener('click',handler);
+  btn.addEventListener('click',function(e){
+    if(isSwipe()){_tsM=false;return;}
+    handler();
+  });
   btn.addEventListener('touchend',function(e){
     if(isSwipe()){
       _tsM=false;
@@ -11090,7 +11097,6 @@ bindMoreBtn('more-divine-btn',function(){d2ShowDivination()});
 bindMoreBtn('more-letters-btn',function(){showPg('pg-letters');switchEnvTab('partner')});
 bindMoreBtn('more-noninstant-btn',function(){openNonInstantChat()});
 bindMoreBtn('more-board-btn',function(){showPg('pg-board');renderBoard()});
-bindMoreBtn('more-music-btn',function(){showPg('pg-music');loadMusicData();renderMusicLibrary()});
 bindMoreBtn('more-schedule-btn',function(){showPg('pg-schedule');renderSchedule()});
 bindMoreBtn('more-survey-btn',function(){openSurveyModal('full')});
 bindMoreBtn('more-accounting-btn',function(){showPg('pg-accounting');renderAccounting()});
@@ -12143,7 +12149,7 @@ function renderNonInstantMsgs(){
         if(quoteMsg.retracted){
           quoteContent='对方撤回了一条消息';
         }else if(quoteMsg.isTouch){
-          quoteContent='[拍一拍]';
+          quoteContent=quoteMsg.touchAction || '[拍一拍]';
         }else if(quoteMsg.isCall){
           quoteContent='[通话]';
         }else if(quoteMsg.isVoice||quoteMsg.voice){
@@ -16859,7 +16865,8 @@ $('enter-send').addEventListener('change',function(){saveSpeedSettings();toast(t
 document.querySelectorAll('.stepper').forEach(function(st){var k=st.dataset.k,m=speedSettings[k];if(!m||!m.val)return;var el=document.getElementById(m.val);if(!el)return;st.children[0].addEventListener('click',function(){var cur=parseInt(el.value)||m.min,nxt=Math.max(m.min,cur-m.step);el.value=nxt});st.children[2].addEventListener('click',function(){var cur=parseInt(el.value)||m.min,nxt=Math.min(m.max,cur+m.step);el.value=nxt});el.addEventListener('input',function(){var val=parseInt(this.value);if(isNaN(val))val=m.min;val=Math.max(m.min,Math.min(m.max,val));this.value=val})});
 
 // ---------- Toast ----------
-function toast(t){var el=document.createElement('div');el.className='toast';el.textContent=t;document.body.appendChild(el);setTimeout(function(){if(el.parentNode)el.remove()},1900)}
+var _toastTimer=null;
+function toast(t){if(_toastTimer){clearTimeout(_toastTimer);var old=document.querySelector('.toast');if(old)old.remove()}var el=document.createElement('div');el.className='toast';el.textContent=t;document.body.appendChild(el);_toastTimer=setTimeout(function(){if(el.parentNode)el.remove();_toastTimer=null},1900)}
 function escapeHTML(s){if(!s)return'';var d=document.createElement('div');d.textContent=s;return d.innerHTML}
 function showSurveyDetail(idx){if(!SurveyApp)return;SurveyApp._loadRecords().then(function(records){if(!records||idx<0||idx>=records.length)return;var r=records[idx];var html='<div style="font-size:16px;font-weight:600;color:#333;margin-bottom:12px;">'+escapeHTML(r.title||'无标题')+'</div>';html+='<div style="font-size:12px;color:#888;margin-bottom:16px;">'+r.contactName+' · '+r.time+'</div>';r.questions.forEach(function(q,i){html+='<div style="padding:12px;background:#f8f9fa;border-radius:8px;margin-bottom:8px;">';html+='<div style="font-size:14px;font-weight:600;color:#333;margin-bottom:6px;">Q'+(i+1)+': '+escapeHTML(q.text)+'</div>';var a=r.answers&&r.answers[i];html+='<div style="font-size:13px;color:#666;">A: '+escapeHTML(a?a.answer:'(未回答)')+'</div>';html+='</div>'});$('survey-detail-content').innerHTML=html;showOv('ov-survey-detail')})}
 // 触感反馈（移动端）
@@ -17632,6 +17639,20 @@ function scheduleFriendMoments(){
       });
       saveMomentsData();
       addMomentsNotification('post',postId,c.id,content);
+      
+      // 在联系人聊天中显示朋友圈通知
+      var contactMsgs=msgs(c.id);
+      contactMsgs.push({
+        id:'m_'+Date.now()+'_'+Math.random().toString(36).substr(2,9),
+        s:OTHER,
+        t:(c.name||c.nickname||'联系人')+'发布了一条朋友圈',
+        ts:new Date(),
+        read:(c.id===window.currentCid),
+        isSystem:true
+      });
+      savemsgs(c.id,contactMsgs);
+      if(c.id===window.currentCid){renderMsgs();}
+      renderChatList();
       if(document.getElementById('pg-moments').classList.contains('active')){
         renderMoments();
       }
@@ -18548,13 +18569,13 @@ function renderBoardTargets(){
       btn.classList.add(t.id==='__ALL__'?'active-all':'active');
     }
     btn.addEventListener('click',function(){
-      var isCapture=!!(window._touchMoved||0);
-      if(isCapture){window._touchMoved=0;return;}
+      var isCapture=!!(window._tsM||0);
+      if(isCapture){window._tsM=false;return;}
       boardSelectedTarget=t.id;
       renderBoardTargets();
     });
     btn.addEventListener('touchend',function(e){
-      if(window._touchMoved){window._touchMoved=0;return;}
+      if(window._tsM){window._tsM=false;return;}
       e.preventDefault();
       boardSelectedTarget=t.id;
       renderBoardTargets();
@@ -18703,11 +18724,11 @@ function deleteBoardMessage(id){
   var publishBtn=$('board-publish-btn');
   if(publishBtn){
     publishBtn.addEventListener('click',function(){
-      if(window._touchMoved){window._touchMoved=0;return;}
+      if(window._tsM){window._tsM=false;return;}
       postBoardMessage();
     });
     publishBtn.addEventListener('touchend',function(e){
-      if(window._touchMoved){window._touchMoved=0;return;}
+      if(window._tsM){window._tsM=false;return;}
       e.preventDefault();
       postBoardMessage();
     });
@@ -18809,11 +18830,7 @@ function renderMusicLibrary(){
   }
   
   var countEl=$('music-count');
-  var totalEl=$('music-stat-total');
-  var plEl=$('music-stat-playlists');
   if(countEl)countEl.textContent='共 '+filtered.length+' 首';
-  if(totalEl)totalEl.textContent=musicLibrary.length;
-  if(plEl)plEl.textContent=musicPlaylists.length;
   
   if(!filtered.length){
     el.innerHTML='<div class="music-empty"><span class="empty-icon">🎵</span><p>还没有音乐</p><p class="empty-sub">点击上方按钮上传音乐文件吧～</p></div>';
@@ -20176,7 +20193,10 @@ function bindMyPageEvents(){
   els.forEach(function(item){
     var el=$(item[0]);
     if(el){
-      el.addEventListener('click',item[1]);
+      el.addEventListener('click',function(e){
+        if(isSwipe()){_tsM=false;return;}
+        item[1]();
+      });
       el.addEventListener('touchend',function(e){
         if(isSwipe()){
           _tsM=false;
@@ -24290,8 +24310,8 @@ document.addEventListener('click',function(e){
 // ---------- TA's Favorites ----------
 var taFavorites={};
 var taFavoritesSettings={
-  instantProbability:2,
-  delayProbability:5,
+  instantProbability:30,
+  delayProbability:20,
   minCount:1,
   maxCount:5
 };
@@ -24334,58 +24354,80 @@ function showTAFavorites(){
   
   if(favorites.length===0){
     html='<div style="text-align:center;padding:40px;color:var(--txt2);"><div style="font-size:14px;">暂无收藏</div><div style="font-size:12px;margin-top:4px;">消息发送后有概率被TA收藏</div></div>';
-  }else{
-    var contact2=contacts.find(function(c){return c.id===cid})||groups.find(function(g){return g.id===cid})||{name:'未知联系人',avatar:''};
-    var avatarHtml=contact2.avatar?'<img src="'+contact2.avatar.replace(/"/g,'&quot;')+'" style="width:100%;height:100%;object-fit:cover;">':'✦';
-    
-    html+='<div style="margin-bottom:20px;"><div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--border);"><div style="width:36px;height:36px;border-radius:8px;background:var(--c3);display:flex;align-items:center;justify-content:center;overflow:hidden;">'+avatarHtml+'</div><div style="font-size:14px;font-weight:600;color:var(--txt);">'+contact2.name+'</div><div style="font-size:12px;color:var(--txt2);">('+favorites.length+')</div></div>';
-    
-    favorites.sort(function(a,b){return b.timestamp-a.timestamp});
-    var now=new Date();
-    var todayStart=new Date(now.getFullYear(),now.getMonth(),now.getDate());
-    var yesterdayStart=new Date(todayStart.getTime()-86400000);
-    var dayOfWeek=now.getDay();var mondayOffset=dayOfWeek===0?-6:1-dayOfWeek;
-    var weekStart=new Date(todayStart.getTime()+mondayOffset*86400000);
-    function getDateGroup(d){
-      var t=d.getTime();
-      if(t>=todayStart.getTime())return'今天';
-      if(t>=yesterdayStart.getTime())return'昨天';
-      if(t>=weekStart.getTime())return'本周';
-      return'更早';
-    }
-    var lastGroup='';
-    favorites.forEach(function(fav){
-      var d=null;
-      if(fav.msgTime){d=new Date(fav.msgTime);}
-      var group=d?getDateGroup(d):'';
-      if(group&&group!==lastGroup){
-        html+='<div style="text-align:center;margin:16px 0 8px;font-size:11px;color:var(--txt3);">'+group+'</div>';
-        lastGroup=group;
-      }
-      var contentHtml='';
-      if(fav.text){
-        contentHtml+='<div style="font-size:14px;color:var(--txt);line-height:1.5;">'+fav.text+'</div>';
-      }
-      if(fav.image){
-        var favImg=ls('ml2_ta_fav_img_'+fav.id);
-        if(favImg){
-          contentHtml+='<img src="'+favImg+'" style="max-width:120px;max-height:120px;border-radius:8px;margin-top:8px;object-fit:cover;">';
-        }
-      }
-      
-      var timeStr='';
-      if(fav.msgTime){
-        timeStr=(d.getMonth()+1)+'/'+d.getDate()+' '+('0'+d.getHours()).slice(-2)+':'+('0'+d.getMinutes()).slice(-2)+':'+('0'+d.getSeconds()).slice(-2);
-      }
-      
-      html+='<div style="padding:12px;background:var(--c2);border-radius:8px;margin-bottom:8px;">'+contentHtml+'<div style="font-size:11px;color:var(--txt2);margin-top:8px;">收藏于 '+timeStr+'</div></div>';
-    });
-    
-    html+='</div>';
+    list.innerHTML=html;
+    return;
   }
+  
+  var contact2=contacts.find(function(c){return c.id===cid})||groups.find(function(g){return g.id===cid})||{name:'未知联系人',avatar:''};
+  var avatarHtml=contact2.avatar?'<img src="'+contact2.avatar.replace(/"/g,'&quot;')+'" style="width:100%;height:100%;object-fit:cover;">':'✦';
+  
+  html+='<div style="margin-bottom:20px;"><div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--border);"><div style="width:36px;height:36px;border-radius:8px;background:var(--c3);display:flex;align-items:center;justify-content:center;overflow:hidden;">'+avatarHtml+'</div><div style="font-size:14px;font-weight:600;color:var(--txt);">'+contact2.name+'</div><div style="font-size:12px;color:var(--txt2);">('+favorites.length+')</div></div>';
+  
+  favorites.sort(function(a,b){return b.timestamp-a.timestamp});
+  var now=new Date();
+  var todayStart=new Date(now.getFullYear(),now.getMonth(),now.getDate());
+  var yesterdayStart=new Date(todayStart.getTime()-86400000);
+  var dayOfWeek=now.getDay();var mondayOffset=dayOfWeek===0?-6:1-dayOfWeek;
+  var weekStart=new Date(todayStart.getTime()+mondayOffset*86400000);
+  function getDateGroup(d){
+    var t=d.getTime();
+    if(t>=todayStart.getTime())return'今天';
+    if(t>=yesterdayStart.getTime())return'昨天';
+    if(t>=weekStart.getTime())return'本周';
+    return'更早';
+  }
+  var lastGroup='';
+  favorites.forEach(function(fav){
+    var d=null;
+    if(fav.msgTime){d=new Date(fav.msgTime);}
+    var group=d?getDateGroup(d):'';
+    if(group&&group!==lastGroup){
+      html+='<div style="text-align:center;margin:16px 0 8px;font-size:11px;color:var(--txt3);">'+group+'</div>';
+      lastGroup=group;
+    }
+    var contentHtml='';
+    if(fav.text){
+      contentHtml+='<div style="font-size:14px;color:var(--txt);line-height:1.5;">'+fav.text+'</div>';
+    }
+    if(fav.image){
+      contentHtml+='<div class="ta-fav-img-placeholder" data-fav-id="'+fav.id+'" style="max-width:120px;max-height:120px;border-radius:8px;margin-top:8px;background:var(--c3);display:flex;align-items:center;justify-content:center;font-size:12px;color:var(--txt3);min-height:80px;">加载中...</div>';
+    }
+    
+    var timeStr='';
+    if(fav.msgTime){
+      timeStr=(d.getMonth()+1)+'/'+d.getDate()+' '+('0'+d.getHours()).slice(-2)+':'+('0'+d.getMinutes()).slice(-2)+':'+('0'+d.getSeconds()).slice(-2);
+    }
+    
+    html+='<div style="padding:12px;background:var(--c2);border-radius:8px;margin-bottom:8px;">'+contentHtml+'<div style="font-size:11px;color:var(--txt2);margin-top:8px;">收藏于 '+timeStr+'</div></div>';
+  });
+  
+  html+='</div>';
   
   list.innerHTML=html;
   showOv('ov-ta-favorites');
+  
+  // 异步加载图片（先查localStorage，再查localforage）
+  var placeholders=list.querySelectorAll('.ta-fav-img-placeholder');
+  placeholders.forEach(function(ph){
+    var favId=ph.getAttribute('data-fav-id');
+    var imgKey='ml2_ta_fav_img_'+favId;
+    var imgData=ls(imgKey);
+    if(imgData){
+      ph.outerHTML='<img src="'+imgData+'" style="max-width:120px;max-height:120px;border-radius:8px;margin-top:8px;object-fit:cover;">';
+    }else if(window.localforage){
+      window.localforage.getItem(imgKey).then(function(data){
+        if(data){
+          ph.outerHTML='<img src="'+data+'" style="max-width:120px;max-height:120px;border-radius:8px;margin-top:8px;object-fit:cover;">';
+        }else{
+          ph.style.display='none';
+        }
+      }).catch(function(){
+        ph.style.display='none';
+      });
+    }else{
+      ph.style.display='none';
+    }
+  });
 }
 
 function showTAFavoritesSettings(){
@@ -26577,11 +26619,19 @@ var chatbarItems=[
   {id:'moments',name:'朋友圈',icon:'📸',category:'其他',fixed:false},
   {id:'period',name:'生理周期',icon:'🌸',category:'其他',fixed:false},
   {id:'pomodoro',name:'番茄钟',icon:'🍅',category:'其他',fixed:false},
-  {id:'music-library',name:'音乐库',icon:'🎵',category:'其他',fixed:false},
   {id:'settings',name:'设置',icon:'⚙️',category:'其他',fixed:false}
 ];
 var chatbarCategoryOrder=['消息工具','数据统计','其他'];
-var customChatbarEnabled=['image','touch','cards','decision','group_decision','divine','call','survey','search','favorites','copy_msg','fav_msg','my_favs','card_stats','ta_highlights','long_screenshot','topbar_cards','letters','contact-profile','moments','period','pomodoro','settings','music-library'];
+var customChatbarEnabled=['image','touch','cards','decision','group_decision','divine','call','survey','search','favorites','copy_msg','fav_msg','my_favs','card_stats','ta_highlights','long_screenshot','topbar_cards','letters','contact-profile','moments','period','pomodoro','settings'];
+
+// 聊天输入栏收纳功能：根据全局设置显示/隐藏输入栏按钮
+function applyInputBarVisibility(c){
+  var ibh=ls('ml2_input_bar_hidden')||{};
+  if($('btn-ibar-emoji'))$('btn-ibar-emoji').style.display=ibh.emoji?'none':'';
+  if($('batch-btn'))$('batch-btn').style.display=ibh.batch?'none':'';
+  if($('btn-ibar-continue'))$('btn-ibar-continue').style.display=ibh.continue?'none':'';
+  if($('btn-send'))$('btn-send').style.display=ibh.send?'none':'';
+}
 
 function renderChatMorePanel(){
   var list=$('chat-more-list');
@@ -26630,6 +26680,29 @@ function renderChatMorePanel(){
   });
 
   if(html){list.innerHTML=html;}
+
+  // 收纳按钮：显示被隐藏的输入栏按钮（全局设置）
+  var ibh=ls('ml2_input_bar_hidden')||{};
+  var hiddenBtns=[];
+  if(ibh.emoji)hiddenBtns.push({id:'emoji',name:'表情包',icon:'😄'});
+  if(ibh.batch)hiddenBtns.push({id:'batch',name:'批量发送',icon:'☰'});
+  if(ibh.continue)hiddenBtns.push({id:'continue',name:'让对方继续说',icon:'…'});
+  // 发送按钮不收纳到更多功能，仅隐藏
+  if(hiddenBtns.length>0){
+    var drawerHtml='';
+    hiddenBtns.forEach(function(item){
+      drawerHtml+='<div class="chat-more-item" data-action="drawer-'+item.id+'">';
+      drawerHtml+='<div class="chat-more-icon-wrap"><span class="chat-more-icon">'+item.icon+'</span></div>';
+      drawerHtml+='<span class="chat-more-label">'+item.name+'</span>';
+      drawerHtml+='</div>';
+    });
+    var firstCatItems=list.querySelector('.chat-more-cat-items');
+    if(firstCatItems){
+      firstCatItems.insertAdjacentHTML('afterbegin',drawerHtml);
+    }else{
+      list.insertAdjacentHTML('afterbegin','<div class="chat-more-cat-items">'+drawerHtml+'</div>');
+    }
+  }
 }
 
 var _emojiClicked=false;
@@ -26720,10 +26793,8 @@ function handleChatMoreAction(action){
       case 'pomodoro':
         showPomodoro();
         break;
-      case 'music-library':
-        showPg('pg-music');
-        loadMusicData();
-        renderMusicLibrary();
+      case 'pomodoro':
+        showPomodoro();
         break;
       case 'settings':
         showPg('pg-my');
@@ -26739,6 +26810,19 @@ function handleChatMoreAction(action){
         break;
       case 'contact-profile':
         if(cid)showContactProfile(cid);
+        break;
+      // 收纳按钮：从更多功能中直接触发隐藏的输入栏按钮
+      case 'drawer-emoji':
+        toggleChatEmoji();
+        break;
+      case 'drawer-batch':
+        toggleBatchMode();
+        break;
+      case 'drawer-continue':
+        simulateReply();
+        break;
+      case 'drawer-send':
+        sendMsg();
         break;
     }
   }catch(e){
@@ -27473,13 +27557,18 @@ function openContactEdit(){
   renderMyAvatars();
   $('hide-contact-name')&&($('hide-contact-name').checked=!!editingContact.hideName);
   $('hide-quote-names')&&($('hide-quote-names').checked=!!editingContact.hideQuoteNames);
-  $('hide-bottom-nav')&&($('hide-bottom-nav').checked=!!editingContact.hideBottomNav);
+  $('hide-bottom-nav')&&($('hide-bottom-nav').checked=!!(ls('ml2_hide_bottom_nav')||false));
   $('hide-touch-names')&&($('hide-touch-names').checked=!!editingContact.hideTouchNames);
   $('hide-nav-info')&&($('hide-nav-info').checked=!!editingContact.hideNavInfo);
   $('hide-chat-avatars')&&($('hide-chat-avatars').checked=!!editingContact.hideChatAvatars);
   $('hide-topbar-avatar-status')&&($('hide-topbar-avatar-status').checked=!!editingContact.hideTopbarAvatarStatus);
   $('hide-send-btn')&&($('hide-send-btn').checked=!!editingContact.hideSendBtn);
-  $('enable-batch-send')&&($('enable-batch-send').checked=editingContact.batchSendEnabled!==false);
+  // 聊天输入栏收纳功能：加载全局checkbox状态
+  var ibh=ls('ml2_input_bar_hidden')||{};
+  $('show-ibar-emoji')&&($('show-ibar-emoji').checked=!ibh.emoji);
+  $('show-ibar-batch')&&($('show-ibar-batch').checked=!ibh.batch);
+  $('show-ibar-continue')&&($('show-ibar-continue').checked=!ibh.continue);
+  $('show-ibar-send')&&($('show-ibar-send').checked=!ibh.send);
   var avatarShape=editingContact.avatarShape||'square';
   var avatarRadius=avatarShape==='circle'?'50%':'16px';
   if($('contact-avatar-preview'))$('contact-avatar-preview').style.borderRadius=avatarRadius;
@@ -27584,7 +27673,8 @@ function saveContactEdit(){
   }
   var hideBottomNavCheckbox=$('hide-bottom-nav');
   if(hideBottomNavCheckbox){
-    editingContact.hideBottomNav=hideBottomNavCheckbox.checked;
+    ls('ml2_hide_bottom_nav',hideBottomNavCheckbox.checked);
+    updateBottomNavVisibility();
   }
   var hideTouchNamesCheckbox=$('hide-touch-names');
   if(hideTouchNamesCheckbox){
@@ -27617,16 +27707,20 @@ function saveContactEdit(){
     if($('nav-contact-status'))$('nav-contact-status').style.display=hideTopbarAvatarStatusCheckbox.checked?'none':'';
   }
   var hideSendBtnCheckbox=$('hide-send-btn');
-  if(hideSendBtnCheckbox){
-    editingContact.hideSendBtn=hideSendBtnCheckbox.checked;
-    // 立即更新发送按钮显示/隐藏
-    if($('btn-send'))$('btn-send').style.display=hideSendBtnCheckbox.checked?'none':'';
-  }
-  var enableBatchSendCheckbox=$('enable-batch-send');
-  if(enableBatchSendCheckbox){
-    editingContact.batchSendEnabled=enableBatchSendCheckbox.checked;
-    var batchBtn=$('batch-btn');
-    if(batchBtn)batchBtn.style.display=enableBatchSendCheckbox.checked?'':'none';
+  // 聊天输入栏收纳功能：读取4个checkbox状态，保存为全局设置
+  var showEmoji=$('show-ibar-emoji');
+  var showBatch=$('show-ibar-batch');
+  var showContinue=$('show-ibar-continue');
+  var showSend=$('show-ibar-send');
+  if(showEmoji||showBatch||showContinue||showSend){
+    var ibh=ls('ml2_input_bar_hidden')||{};
+    if(showEmoji)ibh.emoji=!showEmoji.checked;
+    if(showBatch)ibh.batch=!showBatch.checked;
+    if(showContinue)ibh.continue=!showContinue.checked;
+    if(showSend)ibh.send=!showSend.checked;
+    ls('ml2_input_bar_hidden',ibh);
+    // 立即应用收纳设置
+    applyInputBarVisibility();
   }
   if($('avatar-shape-square')&&$('avatar-shape-square').checked)editingContact.avatarShape='square';
   if($('avatar-shape-circle')&&$('avatar-shape-circle').checked)editingContact.avatarShape='circle';
@@ -27947,8 +28041,9 @@ async function checkAvatarLibRefresh(){
     
     // 初始化各类型最后更换时间和下次更换时间（独立）
     // 与顶部栏字卡机制一致：初始lastChange=0, nextChange=0，首次检查立即触发，之后1-8小时更换一次
-    if(!c.avatarLibLastChange){c.avatarLibLastChange={chat:0,mail:0,moment:0};}
-    if(!c.avatarLibNextChange){c.avatarLibNextChange={chat:0,mail:0,moment:0};}
+    // 兼容旧数据：avatarLibLastChange/avatarLibNextChange 可能是数字（旧格式），需转为对象
+    if(!c.avatarLibLastChange||typeof c.avatarLibLastChange!=='object'){c.avatarLibLastChange={chat:0,mail:0,moment:0};}
+    if(!c.avatarLibNextChange||typeof c.avatarLibNextChange!=='object'){c.avatarLibNextChange={chat:0,mail:0,moment:0};}
     
     // 检查并修复异常的时间戳（未来时间戳或无效值）
     ['chat','mail','moment'].forEach(function(type){
@@ -28991,7 +29086,11 @@ function showAnnouncement(){
   }
 }
 var currentAnnouncementPage=0;
+var _announcementLock=false;
 function nextAnnouncementPage(){
+  if(_announcementLock)return;
+  _announcementLock=true;
+  setTimeout(function(){_announcementLock=false;},400);
   var pages=document.querySelectorAll('.announcement-page');
   var dots=document.getElementById('announcement-dots');
   var nextBtn=document.getElementById('announcement-next');
@@ -29055,6 +29154,7 @@ function enterApp(){
   setTimeout(function(){
     showPg('pg-list');
     renderChatList();
+    checkUsageNotice();
   },100);
 }
 async function preloadMsgsFromDB(){
@@ -32154,31 +32254,31 @@ function d2HidePage(pageId) {
             }
             requestAnimationFrame(() => {
                 cards.forEach((el, i) => {
-                    const t = (i / cards.length) * 1.5;
+                    const t = (i / cards.length) * 2.5;
                     setTimeout(() => {
                         const px = (Math.random() - 0.5) * 140;
                         const py = (Math.random() - 0.5) * 100;
                         const pr = (Math.random() - 0.5) * 70;
                         el.style.transform = `translate(${px}px, ${py}px) rotate(${pr}deg) scale(0.9)`;
                         el.style.opacity = 0.5 + Math.random() * 0.5;
-                    }, t * 250);
+                    }, t * 400);
                 });
             });
             setTimeout(() => {
                 cards.forEach((el, i) => {
-                    const delay = i * 0.04;
+                    const delay = i * 0.06;
                     setTimeout(() => {
                         const offX = (i - cards.length / 2) * 0.8;
                         const offY = (i - cards.length / 2) * 1.2;
                         el.style.transform = `translate(${offX}px, ${offY}px) rotate(0deg) scale(0.98)`;
                         el.style.opacity = 0.9;
                         el.style.zIndex = cards.length - i;
-                    }, delay * 120);
+                    }, delay * 180);
                 });
-            }, 800);
+            }, 1600);
             setTimeout(() => {
                 if (onDone) onDone();
-            }, 1800);
+            }, 3200);
         }
 
         // ================================================================
@@ -32527,6 +32627,8 @@ function d2HidePage(pageId) {
             d2DrawState.currentResults = [];
             d2DrawState.mixedAllResults = [];
             d2DrawState.mixedStep = 0;
+            d2DrawState.question = '';
+            if (questionInput) questionInput.value = '';
             resultArea.classList.add('d2-hidden');
             shuffleBox.classList.add('d2-hidden');
             shuffleBox.innerHTML = '';
@@ -32945,6 +33047,11 @@ if($('mood-card-help-modal'))$('mood-card-help-modal').addEventListener('click',
     if (!avg) return null;
     var next = new Date(records[records.length-1].start);
     next.setDate(next.getDate() + avg);
+    // 如果预测日期已过（含今天），再往后推一个周期，确保预测的是未来日期
+    var today = pTodayDate();
+    if (next <= today) {
+      next.setDate(next.getDate() + avg);
+    }
     return next;
   }
 
@@ -33404,6 +33511,13 @@ function escapeHtml(text) {
 /* ===== Update Notice System ===== */
 var UPDATE_NOTICES = [
   {
+    version: '1.45',
+    date: '2026-07-23',
+    title: '星言字卡',
+    summary: 'Bug修复、新增更新公告、使用须知、音乐库、留言板更新、让对方继续说、输入栏收纳',
+    content: '<h4>1. Bug 修复</h4><p>修复了一些群内反馈的问题。</p><p>由于我没有相关设备进行测试，部分修复效果需要大家实际使用验证。</p><p>如果遇到新的问题，欢迎继续反馈。</p><h4>2. 新增更新公告</h4><p>设置中新增<strong>【更新公告】</strong>页面。</p><p>可以查看星言历次版本更新内容。</p><h4>3. 新增使用须知</h4><p>设置中新增<strong>【使用须知】</strong>页面。</p><p>包含：</p><ul><li>Bug反馈方式</li><li>网站说明</li><li>版本说明</li><li>使用相关注意事项</li></ul><h4>4. 新增音乐库</h4><p>底部聊天输入栏左侧新增<strong>【音乐库】</strong>功能入口。</p><p>支持本地上传和播放音乐。</p><h4>5. 我的留言板更新</h4><p>更多功能中的<strong>【我的留言板】</strong>已更新新版。</p><p>该功能为单向留言功能，不设置互动功能。</p><p>可用于记录想留下的话。</p><h4>6. 新增「让对方继续说」功能</h4><p>聊天输入栏右侧新增功能按钮。</p><p>点击后可触发联系人立即回复一条消息。</p><p>该按钮支持收纳，不需要时可以隐藏。</p><h4>7. 新增聊天输入栏收纳功能</h4><p>取消勾选显示的功能按钮后，会自动从聊天输入栏隐藏。</p><p>隐藏后的按钮会移动至底部左侧<strong>【更多功能】</strong>中的<strong>【收纳按钮】</strong>区域。</p><p>发送消息按钮不会被收纳。</p><h4>8. 其他优化</h4><p>修复了一些我自己在使用过程中发现的问题。</p><p>部分优化内容不单独列出。</p>'
+  },
+  {
     version: '1.4',
     date: '2026-07-22',
     title: '星言字卡',
@@ -33447,7 +33561,7 @@ var UPDATE_NOTICES = [
   }
 ];
 
-var CURRENT_VERSION = '1.4';
+var CURRENT_VERSION = '1.45';
 
 function compareVersions(v1, v2) {
   var parts1 = v1.split('.').map(Number);
@@ -33584,15 +33698,14 @@ function initUpdateNotice() {
   setTimeout(function() {
     var lastRead = getLastReadVersion();
     checkUpdateNotice();
-    checkUsageNotice();
   }, 2000);
 }
 
-// 使用须知弹窗（仅首次访问时弹窗）
+// 使用须知弹窗（每个版本弹一次，和公告一样）
 function checkUsageNotice() {
   try {
-    var hasSeen = localStorage.getItem('star_usage_notice_seen');
-    if (hasSeen === '1') return;
+    var seenVersion = localStorage.getItem('star_usage_notice_version') || '0.0';
+    if (compareVersions(CURRENT_VERSION, seenVersion) <= 0) return;
   } catch(e) {}
   showUsageNoticePopup();
 }
@@ -33610,7 +33723,7 @@ function closeUsageNoticePopup() {
     overlay.style.display = 'none';
   }
   try {
-    localStorage.setItem('star_usage_notice_seen', '1');
+    localStorage.setItem('star_usage_notice_version', CURRENT_VERSION);
   } catch(e) {}
 }
 
